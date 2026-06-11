@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Email — CryptoSwap</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="verify-wrapper">
+      <div class="verify-icon">📧</div>
+      <h2>Verify Your Email</h2>
+      <p>
+        We sent a verification link to your email. Click it to activate your
+        account and start trading.
+      </p>
+      <button
+        class="btn-primary"
+        style="max-width: 280px"
+        onclick="checkVerification()"
+      >
+        I've Verified My Email
+      </button>
+      <button class="btn-secondary" onclick="resendEmail()">
+        Resend Verification Email
+      </button>
+      <button
+        class="btn-secondary"
+        onclick="auth.signOut().then(() => window.location.href = '/')"
+      >
+        Back to Login
+      </button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script>
+      function checkVerification() {
+        const user = auth.currentUser;
+        if (!user) {
+          window.location.href = "/";
+          return;
+        }
+        user.reload().then(() => {
+          if (user.emailVerified) {
+            showToast("Email verified! Welcome to CryptoSwap 🎉", "success");
+            setTimeout(() => (window.location.href = "/home.html"), 1500);
+          } else {
+            showToast("Email not verified yet. Check your inbox.", "warning");
+          }
+        });
+      }
+
+      function resendEmail() {
+        const user = auth.currentUser;
+        if (!user) return;
+        user
+          .sendEmailVerification()
+          .then(() => showToast("Verification email sent!", "success"))
+          .catch((err) => showToast(err.message, "error"));
+      }
+    </script>
+  </body>
+</html>

@@ -1,11 +1,11 @@
 // Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyCc3K5CNtzwVlYDf-YO-lsEFiX1py3tIw8",
+  authDomain: "nexswap-90bc3.firebaseapp.com",
+  projectId: "nexswap-90bc3",
+  storageBucket: "nexswap-90bc3.firebasestorage.app",
+  messagingSenderId: "454225870434",
+  appId: "1:454225870434:web:1ee8c8ef51ed4ae1c95b3b",
 };
 
 // Initialize Firebase

@@ -29,10 +29,34 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+.page,
+.auth-wrapper,
+.verify-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.bottom-nav {
+  max-width: 480px;
+}
+
+@media (min-width: 481px) {
+  body {
+    background: linear-gradient(135deg, #050709 0%, #0b0e11 100%);
+  }
+
+  .page,
+  .auth-wrapper,
+  .verify-wrapper {
+    background: var(--bg);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    min-height: 100vh;
+  }
 }
 
 #bg-canvas {

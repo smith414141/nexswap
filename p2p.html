@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — P2P</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="page">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="top-bar-logo">⚡ CryptoSwap</div>
+        <div class="top-bar-right">
+          <span class="kyc-badge none" id="kyc-badge">No KYC</span>
+        </div>
+      </div>
+
+      <!-- BUY/SELL TOGGLE -->
+      <div style="padding: 16px 16px 0">
+        <div class="tabs">
+          <button class="tab active" id="tab-buy" onclick="setOrderType('buy')">
+            Buy
+          </button>
+          <button class="tab" id="tab-sell" onclick="setOrderType('sell')">
+            Sell
+          </button>
+        </div>
+      </div>
+
+      <!-- CRYPTO SELECTOR -->
+      <div style="padding: 12px 16px 0">
+        <div class="tabs">
+          <button class="tab active" id="tab-usdt" onclick="setCrypto('USDT')">
+            USDT
+          </button>
+          <button class="tab" id="tab-btc" onclick="setCrypto('BTC')">
+            BTC
+          </button>
+        </div>
+      </div>
+
+      <!-- CURRENCY SELECTOR -->
+      <div style="padding: 12px 16px">
+        <div
+          class="card"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 14px 16px;
+          "
+          onclick="openCurrencyPicker()"
+        >
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="font-size: 20px" id="selected-flag">🇪🇹</span>
+            <div>
+              <div
+                style="font-weight: 700; font-size: 14px"
+                id="selected-currency"
+              >
+                ETB
+              </div>
+              <div
+                style="font-size: 11px; color: var(--text2)"
+                id="selected-currency-name"
+              >
+                Ethiopian Birr
+              </div>
+            </div>
+          </div>
+          <span style="color: var(--text2); font-size: 18px">▾</span>
+        </div>
+      </div>
+
+      <!-- AMOUNT FILTER -->
+      <div style="padding: 0 16px 12px">
+        <div class="input-row">
+          <span class="input-suffix" id="amount-currency-label">ETB</span>
+          <input
+            type="number"
+            id="amount-filter"
+            placeholder="Enter amount"
+            min="0"
+            oninput="filterByAmount()"
+          />
+        </div>
+      </div>
+
+      <!-- LISTINGS -->
+      <div id="listings-container">
+        <!-- listings render here -->
+      </div>
+    </div>
+
+    <!-- CURRENCY PICKER MODAL -->
+    <div id="currency-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <span class="modal-title">Select Currency</span>
+          <span class="modal-close" onclick="closeCurrencyPicker()">✕</span>
+        </div>
+        <div class="input-row" style="margin: 0 16px 12px">
+          <span class="input-suffix">🔍</span>
+          <input
+            type="text"
+            id="currency-search"
+            placeholder="Search currency..."
+            oninput="renderCurrencyList()"
+          />
+        </div>
+        <div id="currency-list" class="modal-list"></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item active" onclick="window.location.href='p2p.html'">
+        <span class="nav-icon">🔄</span>
+        <span class="nav-label">P2P</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='deposit.html'">
+        <span class="nav-icon">⬇️</span>
+        <span class="nav-label">Deposit</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='withdraw.html'">
+        <span class="nav-icon">⬆️</span>
+      </button>
+    </div>
+  </body>
+</html>

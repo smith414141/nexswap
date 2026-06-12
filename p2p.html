@@ -25,9 +25,17 @@
         </div>
       </div>
 
-      <!-- BUY/SELL TOGGLE -->
-      <div style="padding: 16px 16px 0">
-        <div class="tabs">
+      <!-- P2P HEADER -->
+      <div
+        style="
+          padding: 12px 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid var(--border);
+        "
+      >
+        <div class="tabs" style="width: 140px">
           <button class="tab active" id="tab-buy" onclick="setOrderType('buy')">
             Buy
           </button>
@@ -35,65 +43,55 @@
             Sell
           </button>
         </div>
+
+        <div
+          style="display: flex; align-items: center; gap: 6px; cursor: pointer"
+          onclick="openCurrencyPicker()"
+        >
+          <span style="font-size: 18px" id="selected-flag">🇪🇹</span>
+          <span style="font-weight: 700; font-size: 14px" id="selected-currency"
+            >ETB</span
+          >
+          <span style="color: var(--text2); font-size: 14px">▾</span>
+        </div>
       </div>
 
       <!-- CRYPTO SELECTOR -->
-      <div style="padding: 12px 16px 0">
-        <div class="tabs">
-          <button class="tab active" id="tab-usdt" onclick="setCrypto('USDT')">
-            USDT
-          </button>
-          <button class="tab" id="tab-btc" onclick="setCrypto('BTC')">
-            BTC
-          </button>
-        </div>
-      </div>
-
-      <!-- CURRENCY SELECTOR -->
-      <div style="padding: 12px 16px">
-        <div
-          class="card"
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 14px 16px;
-          "
-          onclick="openCurrencyPicker()"
+      <div style="padding: 12px 16px 0; display: flex; gap: 8px">
+        <button
+          class="crypto-pill active"
+          id="tab-usdt"
+          onclick="setCrypto('USDT')"
         >
-          <div style="display: flex; align-items: center; gap: 10px">
-            <span style="font-size: 20px" id="selected-flag">🇪🇹</span>
-            <div>
-              <div
-                style="font-weight: 700; font-size: 14px"
-                id="selected-currency"
-              >
-                ETB
-              </div>
-              <div
-                style="font-size: 11px; color: var(--text2)"
-                id="selected-currency-name"
-              >
-                Ethiopian Birr
-              </div>
-            </div>
-          </div>
-          <span style="color: var(--text2); font-size: 18px">▾</span>
-        </div>
+          <span
+            class="coin-icon usdt"
+            style="width: 22px; height: 22px; font-size: 12px"
+            >₮</span
+          >
+          USDT
+        </button>
+        <button class="crypto-pill" id="tab-btc" onclick="setCrypto('BTC')">
+          <span
+            class="coin-icon btc"
+            style="width: 22px; height: 22px; font-size: 12px"
+            >₿</span
+          >
+          BTC
+        </button>
       </div>
 
       <!-- AMOUNT FILTER -->
-      <div style="padding: 0 16px 12px">
-        <div class="input-row">
-          <span class="input-suffix" id="amount-currency-label">ETB</span>
+      <div style="padding: 12px 16px">
+        <div class="input-row" style="margin: 0">
+          <span class="input-suffix">Amount</span>
           <input
             type="number"
             id="amount-filter"
-            placeholder="Enter amount"
+            placeholder="0"
             min="0"
             oninput="filterByAmount()"
           />
+          <span class="input-suffix" id="amount-currency-label">ETB</span>
         </div>
       </div>
 
@@ -139,7 +137,23 @@
       </button>
       <button class="nav-item" onclick="window.location.href='withdraw.html'">
         <span class="nav-icon">⬆️</span>
+        <span class="nav-label">Withdraw</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='profile.html'">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
       </button>
     </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="currencies.js"></script>
+    <script src="listings.js"></script>
+    <script src="p2p.js"></script>
   </body>
 </html>

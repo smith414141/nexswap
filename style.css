@@ -994,3 +994,24 @@ body {
 .modal-item:active {
   background: var(--bg3);
 }
+.crypto-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.crypto-pill.active {
+  background: rgba(240, 185, 11, 0.1);
+  border-color: var(--yellow);
+  color: var(--yellow);
+}

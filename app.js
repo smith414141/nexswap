@@ -128,7 +128,10 @@ function register() {
       ]);
     })
     .then(() => {
-      showToast("Account created! Check your email to verify.", "success");
+      showToast(
+        "Account created! Check your email (and spam folder) to verify.",
+        "success"
+      );
       setTimeout(() => (window.location.href = "/verify.html"), 2000);
     })
     .catch((err) => {

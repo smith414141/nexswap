@@ -94,8 +94,8 @@ function selectCurrency(code) {
   currentCurrency = code;
   document.getElementById("selected-flag").textContent = currency.flag;
   document.getElementById("selected-currency").textContent = currency.code;
-  document.getElementById("selected-currency-name").textContent = currency.name;
   document.getElementById("amount-currency-label").textContent = currency.code;
+
   closeCurrencyPicker();
   renderListings();
 }

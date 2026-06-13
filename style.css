@@ -1015,3 +1015,96 @@ body {
   border-color: var(--yellow);
   color: var(--yellow);
 }
+/* ---- PROFILE MENU ---- */
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.profile-menu-item:last-child {
+  border-bottom: none;
+}
+.profile-menu-item:active {
+  background: var(--bg3);
+}
+
+.profile-menu-icon {
+  font-size: 20px;
+  width: 28px;
+  text-align: center;
+}
+.profile-menu-text {
+  flex: 1;
+}
+.profile-menu-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+.profile-menu-sub {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+.profile-menu-arrow {
+  font-size: 18px;
+  color: var(--text3);
+}
+.profile-menu-status {
+  font-size: 14px;
+}
+
+/* ---- MERCHANT GLOW CARD ---- */
+.merchant-glow-card {
+  background: linear-gradient(
+    135deg,
+    rgba(240, 185, 11, 0.15),
+    rgba(139, 92, 246, 0.1)
+  );
+  border: 1px solid rgba(240, 185, 11, 0.3);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(240, 185, 11, 0.15);
+  animation: glowPulse 3s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+
+.merchant-glow-card:active {
+  transform: scale(0.98);
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(240, 185, 11, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(240, 185, 11, 0.25);
+  }
+}
+
+/* ---- FORM SELECT ---- */
+.form-group select {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 15px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+}
+
+.form-group select:focus {
+  border-color: var(--yellow);
+}
+.form-group select option {
+  background: var(--bg2);
+}

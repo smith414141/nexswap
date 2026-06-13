@@ -25,26 +25,29 @@
         </div>
       </div>
 
-      <!-- PROFILE INFO -->
+      <!-- PROFILE HEADER -->
       <div style="padding: 20px 16px">
         <div class="card" style="display: flex; align-items: center; gap: 14px">
           <div
             style="
-              width: 52px;
-              height: 52px;
+              width: 56px;
+              height: 56px;
               border-radius: 50%;
-              background: rgba(240, 185, 11, 0.1);
+              background: linear-gradient(135deg, var(--yellow), #d99c00);
               display: flex;
               align-items: center;
               justify-content: center;
               font-size: 24px;
               flex-shrink: 0;
+              font-weight: 900;
+              color: #000;
             "
+            id="profile-avatar"
           >
-            👤
+            U
           </div>
           <div style="flex: 1; overflow: hidden">
-            <div style="font-weight: 800; font-size: 15px" id="profile-name">
+            <div style="font-weight: 800; font-size: 16px" id="profile-name">
               Loading...
             </div>
             <div
@@ -59,225 +62,82 @@
               --
             </div>
           </div>
+          <span
+            style="font-size: 18px; color: var(--text2)"
+            onclick="openPersonalInfo()"
+            >›</span
+          >
         </div>
       </div>
 
-      <!-- KYC SECTION -->
+      <!-- MENU LIST -->
       <div style="padding: 0 16px 20px">
-        <p class="section-title">Identity Verification (KYC)</p>
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div class="profile-menu-item" onclick="openPersonalInfo()">
+            <span class="profile-menu-icon">👤</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Personal Information</div>
+              <div class="profile-menu-sub">Name, phone, country</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
 
-        <!-- NOT STARTED -->
-        <div id="kyc-none" style="display: none">
-          <div class="kyc-step">
-            <div class="kyc-step-icon">🆔</div>
-            <div>
-              <div class="kyc-step-title">Verify Your Identity</div>
-              <div class="kyc-step-desc">
-                Upload your ID or Passport to unlock P2P trading. Manual review
-                usually takes a few hours.
+          <div class="profile-menu-item" onclick="openKycPage()">
+            <span class="profile-menu-icon">🆔</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Identity Verification</div>
+              <div class="profile-menu-sub" id="kyc-menu-sub">
+                Not submitted
               </div>
             </div>
+            <span class="profile-menu-status" id="kyc-menu-status">❌</span>
+            <span class="profile-menu-arrow">›</span>
           </div>
 
           <div
-            class="file-upload"
-            onclick="document.getElementById('id-upload').click()"
+            class="profile-menu-item"
+            onclick="openMerchantPage()"
+            id="merchant-menu-item"
           >
-            <div class="file-upload-icon">📄</div>
-            <div class="file-upload-text">
-              <span>Tap to upload</span> your ID or Passport
-            </div>
-            <input
-              type="file"
-              id="id-upload"
-              accept="image/*"
-              style="display: none"
-              onchange="previewFile(this, 'id-preview')"
-            />
-          </div>
-          <img
-            id="id-preview"
-            style="
-              display: none;
-              width: 100%;
-              border-radius: 10px;
-              margin-bottom: 12px;
-            "
-          />
-
-          <button class="btn-primary" onclick="submitKyc()">
-            Submit for Review
-          </button>
-        </div>
-
-        <!-- PENDING -->
-        <div id="kyc-pending" style="display: none">
-          <div class="kyc-step">
-            <div class="kyc-step-icon">⏳</div>
-            <div>
-              <div class="kyc-step-title">Under Review</div>
-              <div class="kyc-step-desc">
-                Your documents are being reviewed. This usually takes a few
-                hours. We'll notify you once approved.
+            <span class="profile-menu-icon">🏆</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">P2P Merchant</div>
+              <div class="profile-menu-sub" id="merchant-menu-sub">
+                Locked — complete KYC first
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- APPROVED -->
-        <div id="kyc-approved" style="display: none">
-          <div class="kyc-step">
-            <div class="kyc-step-icon">✅</div>
-            <div>
-              <div class="kyc-step-title">Identity Verified</div>
-              <div class="kyc-step-desc">
-                You can now buy and sell on P2P. Apply to become a merchant to
-                post your own listings.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- REJECTED -->
-        <div id="kyc-rejected" style="display: none">
-          <div class="kyc-step">
-            <div class="kyc-step-icon">❌</div>
-            <div>
-              <div class="kyc-step-title">Verification Rejected</div>
-              <div class="kyc-step-desc" id="rejection-reason">
-                Your documents could not be verified. Please try again with
-                clearer images.
-              </div>
-            </div>
+            <span class="profile-menu-arrow">›</span>
           </div>
 
           <div
-            class="file-upload"
-            onclick="document.getElementById('id-upload-2').click()"
+            class="profile-menu-item"
+            onclick="document.getElementById('order-history-section').scrollIntoView({behavior:'smooth'})"
           >
-            <div class="file-upload-icon">📄</div>
-            <div class="file-upload-text"><span>Tap to upload</span> again</div>
-            <input
-              type="file"
-              id="id-upload-2"
-              accept="image/*"
-              style="display: none"
-              onchange="previewFile(this, 'id-preview-2')"
-            />
+            <span class="profile-menu-icon">📋</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Order History</div>
+              <div class="profile-menu-sub">View past trades</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
           </div>
-          <img
-            id="id-preview-2"
-            style="
-              display: none;
-              width: 100%;
-              border-radius: 10px;
-              margin-bottom: 12px;
-            "
-          />
-
-          <button class="btn-primary" onclick="resubmitKyc()">Resubmit</button>
         </div>
       </div>
 
-      <!-- MERCHANT SECTION (only if KYC approved) -->
-      <div
-        style="padding: 0 16px 20px"
-        id="merchant-section"
-        style="display: none"
-      >
-        <p class="section-title">P2P Merchant</p>
-
-        <div id="merchant-none">
-          <div class="merchant-req">
-            <span class="merchant-req-icon">✅</span>
-            <span class="merchant-req-text">Basic KYC Approved</span>
-            <span class="merchant-req-status" id="merchant-req-1">✅</span>
+      <!-- MERCHANT GLOW CTA (only if eligible) -->
+      <div style="padding: 0 16px 20px" id="merchant-cta" style="display: none">
+        <div class="merchant-glow-card" onclick="openMerchantPage()">
+          <div style="font-size: 28px; margin-bottom: 6px">🏆</div>
+          <div style="font-weight: 800; font-size: 15px; margin-bottom: 4px">
+            Become a P2P Merchant
           </div>
-          <div class="merchant-req">
-            <span class="merchant-req-icon">💰</span>
-            <span class="merchant-req-text">$300 Locked Balance</span>
-            <span class="merchant-req-status" id="merchant-req-2">❌</span>
-          </div>
-          <div class="merchant-req">
-            <span class="merchant-req-icon">🏠</span>
-            <span class="merchant-req-text">Proof of Residence</span>
-            <span class="merchant-req-status" id="merchant-req-3">❌</span>
-          </div>
-
-          <div style="margin-top: 16px">
-            <div
-              class="file-upload"
-              onclick="document.getElementById('residence-upload').click()"
-            >
-              <div class="file-upload-icon">🏠</div>
-              <div class="file-upload-text">
-                <span>Tap to upload</span> proof of residence (utility bill,
-                bank statement)
-              </div>
-              <input
-                type="file"
-                id="residence-upload"
-                accept="image/*"
-                style="display: none"
-                onchange="previewFile(this, 'residence-preview')"
-              />
-            </div>
-            <img
-              id="residence-preview"
-              style="
-                display: none;
-                width: 100%;
-                border-radius: 10px;
-                margin-bottom: 12px;
-              "
-            />
-          </div>
-
-          <button class="btn-primary" onclick="applyMerchant()">
-            Apply to Become Merchant
-          </button>
-          <p
-            style="
-              font-size: 11px;
-              color: var(--text3);
-              text-align: center;
-              margin-top: -8px;
-            "
-          >
-            Note: $300 must be available in your USDT/BTC balance
-          </p>
-        </div>
-
-        <div id="merchant-pending" style="display: none">
-          <div class="kyc-step">
-            <div class="kyc-step-icon">⏳</div>
-            <div>
-              <div class="kyc-step-title">
-                Merchant Application Under Review
-              </div>
-              <div class="kyc-step-desc">
-                We're reviewing your application. You'll be notified once
-                approved.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="merchant-approved" style="display: none">
-          <div class="kyc-step">
-            <div class="kyc-step-icon">🏆</div>
-            <div>
-              <div class="kyc-step-title">Merchant Status: Active</div>
-              <div class="kyc-step-desc">
-                You can now post your own P2P listings.
-              </div>
-            </div>
+          <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7)">
+            Post your own listings and set your own rates
           </div>
         </div>
       </div>
 
       <!-- ORDER HISTORY -->
-      <div style="padding: 0 16px 20px">
+      <div style="padding: 0 16px 20px" id="order-history-section">
         <p class="section-title">Order History</p>
         <div id="order-history">
           <div
@@ -297,6 +157,357 @@
       <!-- LOGOUT -->
       <div style="padding: 0 16px 20px">
         <button class="btn-secondary" onclick="logoutUser()">🚪 Logout</button>
+      </div>
+    </div>
+
+    <!-- ============ PERSONAL INFO MODAL ============ -->
+    <div id="personal-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 90vh">
+        <div class="modal-header">
+          <span class="modal-title">Personal Information</span>
+          <span class="modal-close" onclick="closeModal('personal-modal')"
+            >✕</span
+          >
+        </div>
+        <div style="padding: 16px; overflow-y: auto">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="pi-name" placeholder="Your full name" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="pi-phone" placeholder="+251 9XX XXX XXX" />
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <select id="pi-country">
+              <option value="">Select country</option>
+              <option value="ET">🇪🇹 Ethiopia</option>
+              <option value="US">🇺🇸 United States</option>
+              <option value="GB">🇬🇧 United Kingdom</option>
+              <option value="NG">🇳🇬 Nigeria</option>
+              <option value="KE">🇰🇪 Kenya</option>
+              <option value="GH">🇬🇭 Ghana</option>
+              <option value="ZA">🇿🇦 South Africa</option>
+              <option value="AE">🇦🇪 UAE</option>
+              <option value="OTHER">🌍 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="pi-dob" />
+          </div>
+          <div class="form-group">
+            <label>Residential Address</label>
+            <input type="text" id="pi-address" placeholder="Street, City" />
+          </div>
+          <button class="btn-primary" onclick="savePersonalInfo()">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ KYC MODAL ============ -->
+    <div id="kyc-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 92vh">
+        <div class="modal-header">
+          <span class="modal-title">Identity Verification</span>
+          <span class="modal-close" onclick="closeModal('kyc-modal')">✕</span>
+        </div>
+        <div style="padding: 16px; overflow-y: auto">
+          <!-- STATUS: NONE -->
+          <div id="kyc-modal-none">
+            <p
+              style="
+                font-size: 13px;
+                color: var(--text2);
+                margin-bottom: 16px;
+                line-height: 1.6;
+              "
+            >
+              To trade on P2P, you need to verify your identity. Choose your
+              document type below.
+            </p>
+
+            <div class="form-group">
+              <label>Document Type</label>
+              <select id="doc-type" onchange="onDocTypeChange()">
+                <option value="">Select document type</option>
+                <option value="passport">Passport</option>
+                <option value="national_id">National ID Card</option>
+                <option value="drivers_license">Driver's License</option>
+              </select>
+            </div>
+
+            <!-- PASSPORT: single upload -->
+            <div id="doc-passport" style="display: none">
+              <p class="step-label" style="margin-bottom: 10px">
+                Passport — Photo Page
+              </p>
+              <div
+                class="file-upload"
+                onclick="document.getElementById('id-front').click()"
+              >
+                <div class="file-upload-icon">📄</div>
+                <div class="file-upload-text">
+                  <span>Tap to upload</span> passport photo page
+                </div>
+                <input
+                  type="file"
+                  id="id-front"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="previewFile(this, 'id-front-preview')"
+                />
+              </div>
+              <img
+                id="id-front-preview"
+                style="
+                  display: none;
+                  width: 100%;
+                  border-radius: 10px;
+                  margin-bottom: 12px;
+                "
+              />
+            </div>
+
+            <!-- ID / LICENSE: front + back -->
+            <div id="doc-twoside" style="display: none">
+              <p class="step-label" style="margin-bottom: 10px">Front Side</p>
+              <div
+                class="file-upload"
+                onclick="document.getElementById('id-front-2').click()"
+              >
+                <div class="file-upload-icon">🪪</div>
+                <div class="file-upload-text">
+                  <span>Tap to upload</span> front side
+                </div>
+                <input
+                  type="file"
+                  id="id-front-2"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="previewFile(this, 'id-front-2-preview')"
+                />
+              </div>
+              <img
+                id="id-front-2-preview"
+                style="
+                  display: none;
+                  width: 100%;
+                  border-radius: 10px;
+                  margin-bottom: 12px;
+                "
+              />
+
+              <p class="step-label" style="margin-bottom: 10px">Back Side</p>
+              <div
+                class="file-upload"
+                onclick="document.getElementById('id-back').click()"
+              >
+                <div class="file-upload-icon">🪪</div>
+                <div class="file-upload-text">
+                  <span>Tap to upload</span> back side
+                </div>
+                <input
+                  type="file"
+                  id="id-back"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="previewFile(this, 'id-back-preview')"
+                />
+              </div>
+              <img
+                id="id-back-preview"
+                style="
+                  display: none;
+                  width: 100%;
+                  border-radius: 10px;
+                  margin-bottom: 12px;
+                "
+              />
+            </div>
+
+            <button class="btn-primary" onclick="submitKyc()">
+              Submit for Review
+            </button>
+          </div>
+
+          <!-- STATUS: PENDING -->
+          <div id="kyc-modal-pending" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">⏳</div>
+              <div>
+                <div class="kyc-step-title">Under Review</div>
+                <div class="kyc-step-desc">
+                  Your documents are being reviewed. This usually takes a few
+                  hours.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATUS: APPROVED -->
+          <div id="kyc-modal-approved" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">✅</div>
+              <div>
+                <div class="kyc-step-title">Identity Verified</div>
+                <div class="kyc-step-desc">
+                  You're fully verified and can trade on P2P.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATUS: REJECTED -->
+          <div id="kyc-modal-rejected" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">❌</div>
+              <div>
+                <div class="kyc-step-title">Verification Rejected</div>
+                <div class="kyc-step-desc" id="rejection-reason">
+                  Please resubmit with clearer images.
+                </div>
+              </div>
+            </div>
+            <button class="btn-primary" onclick="resetKycForm()">
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ MERCHANT MODAL ============ -->
+    <div id="merchant-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 92vh">
+        <div class="modal-header">
+          <span class="modal-title">P2P Merchant</span>
+          <span class="modal-close" onclick="closeModal('merchant-modal')"
+            >✕</span
+          >
+        </div>
+        <div style="padding: 16px; overflow-y: auto">
+          <!-- NOT ELIGIBLE -->
+          <div id="merchant-modal-locked">
+            <div style="text-align: center; padding: 20px 0">
+              <div style="font-size: 40px; margin-bottom: 10px">🔒</div>
+              <div
+                style="font-weight: 800; font-size: 15px; margin-bottom: 6px"
+              >
+                Complete KYC First
+              </div>
+              <div style="font-size: 13px; color: var(--text2)">
+                Identity verification is required before applying as a merchant.
+              </div>
+            </div>
+          </div>
+
+          <!-- ELIGIBLE: NONE -->
+          <div id="merchant-modal-none" style="display: none">
+            <p
+              style="
+                font-size: 13px;
+                color: var(--text2);
+                margin-bottom: 16px;
+                line-height: 1.6;
+              "
+            >
+              Becoming a merchant lets you post your own buy/sell listings with
+              your own rates and limits.
+            </p>
+
+            <div class="merchant-req">
+              <span class="merchant-req-icon">✅</span>
+              <span class="merchant-req-text">Basic KYC Approved</span>
+              <span class="merchant-req-status">✅</span>
+            </div>
+            <div class="merchant-req">
+              <span class="merchant-req-icon">💰</span>
+              <span class="merchant-req-text">$300 Locked Balance</span>
+              <span class="merchant-req-status" id="merchant-req-2">❌</span>
+            </div>
+            <div class="merchant-req">
+              <span class="merchant-req-icon">🏠</span>
+              <span class="merchant-req-text">Proof of Residence</span>
+              <span class="merchant-req-status" id="merchant-req-3">❌</span>
+            </div>
+
+            <div style="margin-top: 16px">
+              <p class="step-label" style="margin-bottom: 10px">
+                Proof of Residence
+              </p>
+              <div
+                class="file-upload"
+                onclick="document.getElementById('residence-upload').click()"
+              >
+                <div class="file-upload-icon">🏠</div>
+                <div class="file-upload-text">
+                  <span>Tap to upload</span> utility bill or bank statement
+                </div>
+                <input
+                  type="file"
+                  id="residence-upload"
+                  accept="image/*"
+                  style="display: none"
+                  onchange="previewFile(this, 'residence-preview')"
+                />
+              </div>
+              <img
+                id="residence-preview"
+                style="
+                  display: none;
+                  width: 100%;
+                  border-radius: 10px;
+                  margin-bottom: 12px;
+                "
+              />
+            </div>
+
+            <button class="btn-primary" onclick="applyMerchant()">
+              Apply to Become Merchant
+            </button>
+            <p
+              style="
+                font-size: 11px;
+                color: var(--text3);
+                text-align: center;
+                margin-top: -8px;
+              "
+            >
+              Note: $300 must be available in your USDT/BTC balance
+            </p>
+          </div>
+
+          <!-- ELIGIBLE: PENDING -->
+          <div id="merchant-modal-pending" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">⏳</div>
+              <div>
+                <div class="kyc-step-title">Application Under Review</div>
+                <div class="kyc-step-desc">
+                  We're reviewing your application. You'll be notified once
+                  approved.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ELIGIBLE: APPROVED -->
+          <div id="merchant-modal-approved" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">🏆</div>
+              <div>
+                <div class="kyc-step-title">Merchant Status: Active</div>
+                <div class="kyc-step-desc">
+                  You can now post your own P2P listings.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

@@ -1,5 +1,6 @@
 let currentUserData = null;
 let currentWallet = null;
+let currentDocType = "";
 
 auth.onAuthStateChanged((user) => {
   if (!user || !user.emailVerified) return;
@@ -14,6 +15,18 @@ auth.onAuthStateChanged((user) => {
       currentUserData = doc.data();
       document.getElementById("profile-name").textContent =
         currentUserData.name || "User";
+      document.getElementById("profile-avatar").textContent =
+        (currentUserData.name || "U")[0].toUpperCase();
+
+      // Prefill personal info
+      document.getElementById("pi-name").value = currentUserData.name || "";
+      document.getElementById("pi-phone").value = currentUserData.phone || "";
+      document.getElementById("pi-country").value =
+        currentUserData.country || "";
+      document.getElementById("pi-dob").value = currentUserData.dob || "";
+      document.getElementById("pi-address").value =
+        currentUserData.address || "";
+
       updateKycDisplay(
         currentUserData.kycStatus,
         currentUserData.kycRejectionReason
@@ -35,6 +48,33 @@ auth.onAuthStateChanged((user) => {
   loadOrderHistory(user.uid);
 });
 
+// ---- MODAL HELPERS ----
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+function openPersonalInfo() {
+  openModal("personal-modal");
+}
+
+function openKycPage() {
+  openModal("kyc-modal");
+}
+
+function openMerchantPage() {
+  if (!currentUserData || currentUserData.kycStatus !== "approved") {
+    document.getElementById("merchant-modal-locked").style.display = "block";
+    document.getElementById("merchant-modal-none").style.display = "none";
+    document.getElementById("merchant-modal-pending").style.display = "none";
+    document.getElementById("merchant-modal-approved").style.display = "none";
+  }
+  openModal("merchant-modal");
+}
+
+// ---- TOP BADGE ----
 function updateTopBadge(status) {
   const badge = document.getElementById("kyc-badge");
   if (status === "approved") {
@@ -49,46 +89,101 @@ function updateTopBadge(status) {
   }
 }
 
+// ---- KYC DISPLAY ----
 function updateKycDisplay(status, rejectionReason) {
-  ["kyc-none", "kyc-pending", "kyc-approved", "kyc-rejected"].forEach((id) => {
+  const sub = document.getElementById("kyc-menu-sub");
+  const statusIcon = document.getElementById("kyc-menu-status");
+
+  [
+    "kyc-modal-none",
+    "kyc-modal-pending",
+    "kyc-modal-approved",
+    "kyc-modal-rejected",
+  ].forEach((id) => {
     document.getElementById(id).style.display = "none";
   });
 
   if (status === "pending") {
-    document.getElementById("kyc-pending").style.display = "block";
+    sub.textContent = "Under review";
+    statusIcon.textContent = "⏳";
+    document.getElementById("kyc-modal-pending").style.display = "block";
   } else if (status === "approved") {
-    document.getElementById("kyc-approved").style.display = "block";
+    sub.textContent = "Verified";
+    statusIcon.textContent = "✅";
+    document.getElementById("kyc-modal-approved").style.display = "block";
   } else if (status === "rejected") {
-    document.getElementById("kyc-rejected").style.display = "block";
-    if (rejectionReason) {
+    sub.textContent = "Rejected — resubmit";
+    statusIcon.textContent = "❌";
+    document.getElementById("kyc-modal-rejected").style.display = "block";
+    if (rejectionReason)
       document.getElementById("rejection-reason").textContent = rejectionReason;
-    }
   } else {
-    document.getElementById("kyc-none").style.display = "block";
+    sub.textContent = "Not submitted";
+    statusIcon.textContent = "❌";
+    document.getElementById("kyc-modal-none").style.display = "block";
   }
 }
 
+// ---- DOC TYPE SWITCH ----
+function onDocTypeChange() {
+  currentDocType = document.getElementById("doc-type").value;
+  document.getElementById("doc-passport").style.display = "none";
+  document.getElementById("doc-twoside").style.display = "none";
+
+  if (currentDocType === "passport") {
+    document.getElementById("doc-passport").style.display = "block";
+  } else if (
+    currentDocType === "national_id" ||
+    currentDocType === "drivers_license"
+  ) {
+    document.getElementById("doc-twoside").style.display = "block";
+  }
+}
+
+function resetKycForm() {
+  document.getElementById("kyc-modal-rejected").style.display = "none";
+  document.getElementById("kyc-modal-none").style.display = "block";
+}
+
+// ---- MERCHANT DISPLAY ----
 function updateMerchantDisplay(merchantStatus, kycStatus) {
-  const section = document.getElementById("merchant-section");
+  const sub = document.getElementById("merchant-menu-sub");
+  const cta = document.getElementById("merchant-cta");
 
   if (kycStatus !== "approved") {
-    section.style.display = "none";
+    sub.textContent = "Locked — complete KYC first";
+    cta.style.display = "none";
     return;
   }
-  section.style.display = "block";
 
-  ["merchant-none", "merchant-pending", "merchant-approved"].forEach((id) => {
+  if (merchantStatus === "pending") {
+    sub.textContent = "Application under review";
+    cta.style.display = "none";
+  } else if (merchantStatus === "approved") {
+    sub.textContent = "Active merchant";
+    cta.style.display = "none";
+  } else {
+    sub.textContent = "Tap to apply";
+    cta.style.display = "block";
+    checkMerchantBalance();
+  }
+
+  // Set modal state
+  document.getElementById("merchant-modal-locked").style.display = "none";
+  [
+    "merchant-modal-none",
+    "merchant-modal-pending",
+    "merchant-modal-approved",
+  ].forEach((id) => {
     document.getElementById(id).style.display = "none";
   });
 
   if (merchantStatus === "pending") {
-    document.getElementById("merchant-pending").style.display = "block";
+    document.getElementById("merchant-modal-pending").style.display = "block";
   } else if (merchantStatus === "approved") {
-    document.getElementById("merchant-approved").style.display = "block";
+    document.getElementById("merchant-modal-approved").style.display = "block";
   } else {
-    document.getElementById("merchant-none").style.display = "block";
-    // Check $300 balance requirement
-    checkMerchantBalance();
+    document.getElementById("merchant-modal-none").style.display = "block";
   }
 }
 
@@ -101,14 +196,43 @@ function checkMerchantBalance() {
   const total = usdtValue + btcValue;
 
   const req2 = document.getElementById("merchant-req-2");
-  if (total >= 300) {
-    req2.textContent = "✅";
-  } else {
-    req2.textContent = "❌";
-  }
+  if (req2) req2.textContent = total >= 300 ? "✅" : "❌";
 }
 
-// ---- FILE PREVIEW ----
+// ---- PERSONAL INFO ----
+function savePersonalInfo() {
+  const user = auth.currentUser;
+  const name = document.getElementById("pi-name").value.trim();
+  const phone = document.getElementById("pi-phone").value.trim();
+  const country = document.getElementById("pi-country").value;
+  const dob = document.getElementById("pi-dob").value;
+  const address = document.getElementById("pi-address").value.trim();
+
+  if (!name || !phone) {
+    showToast("Name and phone are required", "error");
+    return;
+  }
+
+  db.collection("users")
+    .doc(user.uid)
+    .update({
+      name,
+      phone,
+      country,
+      dob,
+      address,
+    })
+    .then(() => {
+      showToast("Profile updated!", "success");
+      document.getElementById("profile-name").textContent = name;
+      document.getElementById("profile-avatar").textContent =
+        name[0].toUpperCase();
+      closeModal("personal-modal");
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+// ---- FILE HELPERS ----
 function previewFile(input, previewId) {
   const file = input.files[0];
   if (!file) return;
@@ -144,19 +268,56 @@ function fileToBase64(input) {
 
 // ---- SUBMIT KYC ----
 function submitKyc() {
-  const input = document.getElementById("id-upload");
-  if (!input.files[0]) {
-    showToast("Please upload your ID or Passport", "error");
+  const docType = document.getElementById("doc-type").value;
+  if (!docType) {
+    showToast("Please select a document type", "error");
     return;
   }
 
   const user = auth.currentUser;
-  const btn = document.querySelector("#kyc-none .btn-primary");
+  let images = {};
+
+  if (docType === "passport") {
+    const input = document.getElementById("id-front");
+    if (!input.files[0]) {
+      showToast("Please upload your passport photo page", "error");
+      return;
+    }
+  } else {
+    const front = document.getElementById("id-front-2");
+    const back = document.getElementById("id-back");
+    if (!front.files[0] || !back.files[0]) {
+      showToast("Please upload both front and back", "error");
+      return;
+    }
+  }
+
+  const btn = document.querySelector("#kyc-modal-none .btn-primary");
   btn.disabled = true;
   btn.textContent = "Submitting...";
 
-  fileToBase64(input)
-    .then((base64) => {
+  let promises = [];
+  if (docType === "passport") {
+    promises.push(
+      fileToBase64(document.getElementById("id-front")).then(
+        (b64) => (images.front = b64)
+      )
+    );
+  } else {
+    promises.push(
+      fileToBase64(document.getElementById("id-front-2")).then(
+        (b64) => (images.front = b64)
+      )
+    );
+    promises.push(
+      fileToBase64(document.getElementById("id-back")).then(
+        (b64) => (images.back = b64)
+      )
+    );
+  }
+
+  Promise.all(promises)
+    .then(() => {
       return db
         .collection("kyc")
         .doc(user.uid)
@@ -164,51 +325,8 @@ function submitKyc() {
           userId: user.uid,
           userEmail: user.email,
           userName: currentUserData ? currentUserData.name : "",
-          idImage: base64,
-          status: "pending",
-          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-    })
-    .then(() => {
-      return db
-        .collection("users")
-        .doc(user.uid)
-        .update({ kycStatus: "pending" });
-    })
-    .then(() => {
-      showToast("KYC submitted for review!", "success");
-      updateKycDisplay("pending");
-      updateTopBadge("pending");
-    })
-    .catch((err) => {
-      showToast(err.message, "error");
-      btn.disabled = false;
-      btn.textContent = "Submit for Review";
-    });
-}
-
-function resubmitKyc() {
-  const input = document.getElementById("id-upload-2");
-  if (!input.files[0]) {
-    showToast("Please upload your ID or Passport", "error");
-    return;
-  }
-
-  const user = auth.currentUser;
-  const btn = document.querySelector("#kyc-rejected .btn-primary");
-  btn.disabled = true;
-  btn.textContent = "Submitting...";
-
-  fileToBase64(input)
-    .then((base64) => {
-      return db
-        .collection("kyc")
-        .doc(user.uid)
-        .set({
-          userId: user.uid,
-          userEmail: user.email,
-          userName: currentUserData ? currentUserData.name : "",
-          idImage: base64,
+          docType,
+          images,
           status: "pending",
           submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
@@ -220,14 +338,15 @@ function resubmitKyc() {
       });
     })
     .then(() => {
-      showToast("KYC resubmitted for review!", "success");
+      showToast("KYC submitted for review!", "success");
       updateKycDisplay("pending");
       updateTopBadge("pending");
+      setTimeout(() => closeModal("kyc-modal"), 1000);
     })
     .catch((err) => {
       showToast(err.message, "error");
       btn.disabled = false;
-      btn.textContent = "Resubmit";
+      btn.textContent = "Submit for Review";
     });
 }
 
@@ -256,7 +375,7 @@ function applyMerchant() {
   }
 
   const user = auth.currentUser;
-  const btn = document.querySelector("#merchant-none .btn-primary");
+  const btn = document.querySelector("#merchant-modal-none .btn-primary");
   btn.disabled = true;
   btn.textContent = "Submitting...";
 
@@ -284,6 +403,7 @@ function applyMerchant() {
     .then(() => {
       showToast("Merchant application submitted!", "success");
       updateMerchantDisplay("pending", "approved");
+      setTimeout(() => closeModal("merchant-modal"), 1000);
     })
     .catch((err) => {
       showToast(err.message, "error");

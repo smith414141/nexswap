@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Withdraw</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="page">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="top-bar-logo">⚡ CryptoSwap</div>
+        <div class="top-bar-right">
+          <span class="kyc-badge none" id="kyc-badge">No KYC</span>
+        </div>
+      </div>
+
+      <div style="padding: 20px 16px">
+        <!-- BALANCE DISPLAY -->
+        <div class="card" style="margin-bottom: 20px; text-align: center">
+          <p style="font-size: 11px; color: var(--text2); margin-bottom: 6px">
+            Available Balance
+          </p>
+          <div style="font-size: 24px; font-weight: 900" id="wd-balance">
+            0.00 USDT
+          </div>
+        </div>
+
+        <p class="section-title">Select Crypto</p>
+        <div class="tabs" style="margin-bottom: 16px">
+          <button
+            class="tab active"
+            id="wd-usdt"
+            onclick="selectWithdrawCrypto('USDT')"
+          >
+            USDT
+          </button>
+          <button class="tab" id="wd-btc" onclick="selectWithdrawCrypto('BTC')">
+            BTC
+          </button>
+        </div>
+
+        <p class="section-title">Select Network</p>
+        <div
+          id="wd-network-options"
+          style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap"
+        >
+          <!-- networks render here -->
+        </div>
+
+        <p class="section-title">Withdrawal Address</p>
+        <div class="input-row">
+          <input
+            type="text"
+            id="wd-address"
+            placeholder="Paste wallet address"
+          />
+        </div>
+
+        <p class="section-title">Amount</p>
+        <div class="input-row">
+          <input
+            type="number"
+            id="wd-amount"
+            placeholder="0.00"
+            min="0"
+            oninput="updateWdSummary()"
+          />
+          <span class="input-suffix" id="wd-amount-suffix">USDT</span>
+        </div>
+        <p
+          style="
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: -8px;
+            margin-bottom: 16px;
+          "
+        >
+          <span
+            onclick="setMaxWithdraw()"
+            style="color: var(--yellow); cursor: pointer; font-weight: 600"
+            >MAX</span
+          >
+          available: <span id="wd-max-display">0.00</span>
+        </p>
+
+        <!-- SUMMARY -->
+        <div class="card" style="margin-bottom: 16px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              font-size: 13px;
+              margin-bottom: 8px;
+            "
+          >
+            <span style="color: var(--text2)">Network Fee</span>
+            <span id="wd-fee">--</span>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              font-size: 13px;
+              font-weight: 700;
+              padding-top: 8px;
+              border-top: 1px solid var(--border);
+            "
+          >
+            <span>You'll Receive</span>
+            <span id="wd-receive">--</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="submitWithdrawal()">
+          Submit Withdrawal Request
+        </button>
+
+        <div
+          style="
+            background: rgba(240, 185, 11, 0.06);
+            border: 1px solid rgba(240, 185, 11, 0.15);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+          "
+        >
+          <p style="font-size: 11px; color: var(--text2); line-height: 1.5">
+            ⚠️ Double-check your address and network. Withdrawals are processed
+            manually within 1-24 hours. Incorrect addresses may result in
+            permanent loss of funds.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='p2p.html'">
+        <span class="nav-icon">🔄</span>
+        <span class="nav-label">P2P</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='deposit.html'">
+        <span class="nav-icon">⬇️</span>
+        <span class="nav-label">Deposit</span>
+      </button>
+      <button
+        class="nav-item active"
+        onclick="window.location.href='withdraw.html'"
+      >
+        <span class="nav-icon">⬆️</span>
+        <span class="nav-label">Withdraw</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='profile.html'">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="wallets.js"></script>
+    <script src="withdraw.js"></script>
+  </body>
+</html>

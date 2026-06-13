@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Profile</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="page">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="top-bar-logo">⚡ CryptoSwap</div>
+        <div class="top-bar-right">
+          <span class="kyc-badge none" id="kyc-badge">No KYC</span>
+        </div>
+      </div>
+
+      <!-- PROFILE INFO -->
+      <div style="padding: 20px 16px">
+        <div class="card" style="display: flex; align-items: center; gap: 14px">
+          <div
+            style="
+              width: 52px;
+              height: 52px;
+              border-radius: 50%;
+              background: rgba(240, 185, 11, 0.1);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 24px;
+              flex-shrink: 0;
+            "
+          >
+            👤
+          </div>
+          <div style="flex: 1; overflow: hidden">
+            <div style="font-weight: 800; font-size: 15px" id="profile-name">
+              Loading...
+            </div>
+            <div
+              style="
+                font-size: 12px;
+                color: var(--text2);
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+              id="profile-email"
+            >
+              --
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KYC SECTION -->
+      <div style="padding: 0 16px 20px">
+        <p class="section-title">Identity Verification (KYC)</p>
+
+        <!-- NOT STARTED -->
+        <div id="kyc-none" style="display: none">
+          <div class="kyc-step">
+            <div class="kyc-step-icon">🆔</div>
+            <div>
+              <div class="kyc-step-title">Verify Your Identity</div>
+              <div class="kyc-step-desc">
+                Upload your ID or Passport to unlock P2P trading. Manual review
+                usually takes a few hours.
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="file-upload"
+            onclick="document.getElementById('id-upload').click()"
+          >
+            <div class="file-upload-icon">📄</div>
+            <div class="file-upload-text">
+              <span>Tap to upload</span> your ID or Passport
+            </div>
+            <input
+              type="file"
+              id="id-upload"
+              accept="image/*"
+              style="display: none"
+              onchange="previewFile(this, 'id-preview')"
+            />
+          </div>
+          <img
+            id="id-preview"
+            style="
+              display: none;
+              width: 100%;
+              border-radius: 10px;
+              margin-bottom: 12px;
+            "
+          />
+
+          <button class="btn-primary" onclick="submitKyc()">
+            Submit for Review
+          </button>
+        </div>
+
+        <!-- PENDING -->
+        <div id="kyc-pending" style="display: none">
+          <div class="kyc-step">
+            <div class="kyc-step-icon">⏳</div>
+            <div>
+              <div class="kyc-step-title">Under Review</div>
+              <div class="kyc-step-desc">
+                Your documents are being reviewed. This usually takes a few
+                hours. We'll notify you once approved.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- APPROVED -->
+        <div id="kyc-approved" style="display: none">
+          <div class="kyc-step">
+            <div class="kyc-step-icon">✅</div>
+            <div>
+              <div class="kyc-step-title">Identity Verified</div>
+              <div class="kyc-step-desc">
+                You can now buy and sell on P2P. Apply to become a merchant to
+                post your own listings.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REJECTED -->
+        <div id="kyc-rejected" style="display: none">
+          <div class="kyc-step">
+            <div class="kyc-step-icon">❌</div>
+            <div>
+              <div class="kyc-step-title">Verification Rejected</div>
+              <div class="kyc-step-desc" id="rejection-reason">
+                Your documents could not be verified. Please try again with
+                clearer images.
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="file-upload"
+            onclick="document.getElementById('id-upload-2').click()"
+          >
+            <div class="file-upload-icon">📄</div>
+            <div class="file-upload-text"><span>Tap to upload</span> again</div>
+            <input
+              type="file"
+              id="id-upload-2"
+              accept="image/*"
+              style="display: none"
+              onchange="previewFile(this, 'id-preview-2')"
+            />
+          </div>
+          <img
+            id="id-preview-2"
+            style="
+              display: none;
+              width: 100%;
+              border-radius: 10px;
+              margin-bottom: 12px;
+            "
+          />
+
+          <button class="btn-primary" onclick="resubmitKyc()">Resubmit</button>
+        </div>
+      </div>
+
+      <!-- MERCHANT SECTION (only if KYC approved) -->
+      <div
+        style="padding: 0 16px 20px"
+        id="merchant-section"
+        style="display: none"
+      >
+        <p class="section-title">P2P Merchant</p>
+
+        <div id="merchant-none">
+          <div class="merchant-req">
+            <span class="merchant-req-icon">✅</span>
+            <span class="merchant-req-text">Basic KYC Approved</span>
+            <span class="merchant-req-status" id="merchant-req-1">✅</span>
+          </div>
+          <div class="merchant-req">
+            <span class="merchant-req-icon">💰</span>
+            <span class="merchant-req-text">$300 Locked Balance</span>
+            <span class="merchant-req-status" id="merchant-req-2">❌</span>
+          </div>
+          <div class="merchant-req">
+            <span class="merchant-req-icon">🏠</span>
+            <span class="merchant-req-text">Proof of Residence</span>
+            <span class="merchant-req-status" id="merchant-req-3">❌</span>
+          </div>
+
+          <div style="margin-top: 16px">
+            <div
+              class="file-upload"
+              onclick="document.getElementById('residence-upload').click()"
+            >
+              <div class="file-upload-icon">🏠</div>
+              <div class="file-upload-text">
+                <span>Tap to upload</span> proof of residence (utility bill,
+                bank statement)
+              </div>
+              <input
+                type="file"
+                id="residence-upload"
+                accept="image/*"
+                style="display: none"
+                onchange="previewFile(this, 'residence-preview')"
+              />
+            </div>
+            <img
+              id="residence-preview"
+              style="
+                display: none;
+                width: 100%;
+                border-radius: 10px;
+                margin-bottom: 12px;
+              "
+            />
+          </div>
+
+          <button class="btn-primary" onclick="applyMerchant()">
+            Apply to Become Merchant
+          </button>
+          <p
+            style="
+              font-size: 11px;
+              color: var(--text3);
+              text-align: center;
+              margin-top: -8px;
+            "
+          >
+            Note: $300 must be available in your USDT/BTC balance
+          </p>
+        </div>
+
+        <div id="merchant-pending" style="display: none">
+          <div class="kyc-step">
+            <div class="kyc-step-icon">⏳</div>
+            <div>
+              <div class="kyc-step-title">
+                Merchant Application Under Review
+              </div>
+              <div class="kyc-step-desc">
+                We're reviewing your application. You'll be notified once
+                approved.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="merchant-approved" style="display: none">
+          <div class="kyc-step">
+            <div class="kyc-step-icon">🏆</div>
+            <div>
+              <div class="kyc-step-title">Merchant Status: Active</div>
+              <div class="kyc-step-desc">
+                You can now post your own P2P listings.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER HISTORY -->
+      <div style="padding: 0 16px 20px">
+        <p class="section-title">Order History</p>
+        <div id="order-history">
+          <div
+            class="card"
+            style="
+              text-align: center;
+              color: var(--text3);
+              font-size: 13px;
+              padding: 30px 0;
+            "
+          >
+            No orders yet
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGOUT -->
+      <div style="padding: 0 16px 20px">
+        <button class="btn-secondary" onclick="logoutUser()">🚪 Logout</button>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='p2p.html'">
+        <span class="nav-icon">🔄</span>
+        <span class="nav-label">P2P</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='deposit.html'">
+        <span class="nav-icon">⬇️</span>
+        <span class="nav-label">Deposit</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='withdraw.html'">
+        <span class="nav-icon">⬆️</span>
+        <span class="nav-label">Withdraw</span>
+      </button>
+      <button
+        class="nav-item active"
+        onclick="window.location.href='profile.html'"
+      >
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="profile.js"></script>
+  </body>
+</html>

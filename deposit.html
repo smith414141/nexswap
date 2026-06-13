@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Deposit</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="page">
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="top-bar-logo">⚡ CryptoSwap</div>
+        <div class="top-bar-right">
+          <span class="kyc-badge none" id="kyc-badge">No KYC</span>
+        </div>
+      </div>
+
+      <div style="padding: 20px 16px">
+        <p class="section-title">Select Crypto to Deposit</p>
+        <div class="tabs" style="margin-bottom: 16px">
+          <button
+            class="tab active"
+            id="dep-usdt"
+            onclick="selectDepositCrypto('USDT')"
+          >
+            USDT
+          </button>
+          <button class="tab" id="dep-btc" onclick="selectDepositCrypto('BTC')">
+            BTC
+          </button>
+        </div>
+
+        <p class="section-title">Select Network</p>
+        <div
+          id="network-options"
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+          "
+        >
+          <!-- networks render here -->
+        </div>
+
+        <!-- ADDRESS DISPLAY -->
+        <div id="address-display" style="display: none">
+          <div class="card" style="text-align: center">
+            <p
+              style="font-size: 12px; color: var(--text2); margin-bottom: 12px"
+            >
+              Send <strong id="dep-crypto-label">USDT</strong> (<span
+                id="dep-network-label"
+                >TRC20</span
+              >) to this address:
+            </p>
+
+            <div
+              id="qr-code"
+              style="
+                width: 160px;
+                height: 160px;
+                margin: 0 auto 16px;
+                background: #fff;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                color: #000;
+              "
+            >
+              QR Code
+            </div>
+
+            <div
+              style="
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 12px;
+                font-family: monospace;
+                font-size: 12px;
+                word-break: break-all;
+                color: var(--yellow);
+                margin-bottom: 12px;
+              "
+              id="deposit-address"
+            >
+              Loading address...
+            </div>
+
+            <button
+              class="btn-primary"
+              style="margin-bottom: 8px"
+              onclick="copyDepositAddress()"
+            >
+              📋 Copy Address
+            </button>
+
+            <div
+              style="
+                background: rgba(246, 70, 93, 0.08);
+                border: 1px solid rgba(246, 70, 93, 0.2);
+                border-radius: 10px;
+                padding: 12px;
+                text-align: left;
+                margin-top: 12px;
+              "
+            >
+              <p
+                style="
+                  font-size: 12px;
+                  color: var(--red);
+                  font-weight: 700;
+                  margin-bottom: 4px;
+                "
+              >
+                ⚠️ Important
+              </p>
+              <p style="font-size: 11px; color: var(--text2); line-height: 1.5">
+                Only send <strong id="dep-warn-crypto">USDT</strong> via
+                <strong id="dep-warn-network">TRC20</strong> network to this
+                address. Sending other assets or using a different network may
+                result in permanent loss of funds.
+              </p>
+            </div>
+
+            <p
+              style="
+                font-size: 11px;
+                color: var(--text3);
+                margin-top: 12px;
+                line-height: 1.5;
+              "
+            >
+              Your balance will be credited manually after admin confirms the
+              transaction on the blockchain. This usually takes 10-30 minutes
+              after network confirmation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='p2p.html'">
+        <span class="nav-icon">🔄</span>
+        <span class="nav-label">P2P</span>
+      </button>
+      <button
+        class="nav-item active"
+        onclick="window.location.href='deposit.html'"
+      >
+        <span class="nav-icon">⬇️</span>
+        <span class="nav-label">Deposit</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='withdraw.html'">
+        <span class="nav-icon">⬆️</span>
+        <span class="nav-label">Withdraw</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='profile.html'">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="wallets.js"></script>
+    <script src="deposit.js"></script>
+  </body>
+</html>

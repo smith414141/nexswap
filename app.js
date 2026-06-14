@@ -97,6 +97,17 @@ function register() {
     showToast("Please fill in all fields", "error");
     return;
   }
+
+  // Phone validation: must start with + and have 10-15 digits total
+  const phoneClean = phone.replace(/\s/g, "");
+  const phoneRegex = /^\+[1-9]\d{9,14}$/;
+  if (!phoneRegex.test(phoneClean)) {
+    showToast(
+      "Enter a valid phone number with country code (e.g. +251912345678)",
+      "error"
+    );
+    return;
+  }
   if (password.length < 6) {
     showToast("Password must be at least 6 characters", "error");
     return;

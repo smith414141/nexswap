@@ -44,8 +44,6 @@ auth.onAuthStateChanged((user) => {
     .then((doc) => {
       if (doc.exists) currentWallet = doc.data();
     });
-
-  loadOrderHistory(user.uid);
 });
 
 // ---- MODAL HELPERS ----

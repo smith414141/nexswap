@@ -86,6 +86,18 @@ body {
   justify-content: center;
   padding: 24px 20px;
 }
+@media (max-height: 700px) {
+  .auth-wrapper {
+    padding: 16px 20px;
+  }
+  .auth-logo {
+    margin-bottom: 20px;
+  }
+  .trust-badges {
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+}
 
 .auth-logo {
   display: flex;

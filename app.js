@@ -154,22 +154,44 @@ function login() {
   btn.disabled = true;
   btn.textContent = "Logging in...";
 
+  const timeout = setTimeout(() => {
+    btn.disabled = false;
+    btn.textContent = "Login";
+    showToast(
+      "Connection timeout. Check your internet and try again.",
+      "error"
+    );
+  }, 10000);
+
   auth
     .signInWithEmailAndPassword(email, password)
     .then((cred) => {
+      clearTimeout(timeout);
       if (!cred.user.emailVerified) {
         showToast("Please verify your email first", "warning");
-        setTimeout(() => (window.location.href = "/verify.html"), 2000);
+        setTimeout(() => (window.location.href = "/verify.html"), 1500);
         return;
       }
-      showToast("Welcome back! 👋", "success");
-      setTimeout(() => (window.location.href = "/home.html"), 1500);
+      btn.textContent = "Success!";
+      window.location.href = "/home.html";
     })
     .catch((err) => {
+      clearTimeout(timeout);
       showToast(err.message, "error");
       btn.disabled = false;
       btn.textContent = "Login";
     });
+}
+function forgotPassword() {
+  const email = document.getElementById("login-email").value.trim();
+  if (!email) {
+    showToast("Enter your email above first, then tap Reset", "warning");
+    return;
+  }
+  auth
+    .sendPasswordResetEmail(email)
+    .then(() => showToast("Password reset link sent to your email!", "success"))
+    .catch((err) => showToast(err.message, "error"));
 }
 
 // ---- INIT ----

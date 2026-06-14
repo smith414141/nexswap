@@ -174,3 +174,12 @@ function getStatusColor(status) {
 }
 
 setTimeout(loadRecentActivity, 1000);
+function refreshHomeData() {
+  const icon = document.getElementById("refresh-icon");
+  icon.style.transition = "transform 0.5s";
+  icon.style.transform = "rotate(360deg)";
+  fetchPrices();
+  loadRecentActivity();
+  showToast("Refreshed!", "success");
+  setTimeout(() => (icon.style.transform = "rotate(0deg)"), 500);
+}

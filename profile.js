@@ -22,7 +22,7 @@ auth.onAuthStateChanged((user) => {
       document.getElementById("pi-name").value = currentUserData.name || "";
       document.getElementById("pi-phone").value = currentUserData.phone || "";
       document.getElementById("pi-country").value =
-        currentUserData.country || "";
+        currentUserData.country || "ET";
       document.getElementById("pi-dob").value = currentUserData.dob || "";
       document.getElementById("pi-address").value =
         currentUserData.address || "";
@@ -478,4 +478,88 @@ function logoutUser() {
   auth.signOut().then(() => {
     window.location.href = "/";
   });
+} // ---- TRANSACTIONS ----
+function loadTransactions() {
+  const user = auth.currentUser;
+  const container = document.getElementById("transactions-list");
+  container.innerHTML = '<div class="empty-state">Loading...</div>';
+
+  db.collection("transactions")
+    .where("userId", "==", user.uid)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        container.innerHTML =
+          '<div class="empty-state">No transactions yet</div>';
+        return;
+      }
+      const txns = [];
+      snapshot.forEach((doc) => txns.push(doc.data()));
+      txns.sort(
+        (a, b) =>
+          (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)
+      );
+
+      container.innerHTML = txns
+        .map(
+          (t) => `
+      <div class="card" style="margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; font-size:13px;">${getTransactionLabel(
+            t.type
+          )}</span>
+          <span class="badge badge-${getTxnColor(t.type)}">${t.amount} ${
+            t.crypto
+          }</span>
+        </div>
+        ${
+          t.note
+            ? `<div style="font-size:11px; color:var(--text2);">${t.note}</div>`
+            : ""
+        }
+        <div style="font-size:10px; color:var(--text3); margin-top:4px;">${formatTxnTime(
+          t.createdAt
+        )}</div>
+      </div>
+    `
+        )
+        .join("");
+    })
+    .catch(
+      (err) =>
+        (container.innerHTML =
+          '<div class="empty-state">Error: ' + err.message + "</div>")
+    );
+}
+
+function getTransactionLabel(type) {
+  const labels = {
+    deposit: "⬇️ Deposit",
+    withdrawal: "⬆️ Withdrawal",
+    withdrawal_refund: "↩️ Withdrawal Refund",
+    adjustment: "⚙️ Balance Adjustment",
+    p2p_buy: "🔄 P2P Buy",
+    p2p_sell: "🔄 P2P Sell",
+    p2p_refund: "↩️ P2P Refund",
+  };
+  return labels[type] || type;
+}
+
+function getTxnColor(type) {
+  if (["deposit", "p2p_buy", "withdrawal_refund", "p2p_refund"].includes(type))
+    return "green";
+  if (["withdrawal", "p2p_sell"].includes(type)) return "yellow";
+  return "grey";
+}
+
+function formatTxnTime(timestamp) {
+  if (!timestamp || !timestamp.toDate) return "--";
+  return timestamp
+    .toDate()
+    .toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 }

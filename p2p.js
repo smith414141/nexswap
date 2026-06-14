@@ -178,11 +178,14 @@ function renderListingsDisplay() {
         </div>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text2); margin-bottom:10px;">
-        <span>Limit: ${formatNumber(l.minLimit)} - ${formatNumber(
-        l.maxLimit
-      )} ${l.currency}</span>
-      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text2); margin-bottom:4px;">
+  <span>Limit: ${formatNumber(l.minLimit)} - ${formatNumber(l.maxLimit)} ${
+        l.currency
+      }</span>
+</div>
+<div style="font-size:11px; color:var(--text3); margin-bottom:10px;">
+  Available: ${l.available} ${l.crypto}
+</div>
 
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div style="display:flex; gap:6px; flex-wrap:wrap;">

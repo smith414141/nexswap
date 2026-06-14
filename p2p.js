@@ -229,8 +229,16 @@ function openOrder(listingId) {
         setTimeout(() => (window.location.href = "profile.html"), 1500);
         return;
       }
+      if (data.suspended) {
+        showToast(
+          "Account suspended. Please complete identity verification again.",
+          "error"
+        );
+        setTimeout(() => (window.location.href = "profile.html"), 1500);
+        return;
+      }
 
-      // Save listing to sessionStorage and go to order page
+      sessionStorage.removeItem("activeOrderId");
       const listing = currentListings.find((l) => l.id === listingId);
       sessionStorage.setItem("currentOrder", JSON.stringify(listing));
       window.location.href = `order.html?id=${listingId}`;

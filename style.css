@@ -1120,3 +1120,67 @@ body {
 .form-group select option {
   background: var(--bg2);
 }
+.payment-info-box {
+  background: rgba(240, 185, 11, 0.05);
+  border: 1px solid rgba(240, 185, 11, 0.15);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.payment-info-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 10px;
+}
+.payment-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.payment-info-row:last-child {
+  border-bottom: none;
+}
+.payment-info-row span {
+  color: var(--text2);
+}
+.payment-info-row strong {
+  color: var(--text);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 10px 16px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+}
+.admin-tabs::-webkit-scrollbar {
+  display: none;
+}
+.admin-tabs .filter-tab {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: "Inter", sans-serif;
+}
+.admin-tabs .filter-tab.active {
+  background: var(--yellow);
+  color: #000;
+  border-color: var(--yellow);
+}
+.admin-tab-content {
+  padding: 16px;
+}
+.admin-tab-content .card {
+  margin-bottom: 10px;
+}

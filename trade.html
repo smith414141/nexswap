@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Trade</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page" style="padding-bottom: 24px">
+      <div class="top-bar">
+        <span
+          style="font-size: 20px; cursor: pointer"
+          onclick="window.location.href='home.html'"
+          >←</span
+        >
+        <div class="top-bar-logo" style="font-size: 16px" id="trade-title">
+          BTC/USDT
+        </div>
+        <span style="width: 20px"></span>
+      </div>
+
+      <div style="padding: 16px">
+        <div class="card" style="margin-bottom: 16px">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div
+              class="coin-icon"
+              id="trade-coin-icon"
+              style="width: 40px; height: 40px; font-size: 18px"
+            >
+              ₿
+            </div>
+            <div>
+              <div style="font-weight: 800; font-size: 18px" id="trade-price">
+                $--
+              </div>
+              <span class="badge" id="trade-change">--%</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="card"
+          style="margin-bottom: 16px; padding: 0; overflow: hidden"
+        >
+          <div class="tradingview-widget-container">
+            <div id="tv-chart"></div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 16px">
+          <button
+            class="btn-primary"
+            style="margin: 0; flex: 1; background: var(--green)"
+            onclick="tryTrade('buy')"
+          >
+            Buy
+          </button>
+          <button
+            class="btn-primary"
+            style="margin: 0; flex: 1; background: var(--red)"
+            onclick="tryTrade('sell')"
+          >
+            Sell
+          </button>
+        </div>
+
+        <div class="card">
+          <p class="section-title">About</p>
+          <p
+            style="font-size: 13px; color: var(--text2); line-height: 1.6"
+            id="trade-about"
+          ></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="trade.js"></script>
+  </body>
+</html>

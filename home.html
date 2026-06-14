@@ -133,7 +133,11 @@
       <div style="padding: 0 16px 20px">
         <p class="section-title">Live Market Prices</p>
         <div class="card" id="market-prices">
-          <div class="ticker-item">
+          <div
+            class="ticker-item"
+            onclick="window.location.href='trade.html?symbol=BTC'"
+            style="cursor: pointer"
+          >
             <div class="ticker-coin">
               <div class="coin-icon btc">₿</div>
               <div>
@@ -146,7 +150,11 @@
               <div class="ticker-change" id="change-btc">--%</div>
             </div>
           </div>
-          <div class="ticker-item">
+          <div
+            class="ticker-item"
+            onclick="window.location.href='trade.html?symbol=BTC'"
+            style="cursor: pointer"
+          >
             <div class="ticker-coin">
               <div class="coin-icon eth">Ξ</div>
               <div>
@@ -159,7 +167,11 @@
               <div class="ticker-change" id="change-eth">--%</div>
             </div>
           </div>
-          <div class="ticker-item">
+          <div
+            class="ticker-item"
+            onclick="window.location.href='trade.html?symbol=BTC'"
+            style="cursor: pointer"
+          >
             <div class="ticker-coin">
               <div class="coin-icon usdt">₮</div>
               <div>
@@ -172,7 +184,11 @@
               <div class="ticker-change" id="change-usdt">--%</div>
             </div>
           </div>
-          <div class="ticker-item">
+          <div
+            class="ticker-item"
+            onclick="window.location.href='trade.html?symbol=BTC'"
+            style="cursor: pointer"
+          >
             <div class="ticker-coin">
               <div class="coin-icon bnb">B</div>
               <div>
@@ -185,7 +201,11 @@
               <div class="ticker-change" id="change-bnb">--%</div>
             </div>
           </div>
-          <div class="ticker-item">
+          <div
+            class="ticker-item"
+            onclick="window.location.href='trade.html?symbol=BTC'"
+            style="cursor: pointer"
+          >
             <div class="ticker-coin">
               <div class="coin-icon sol">S</div>
               <div>
@@ -198,7 +218,11 @@
               <div class="ticker-change" id="change-sol">--%</div>
             </div>
           </div>
-          <div class="ticker-item">
+          <div
+            class="ticker-item"
+            onclick="window.location.href='trade.html?symbol=BTC'"
+            style="cursor: pointer"
+          >
             <div class="ticker-coin">
               <div class="coin-icon xrp">X</div>
               <div>
@@ -238,27 +262,86 @@
         class="nav-item active"
         onclick="window.location.href='home.html'"
       >
-        <span class="nav-icon">🏠</span>
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+          />
+        </svg>
         <span class="nav-label">Home</span>
       </button>
       <button class="nav-item" onclick="window.location.href='p2p.html'">
-        <span class="nav-icon">🔄</span>
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M7 3L3 7l4 4" />
+          <path d="M3 7h13a4 4 0 014 4v1" />
+          <path d="M17 21l4-4-4-4" />
+          <path d="M21 17H8a4 4 0 01-4-4v-1" />
+        </svg>
         <span class="nav-label">P2P</span>
       </button>
       <button class="nav-item" onclick="window.location.href='deposit.html'">
-        <span class="nav-icon">⬇️</span>
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 3v12" />
+          <path d="M7 10l5 5 5-5" />
+          <path d="M5 19h14" />
+        </svg>
         <span class="nav-label">Deposit</span>
       </button>
       <button class="nav-item" onclick="window.location.href='withdraw.html'">
-        <span class="nav-icon">⬆️</span>
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 19V7" />
+          <path d="M7 12l5-5 5 5" />
+          <path d="M5 19h14" />
+        </svg>
         <span class="nav-label">Withdraw</span>
       </button>
       <button class="nav-item" onclick="window.location.href='profile.html'">
-        <span class="nav-icon">👤</span>
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+        </svg>
         <span class="nav-label">Profile</span>
       </button>
     </div>
-
     <div id="toast-container"></div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>

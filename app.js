@@ -97,8 +97,11 @@ function register() {
     showToast("Please fill in all fields", "error");
     return;
   }
+  if (password.length < 6) {
+    showToast("Password must be at least 6 characters", "error");
+    return;
+  }
 
-  // Phone validation: must start with + and have 10-15 digits total
   const phoneClean = phone.replace(/\s/g, "");
   const phoneRegex = /^\+[1-9]\d{9,14}$/;
   if (!phoneRegex.test(phoneClean)) {
@@ -108,13 +111,42 @@ function register() {
     );
     return;
   }
-  if (password.length < 6) {
-    showToast("Password must be at least 6 characters", "error");
-    return;
-  }
 
   const btn = document.querySelector("#register-form .btn-primary");
   btn.disabled = true;
+  btn.textContent = "Verifying...";
+
+  grecaptcha.ready(() => {
+    grecaptcha
+      .execute("6Ldt_x8tAAAAAC5nOTlZno2TujGj2Frsq4wb4saJ", {
+        action: "register",
+      })
+      .then((token) => {
+        fetch("/api/verify-captcha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (!data.success) {
+              showToast("Security check failed. Please try again.", "error");
+              btn.disabled = false;
+              btn.textContent = "Create Account";
+              return;
+            }
+            proceedWithRegistration(name, email, password, phone, btn);
+          })
+          .catch((err) => {
+            showToast("Verification error: " + err.message, "error");
+            btn.disabled = false;
+            btn.textContent = "Create Account";
+          });
+      });
+  });
+}
+
+function proceedWithRegistration(name, email, password, phone, btn) {
   btn.textContent = "Creating account...";
 
   auth
@@ -128,6 +160,7 @@ function register() {
           phone,
           kycStatus: "none",
           merchantStatus: "none",
+          country: "ET",
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         }),
         db.collection("wallets").doc(user.uid).set({
@@ -140,7 +173,7 @@ function register() {
     })
     .then(() => {
       showToast(
-        "Account created! Check your email (and spam folder) to verify.",
+        "Account created! Check your email (and SPAM folder) to verify.",
         "success"
       );
       setTimeout(() => (window.location.href = "/verify.html"), 2000);

@@ -23,11 +23,7 @@ auth.onAuthStateChanged((user) => {
     });
 
   // Wait for NETWORK_INFO to be available
-  if (typeof NETWORK_INFO !== "undefined") {
-    renderNetworks();
-  } else {
-    window.addEventListener("load", renderNetworks);
-  }
+  renderNetworks();
 });
 
 function selectDepositCrypto(crypto) {

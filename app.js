@@ -51,6 +51,13 @@ function initCanvas() {
   const theme = localStorage.getItem("theme") || "dark";
   document.documentElement.setAttribute("data-theme", theme);
 })();
+function goBack() {
+  if (document.referrer && document.referrer !== window.location.href) {
+    window.history.back();
+  } else {
+    window.location.href = "home.html";
+  }
+}
 function showToast(message, type = "success") {
   let container = document.getElementById("toast-container");
   if (!container) {
@@ -121,37 +128,7 @@ function register() {
   btn.disabled = true;
   btn.textContent = "Verifying...";
 
-  grecaptcha.ready(() => {
-    grecaptcha
-      .execute("6Ldt_x8tAAAAAC5nOTlZno2TujGj2Frsq4wb4saJ", {
-        action: "register",
-      })
-      .then((token) => {
-        fetch("/api/verify-captcha", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (
-              data.success === false &&
-              data.score !== undefined &&
-              data.score < 0.3
-            ) {
-              showToast("Security check failed. Please try again.", "error");
-              btn.disabled = false;
-              btn.textContent = "Create Account";
-              return;
-            }
-            proceedWithRegistration(name, email, password, phone, btn);
-          })
-          .catch(() => {
-            // If CAPTCHA API fails for any reason, proceed anyway
-            proceedWithRegistration(name, email, password, phone, btn);
-          });
-      });
-  });
+  proceedWithRegistration(name, email, password, phone, btn);
 }
 
 function proceedWithRegistration(name, email, password, phone, btn) {

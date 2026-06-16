@@ -21,7 +21,13 @@ auth.onAuthStateChanged((user) => {
         badge.className = "kyc-badge none";
       }
     });
-  renderNetworks();
+
+  // Wait for NETWORK_INFO to be available
+  if (typeof NETWORK_INFO !== "undefined") {
+    renderNetworks();
+  } else {
+    window.addEventListener("load", renderNetworks);
+  }
 });
 
 function selectDepositCrypto(crypto) {

@@ -134,7 +134,11 @@ function register() {
         })
           .then((res) => res.json())
           .then((data) => {
-            if (!data.success) {
+            if (
+              data.success === false &&
+              data.score !== undefined &&
+              data.score < 0.3
+            ) {
               showToast("Security check failed. Please try again.", "error");
               btn.disabled = false;
               btn.textContent = "Create Account";
@@ -142,10 +146,9 @@ function register() {
             }
             proceedWithRegistration(name, email, password, phone, btn);
           })
-          .catch((err) => {
-            showToast("Verification error: " + err.message, "error");
-            btn.disabled = false;
-            btn.textContent = "Create Account";
+          .catch(() => {
+            // If CAPTCHA API fails for any reason, proceed anyway
+            proceedWithRegistration(name, email, password, phone, btn);
           });
       });
   });

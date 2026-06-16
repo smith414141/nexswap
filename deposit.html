@@ -15,123 +15,232 @@
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
-    <!-- PC NAV (hidden on mobile) -->
-    <div class="pc-nav">
-      <div class="pc-nav-logo">⚡ CryptoSwap</div>
-      <div class="pc-nav-links">
-        <span
-          class="pc-nav-link active"
-          onclick="window.location.href='home.html'"
-          >Home</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='p2p.html'"
-          >P2P</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='deposit.html'"
-          >Deposit</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='withdraw.html'"
-          >Withdraw</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='profile.html'"
-          >Profile</span
-        >
-      </div>
-    </div>
+
     <div class="page">
-      <!-- TOP BAR -->
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
-        <div class="top-bar-logo">⚡ CryptoSwap</div>
-        <div class="top-bar-right">
+      <!-- PC NAV -->
+      <div class="pc-nav">
+        <div class="pc-nav-logo">⚡ CryptoSwap</div>
+        <div class="pc-nav-right">
+          <span class="kyc-badge none" id="kyc-badge-pc">No KYC</span>
+          <button class="btn-logout" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+
+      <!-- PC SIDEBAR -->
+      <div class="pc-sidebar">
+        <a class="pc-sidebar-link" href="home.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+            /></svg
+          >Home
+        </a>
+        <a class="pc-sidebar-link" href="p2p.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M7 3L3 7l4 4" />
+            <path d="M3 7h13a4 4 0 014 4v1" />
+            <path d="M17 21l4-4-4-4" />
+            <path d="M21 17H8a4 4 0 01-4-4v-1" /></svg
+          >P2P
+        </a>
+        <a class="pc-sidebar-link active" href="deposit.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 3v12" />
+            <path d="M7 10l5 5 5-5" />
+            <path d="M5 19h14" /></svg
+          >Deposit
+        </a>
+        <a class="pc-sidebar-link" href="withdraw.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 19V7" />
+            <path d="M7 12l5-5 5 5" />
+            <path d="M5 19h14" /></svg
+          >Withdraw
+        </a>
+        <a class="pc-sidebar-link" href="messages.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+            /></svg
+          >Messages
+        </a>
+        <a class="pc-sidebar-link" href="profile.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
+          >Profile
+        </a>
+        <a class="pc-sidebar-link" href="settings.html">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
+            /></svg
+          >Settings
+        </a>
+      </div>
+
+      <!-- MAIN -->
+      <div class="pc-main">
+        <div class="top-bar">
+          <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
+            >←</span
+          >
+          <div class="top-bar-logo">Deposit Crypto</div>
           <span class="kyc-badge none" id="kyc-badge">No KYC</span>
         </div>
-      </div>
 
-      <div style="padding: 20px 16px">
-        <p class="section-title">Select Crypto to Deposit</p>
-        <div class="tabs" style="margin-bottom: 16px">
-          <button
-            class="tab active"
-            id="dep-usdt"
-            onclick="selectDepositCrypto('USDT')"
-          >
-            USDT
-          </button>
-          <button class="tab" id="dep-btc" onclick="selectDepositCrypto('BTC')">
-            BTC
-          </button>
-        </div>
-
-        <p class="section-title">Select Network</p>
-        <div
-          id="network-options"
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-          "
-        >
-          <!-- networks render here -->
-        </div>
-
-        <!-- ADDRESS DISPLAY -->
-        <div id="address-display" style="display: none">
-          <div class="card" style="text-align: center">
-            <p
-              style="font-size: 12px; color: var(--text2); margin-bottom: 12px"
-            >
-              Send <strong id="dep-crypto-label">USDT</strong> (<span
-                id="dep-network-label"
-                >TRC20</span
-              >) to this address:
-            </p>
-
+        <div style="padding: 16px">
+          <!-- STEP 1: SELECT COIN -->
+          <div id="step-coin">
             <div
-              id="qr-code"
               style="
-                width: 160px;
-                height: 160px;
-                margin: 0 auto 16px;
-                background: #fff;
-                border-radius: 12px;
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                font-size: 11px;
-                color: #000;
+                gap: 10px;
+                margin-bottom: 16px;
               "
             >
-              QR Code
+              <div
+                style="
+                  width: 28px;
+                  height: 28px;
+                  border-radius: 50%;
+                  background: var(--yellow);
+                  color: #000;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 900;
+                  font-size: 13px;
+                  flex-shrink: 0;
+                "
+              >
+                1
+              </div>
+              <span style="font-weight: 700; font-size: 15px">Select Coin</span>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="input-row" style="margin-bottom: 12px">
+              <input
+                type="text"
+                id="coin-search"
+                placeholder="Search coin name or symbol..."
+                oninput="filterCoins()"
+              />
+            </div>
+
+            <!-- COIN GRID -->
+            <div
+              id="coin-grid"
+              style="display: flex; flex-direction: column; gap: 8px"
+            ></div>
+          </div>
+
+          <!-- STEP 2: SELECT NETWORK -->
+          <div id="step-network" style="display: none">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 16px;
+                cursor: pointer;
+              "
+              onclick="backToCoin()"
+            >
+              <span style="font-size: 18px">←</span>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div
+                  id="selected-coin-icon"
+                  style="
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 800;
+                    font-size: 16px;
+                  "
+                ></div>
+                <div>
+                  <div
+                    style="font-weight: 800; font-size: 15px"
+                    id="selected-coin-name"
+                  ></div>
+                  <div style="font-size: 11px; color: var(--yellow)">
+                    Tap to change coin
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div
               style="
-                background: var(--bg);
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                padding: 12px;
-                font-family: monospace;
-                font-size: 12px;
-                word-break: break-all;
-                color: var(--yellow);
-                margin-bottom: 12px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 16px;
               "
-              id="deposit-address"
             >
-              Loading address...
+              <div
+                style="
+                  width: 28px;
+                  height: 28px;
+                  border-radius: 50%;
+                  background: var(--yellow);
+                  color: #000;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: 900;
+                  font-size: 13px;
+                  flex-shrink: 0;
+                "
+              >
+                2
+              </div>
+              <span style="font-weight: 700; font-size: 15px"
+                >Select Network</span
+              >
             </div>
-
-            <button
-              class="btn-primary"
-              style="margin-bottom: 8px"
-              onclick="copyDepositAddress()"
-            >
-              📋 Copy Address
-            </button>
 
             <div
               style="
@@ -139,25 +248,138 @@
                 border: 1px solid rgba(246, 70, 93, 0.2);
                 border-radius: 10px;
                 padding: 12px;
-                text-align: left;
-                margin-top: 12px;
+                margin-bottom: 16px;
               "
             >
+              <p style="font-size: 12px; color: var(--red); line-height: 1.5">
+                ⚠️ Please note that only supported networks on Binance platform
+                are shown. If you deposit via another network your assets may be
+                lost.
+              </p>
+            </div>
+
+            <div
+              id="network-list"
+              style="display: flex; flex-direction: column; gap: 8px"
+            ></div>
+          </div>
+
+          <!-- STEP 3: ADDRESS -->
+          <div id="step-address" style="display: none">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 16px;
+                cursor: pointer;
+              "
+              onclick="backToNetwork()"
+            >
+              <span style="font-size: 18px">←</span>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div
+                  id="addr-coin-icon"
+                  style="
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 800;
+                    font-size: 16px;
+                  "
+                ></div>
+                <div>
+                  <div
+                    style="font-weight: 800; font-size: 15px"
+                    id="addr-coin-name"
+                  ></div>
+                  <div
+                    style="font-size: 11px; color: var(--yellow)"
+                    id="addr-network-name"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="text-align: center; margin-bottom: 16px">
               <p
                 style="
                   font-size: 12px;
-                  color: var(--red);
-                  font-weight: 700;
-                  margin-bottom: 4px;
+                  color: var(--text2);
+                  margin-bottom: 16px;
                 "
               >
-                ⚠️ Important
+                Send only <strong id="addr-crypto-warn"></strong> via
+                <strong id="addr-network-warn"></strong> to this address
               </p>
-              <p style="font-size: 11px; color: var(--text2); line-height: 1.5">
-                Only send <strong id="dep-warn-crypto">USDT</strong> via
-                <strong id="dep-warn-network">TRC20</strong> network to this
-                address. Sending other assets or using a different network may
-                result in permanent loss of funds.
+
+              <div
+                style="
+                  width: 160px;
+                  height: 160px;
+                  margin: 0 auto 16px;
+                  background: #fff;
+                  border-radius: 12px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  overflow: hidden;
+                "
+              >
+                <canvas id="qr-canvas" width="150" height="150"></canvas>
+              </div>
+
+              <div
+                style="
+                  background: var(--bg);
+                  border: 1px solid var(--border);
+                  border-radius: 10px;
+                  padding: 12px;
+                  font-family: monospace;
+                  font-size: 12px;
+                  word-break: break-all;
+                  color: var(--yellow);
+                  margin-bottom: 12px;
+                "
+                id="deposit-address-display"
+              >
+                Loading...
+              </div>
+
+              <button class="btn-primary" onclick="copyDepositAddress()">
+                📋 Copy Address
+              </button>
+            </div>
+
+            <div class="card" style="margin-bottom: 16px">
+              <div class="payment-info-row">
+                <span>Network</span><strong id="info-network">--</strong>
+              </div>
+              <div class="payment-info-row">
+                <span>Confirmation</span><strong id="info-confirms">--</strong>
+              </div>
+              <div class="payment-info-row">
+                <span>Est. Arrival</span><strong id="info-time">--</strong>
+              </div>
+              <div class="payment-info-row">
+                <span>Min Deposit</span><strong>0.00001</strong>
+              </div>
+            </div>
+
+            <div
+              style="
+                background: rgba(240, 185, 11, 0.06);
+                border: 1px solid rgba(240, 185, 11, 0.15);
+                border-radius: 10px;
+                padding: 12px;
+              "
+            >
+              <p style="font-size: 11px; color: var(--text2); line-height: 1.6">
+                ⚠️ Send only <strong id="addr-crypto-warn2"></strong> to this
+                address. Sending any other coin may result in permanent loss.
               </p>
             </div>
           </div>
@@ -167,10 +389,7 @@
 
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-      <button
-        class="nav-item active"
-        onclick="window.location.href='home.html'"
-      >
+      <button class="nav-item" onclick="window.location.href='home.html'">
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -203,7 +422,10 @@
         </svg>
         <span class="nav-label">P2P</span>
       </button>
-      <button class="nav-item" onclick="window.location.href='deposit.html'">
+      <button
+        class="nav-item active"
+        onclick="window.location.href='deposit.html'"
+      >
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -258,7 +480,6 @@
     <script src="firebase.js"></script>
     <script src="app.js"></script>
     <script src="wallets.js"></script>
-
     <script src="deposit.js"></script>
   </body>
 </html>

@@ -13,8 +13,31 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
+    <!-- PC NAV (hidden on mobile) -->
+    <div class="pc-nav">
+      <div class="pc-nav-logo">⚡ CryptoSwap</div>
+      <div class="pc-nav-links">
+        <span
+          class="pc-nav-link active"
+          onclick="window.location.href='home.html'"
+          >Home</span
+        >
+        <span class="pc-nav-link" onclick="window.location.href='p2p.html'"
+          >P2P</span
+        >
+        <span class="pc-nav-link" onclick="window.location.href='deposit.html'"
+          >Deposit</span
+        >
+        <span class="pc-nav-link" onclick="window.location.href='withdraw.html'"
+          >Withdraw</span
+        >
+        <span class="pc-nav-link" onclick="window.location.href='profile.html'"
+          >Profile</span
+        >
+      </div>
+    </div>
 
     <div class="page">
       <!-- TOP BAR -->
@@ -310,7 +333,7 @@
         </svg>
         <span class="nav-label">Deposit</span>
       </button>
-      <button class="nav-item" onclick="window.location.href='withdraw.html'">
+      <button class="nav-item" onclick="window.location.href='messages.html'">
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -320,11 +343,9 @@
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path d="M12 19V7" />
-          <path d="M7 12l5-5 5 5" />
-          <path d="M5 19h14" />
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
         </svg>
-        <span class="nav-label">Withdraw</span>
+        <span class="nav-label">Messages</span>
       </button>
       <button class="nav-item" onclick="window.location.href='profile.html'">
         <svg

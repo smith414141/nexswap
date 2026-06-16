@@ -109,6 +109,8 @@ function switchAdminTab(tab, btn) {
   if (tab === "users") loadUsersList();
   if (tab === "admins") loadAdminsList();
   if (tab === "listings") loadListingsAdmin();
+  if (tab === "support") loadSupportChats();
+  if (tab === "announcements") loadAnnouncementsAdmin();
 }
 function loadListingsAdmin() {
   const container = document.getElementById("admin-listings-list");
@@ -1087,6 +1089,157 @@ function removeAdmin(email) {
     .then(() => {
       showToast("Admin removed", "success");
       loadAdminsList();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+// ---- SUPPORT CHATS ----
+function loadSupportChats() {
+  const container = document.getElementById("support-chats-list");
+  container.innerHTML = '<div class="empty-state">Loading...</div>';
+
+  db.collection("chats")
+    .orderBy("updatedAt", "desc")
+    .limit(50)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        container.innerHTML =
+          '<div class="empty-state">No support chats yet</div>';
+        return;
+      }
+      container.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const d = doc.data();
+        const chatId = doc.id;
+        const messages = d.messages || [];
+        const last = messages[messages.length - 1];
+        container.innerHTML += `
+        <div class="card" style="margin-bottom:10px;">
+          <div style="font-weight:700; font-size:13px; margin-bottom:4px;">${
+            d.userEmail
+          }</div>
+          ${
+            last
+              ? `<div style="font-size:12px; color:var(--text2); margin-bottom:10px;">${last.text}</div>`
+              : ""
+          }
+          <div style="max-height:140px; overflow-y:auto; background:var(--bg); border-radius:8px; padding:8px; margin-bottom:8px;">
+            ${messages
+              .map(
+                (m) =>
+                  `<div style="font-size:11px; margin-bottom:4px;"><strong>${
+                    m.sender === d.userId ? d.userEmail : "Admin"
+                  }:</strong> ${m.text}</div>`
+              )
+              .join("")}
+          </div>
+          <div class="input-row" style="margin-bottom:0;">
+            <input type="text" id="admin-support-reply-${chatId}" placeholder="Reply..." style="font-size:12px;" />
+            <button class="chat-send-btn" style="width:32px;height:32px;" onclick="sendAdminSupportReply('${chatId}')">➤</button>
+          </div>
+        </div>
+      `;
+      });
+    })
+    .catch(
+      (err) =>
+        (container.innerHTML =
+          '<div class="empty-state">Error: ' + err.message + "</div>")
+    );
+}
+
+function sendAdminSupportReply(chatId) {
+  const input = document.getElementById("admin-support-reply-" + chatId);
+  const text = input.value.trim();
+  if (!text) return;
+
+  db.collection("chats")
+    .doc(chatId)
+    .update({
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      messages: firebase.firestore.FieldValue.arrayUnion({
+        sender: "admin",
+        text,
+        time: Date.now(),
+      }),
+    })
+    .then(() => {
+      showToast("Reply sent!", "success");
+      input.value = "";
+      loadSupportChats();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+// ---- ANNOUNCEMENTS ----
+function loadAnnouncementsAdmin() {
+  const container = document.getElementById("announcements-admin-list");
+  container.innerHTML = '<div class="empty-state">Loading...</div>';
+
+  db.collection("announcements")
+    .orderBy("createdAt", "desc")
+    .limit(20)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        container.innerHTML =
+          '<div class="empty-state">No announcements yet</div>';
+        return;
+      }
+      container.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const a = doc.data();
+        container.innerHTML += `
+        <div class="card" style="margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-weight:700;">${a.title}</span>
+            <button style="background:none; border:none; color:var(--red); cursor:pointer; font-size:16px;" onclick="deleteAnnouncement('${doc.id}')">🗑️</button>
+          </div>
+          <p style="font-size:12px; color:var(--text2);">${a.body}</p>
+        </div>
+      `;
+      });
+    })
+    .catch(
+      (err) =>
+        (container.innerHTML =
+          '<div class="empty-state">Error: ' + err.message + "</div>")
+    );
+}
+
+function sendAnnouncement() {
+  const title = document.getElementById("ann-title").value.trim();
+  const body = document.getElementById("ann-body").value.trim();
+  const type = document.getElementById("ann-type").value;
+  if (!title || !body) {
+    showToast("Fill in all fields", "error");
+    return;
+  }
+
+  db.collection("announcements")
+    .add({
+      title,
+      body,
+      type,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      showToast("Announcement sent!", "success");
+      document.getElementById("ann-title").value = "";
+      document.getElementById("ann-body").value = "";
+      loadAnnouncementsAdmin();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+function deleteAnnouncement(id) {
+  if (!confirm("Delete this announcement?")) return;
+  db.collection("announcements")
+    .doc(id)
+    .delete()
+    .then(() => {
+      showToast("Deleted", "success");
+      loadAnnouncementsAdmin();
     })
     .catch((err) => showToast(err.message, "error"));
 }

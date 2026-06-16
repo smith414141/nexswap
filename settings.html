@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Settings</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page" style="padding-bottom: 24px">
+      <div class="top-bar">
+        <span
+          style="font-size: 20px; cursor: pointer"
+          onclick="window.location.href='profile.html'"
+          >←</span
+        >
+        <div class="top-bar-logo" style="font-size: 16px">Settings</div>
+        <span style="width: 20px"></span>
+      </div>
+
+      <div style="padding: 16px">
+        <!-- APPEARANCE -->
+        <p class="section-title">Appearance</p>
+        <div
+          class="card"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
+        >
+          <div class="profile-menu-item" onclick="toggleTheme()">
+            <span class="profile-menu-icon" id="theme-icon">🌙</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Theme</div>
+              <div class="profile-menu-sub" id="theme-label">Dark Mode</div>
+            </div>
+            <div class="toggle-switch" id="theme-toggle">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECURITY -->
+        <p class="section-title">Security</p>
+        <div
+          class="card"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
+        >
+          <div class="profile-menu-item" onclick="openChangePassword()">
+            <span class="profile-menu-icon">🔑</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Change Password</div>
+              <div class="profile-menu-sub">Update your account password</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+          <div class="profile-menu-item" onclick="send2FAEmail()">
+            <span class="profile-menu-icon">📧</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Email Verification</div>
+              <div class="profile-menu-sub" id="email-verify-status">
+                Checking...
+              </div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <p class="section-title">Notifications</p>
+        <div
+          class="card"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
+        >
+          <div class="profile-menu-item" onclick="toggleNotif('order_updates')">
+            <span class="profile-menu-icon">🔔</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Order Updates</div>
+              <div class="profile-menu-sub">Status changes on your trades</div>
+            </div>
+            <div class="toggle-switch active" id="notif-order_updates">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+          <div class="profile-menu-item" onclick="toggleNotif('announcements')">
+            <span class="profile-menu-icon">📢</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Announcements</div>
+              <div class="profile-menu-sub">Platform news and updates</div>
+            </div>
+            <div class="toggle-switch active" id="notif-announcements">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCOUNT -->
+        <p class="section-title">Account</p>
+        <div
+          class="card"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
+        >
+          <div class="profile-menu-item" onclick="openSupportChat()">
+            <span class="profile-menu-icon">💬</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Support Chat</div>
+              <div class="profile-menu-sub">Chat with our support team</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+          <div class="profile-menu-item" onclick="confirmDeleteAccount()">
+            <span class="profile-menu-icon">🗑️</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title" style="color: var(--red)">
+                Delete Account
+              </div>
+              <div class="profile-menu-sub">
+                Permanently delete your account
+              </div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+        </div>
+
+        <!-- APP INFO -->
+        <p class="section-title">App</p>
+        <div
+          class="card"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
+        >
+          <div class="profile-menu-item">
+            <span class="profile-menu-icon">📱</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Version</div>
+              <div class="profile-menu-sub">1.0.0</div>
+            </div>
+          </div>
+          <div
+            class="profile-menu-item"
+            onclick="window.open('mailto:support@cryptoswap.com')"
+          >
+            <span class="profile-menu-icon">📨</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Contact Us</div>
+              <div class="profile-menu-sub">support@cryptoswap.com</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHANGE PASSWORD MODAL -->
+    <div id="change-password-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <span class="modal-title">Change Password</span>
+          <span
+            class="modal-close"
+            onclick="closeModal('change-password-modal')"
+            >✕</span
+          >
+        </div>
+        <div style="padding: 16px">
+          <div class="form-group">
+            <label>New Password</label>
+            <input
+              type="password"
+              id="new-password"
+              placeholder="Min 6 characters"
+            />
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="Repeat password"
+            />
+          </div>
+          <button class="btn-primary" onclick="changePassword()">
+            Update Password
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPORT CHAT MODAL -->
+    <div id="support-chat-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 80vh">
+        <div class="modal-header">
+          <span class="modal-title">💬 Support Chat</span>
+          <span class="modal-close" onclick="closeModal('support-chat-modal')"
+            >✕</span
+          >
+        </div>
+        <div style="display: flex; flex-direction: column; height: 420px">
+          <div
+            class="chat-messages"
+            id="support-chat-messages"
+            style="flex: 1; padding: 12px; overflow-y: auto"
+          ></div>
+          <div class="chat-input-row" style="padding: 8px">
+            <input
+              type="text"
+              id="support-chat-input"
+              placeholder="Type a message..."
+              onkeypress="if(event.key==='Enter') sendSupportMessage()"
+            />
+            <button class="chat-send-btn" onclick="sendSupportMessage()">
+              ➤
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="settings.js"></script>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Messages</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page" style="padding-bottom: 80px">
+      <div class="top-bar">
+        <div class="top-bar-logo">💬 Messages</div>
+        <span style="width: 20px"></span>
+      </div>
+
+      <div style="padding: 16px">
+        <div class="tabs" style="margin-bottom: 16px">
+          <button class="tab active" onclick="switchMsgTab('support', this)">
+            Support
+          </button>
+          <button class="tab" onclick="switchMsgTab('announcements', this)">
+            Announcements
+          </button>
+        </div>
+
+        <!-- SUPPORT CHAT -->
+        <div id="msg-support">
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              height: calc(100vh - 240px);
+            "
+          >
+            <div class="chat-box" style="flex: 1; margin-bottom: 8px">
+              <div class="chat-messages" id="msg-support-messages"></div>
+            </div>
+            <div class="chat-input-row">
+              <input
+                type="text"
+                id="msg-support-input"
+                placeholder="Type a message..."
+                onkeypress="if(event.key==='Enter') sendMsgSupport()"
+              />
+              <button class="chat-send-btn" onclick="sendMsgSupport()">
+                ➤
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANNOUNCEMENTS -->
+        <div id="msg-announcements" style="display: none">
+          <div id="announcements-list">
+            <div class="empty-state">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'">
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+          />
+        </svg>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='p2p.html'">
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M7 3L3 7l4 4" />
+          <path d="M3 7h13a4 4 0 014 4v1" />
+          <path d="M17 21l4-4-4-4" />
+          <path d="M21 17H8a4 4 0 01-4-4v-1" />
+        </svg>
+        <span class="nav-label">P2P</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='deposit.html'">
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 3v12" />
+          <path d="M7 10l5 5 5-5" />
+          <path d="M5 19h14" />
+        </svg>
+        <span class="nav-label">Deposit</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='withdraw.html'">
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 19V7" />
+          <path d="M7 12l5-5 5 5" />
+          <path d="M5 19h14" />
+        </svg>
+        <span class="nav-label">Withdraw</span>
+      </button>
+      <button
+        class="nav-item active"
+        onclick="window.location.href='messages.html'"
+      >
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
+        <span class="nav-label">Messages</span>
+      </button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="messages.js"></script>
+  </body>
+</html>

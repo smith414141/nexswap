@@ -92,6 +92,15 @@
         <button class="filter-tab" onclick="switchAdminTab('listings', this)">
           Listings
         </button>
+        <button class="filter-tab" onclick="switchAdminTab('support', this)">
+          Support Chats
+        </button>
+        <button
+          class="filter-tab"
+          onclick="switchAdminTab('announcements', this)"
+        >
+          Announcements
+        </button>
       </div>
 
       <!-- DASHBOARD -->
@@ -261,6 +270,47 @@
       </div>
 
       <!-- ADMINS -->
+      <div id="tab-support" class="admin-tab-content" style="display: none">
+        <div id="support-chats-list">
+          <div class="empty-state">Loading...</div>
+        </div>
+      </div>
+
+      <div
+        id="tab-announcements"
+        class="admin-tab-content"
+        style="display: none"
+      >
+        <div class="card" style="margin-bottom: 16px">
+          <p class="section-title">Send Announcement</p>
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              id="ann-title"
+              placeholder="e.g. System Maintenance"
+            />
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <input type="text" id="ann-body" placeholder="Details..." />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="ann-type">
+              <option value="info">Info</option>
+              <option value="warning">Warning</option>
+              <option value="success">Success</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="sendAnnouncement()">
+            Send to All Users
+          </button>
+        </div>
+        <div id="announcements-admin-list">
+          <div class="empty-state">Loading...</div>
+        </div>
+      </div>
       <div id="tab-listings" class="admin-tab-content" style="display: none">
         <div id="admin-listings-list">
           <div class="empty-state">Loading...</div>

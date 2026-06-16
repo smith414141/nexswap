@@ -108,6 +108,100 @@ function switchAdminTab(tab, btn) {
   if (tab === "p2p") loadP2pOrders("active");
   if (tab === "users") loadUsersList();
   if (tab === "admins") loadAdminsList();
+  if (tab === "listings") loadListingsAdmin();
+}
+function loadListingsAdmin() {
+  const container = document.getElementById("admin-listings-list");
+  container.innerHTML = '<div class="empty-state">Loading...</div>';
+
+  db.collection("listings")
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        container.innerHTML =
+          '<div class="empty-state">No merchant listings</div>';
+        return;
+      }
+      container.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const l = doc.data();
+        const id = doc.id;
+        container.innerHTML += `
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <span class="order-type ${l.type}">${l.type.toUpperCase()} ${
+          l.crypto
+        }</span>
+            <span class="badge badge-${
+              l.status === "active" ? "green" : "grey"
+            }">${l.status}</span>
+          </div>
+          <div style="font-size:11px; color:var(--text2); margin-bottom:6px;">${
+            l.merchantName
+          } (${l.merchantUid})</div>
+          <div class="payment-info-row"><span>Rate</span><strong>${l.rate} ${
+          l.currency
+        }</strong></div>
+          <div class="payment-info-row"><span>Limits</span><strong>${
+            l.minLimit
+          } - ${l.maxLimit} ${l.currency}</strong></div>
+          <div class="payment-info-row"><span>Available</span><strong>${
+            l.available
+          } ${l.crypto}</strong></div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button class="btn-secondary" style="margin:0; flex:1; padding:8px;" onclick="editListingRate('${id}',${
+          l.rate
+        })">Edit Rate</button>
+            <button class="btn-secondary" style="margin:0; flex:1; padding:8px;" onclick="toggleListingAdmin('${id}','${
+          l.status
+        }')">${l.status === "active" ? "Pause" : "Activate"}</button>
+            <button class="btn-secondary" style="margin:0; flex:1; padding:8px; border-color:var(--red); color:var(--red);" onclick="deleteListingAdmin('${id}')">Delete</button>
+          </div>
+        </div>
+      `;
+      });
+    })
+    .catch(
+      (err) =>
+        (container.innerHTML =
+          '<div class="empty-state">Error: ' + err.message + "</div>")
+    );
+}
+
+function editListingRate(id, currentRate) {
+  const newRate = prompt("Enter new rate:", currentRate);
+  if (newRate === null) return;
+  db.collection("listings")
+    .doc(id)
+    .update({ rate: parseFloat(newRate) })
+    .then(() => {
+      showToast("Rate updated", "success");
+      loadListingsAdmin();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+function toggleListingAdmin(id, status) {
+  db.collection("listings")
+    .doc(id)
+    .update({ status: status === "active" ? "paused" : "active" })
+    .then(() => {
+      showToast("Updated", "success");
+      loadListingsAdmin();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+function deleteListingAdmin(id) {
+  if (!confirm("Delete this listing?")) return;
+  db.collection("listings")
+    .doc(id)
+    .delete()
+    .then(() => {
+      showToast("Deleted", "success");
+      loadListingsAdmin();
+    })
+    .catch((err) => showToast(err.message, "error"));
 }
 
 // ---- DASHBOARD ----
@@ -693,15 +787,9 @@ function sendAdminReply(orderId) {
 }
 
 function releaseBuyOrder(orderId, userId, crypto, cryptoAmount) {
-  Promise.all([
-    db
-      .collection("wallets")
-      .doc(userId)
-      .update({
-        [crypto]: firebase.firestore.FieldValue.increment(cryptoAmount),
-      }),
-    db.collection("p2pOrders").doc(orderId).update({ status: "completed" }),
-  ])
+  db.collection("p2pOrders")
+    .doc(orderId)
+    .update({ status: "completed" })
     .then(() => {
       logTransaction(
         userId,
@@ -711,7 +799,7 @@ function releaseBuyOrder(orderId, userId, crypto, cryptoAmount) {
         null,
         "P2P buy order completed"
       );
-      showToast("Crypto released!", "success");
+      showToast("Order released! Buyer will receive funds.", "success");
       loadP2pOrders("active");
     })
     .catch((err) => showToast(err.message, "error"));

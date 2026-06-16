@@ -161,6 +161,9 @@ function createBuyOrder(user, fiatAmount, cryptoAmount) {
       status: "awaiting_payment",
       messages: [],
       phaseExpiresAt: expiresAt,
+      merchantUid: listing.merchantUid || null,
+      listingId: listing.listingId || null,
+      creditApplied: false,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     })
     .then((docRef) => {
@@ -213,6 +216,8 @@ function createSellOrder(
         status: "awaiting_release",
         messages: [],
         phaseExpiresAt: expiresAt,
+        merchantUid: listing.merchantUid || null,
+        listingId: listing.listingId || null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
     })
@@ -276,8 +281,41 @@ function renderOrder() {
   statusBadge.className = "badge " + getStatusBadgeClass(o.status);
 
   renderStatusContent();
+  if (o.status === "completed" && o.type === "buy" && !o.creditApplied) {
+    applyBuyCredit();
+  }
   renderChat();
   startTimer();
+}
+let creditingInProgress = false;
+function applyBuyCredit() {
+  if (creditingInProgress) return;
+  creditingInProgress = true;
+  const user = auth.currentUser;
+  const o = currentOrderData;
+  db.collection("wallets")
+    .doc(user.uid)
+    .update({
+      [o.crypto]: firebase.firestore.FieldValue.increment(o.cryptoAmount),
+    })
+    .then(() => {
+      return db
+        .collection("p2pOrders")
+        .doc(currentOrderId)
+        .update({ creditApplied: true });
+    })
+    .then(() => {
+      showToast(
+        `${o.cryptoAmount.toFixed(o.crypto === "BTC" ? 8 : 4)} ${
+          o.crypto
+        } credited to your balance!`,
+        "success"
+      );
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      creditingInProgress = false;
+    });
 }
 
 function getStatusBadgeClass(status) {

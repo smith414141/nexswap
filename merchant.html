@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>CryptoSwap — Merchant</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page" style="padding-bottom: 24px">
+      <div class="top-bar">
+        <span
+          style="font-size: 20px; cursor: pointer"
+          onclick="window.location.href='profile.html'"
+          >←</span
+        >
+        <div class="top-bar-logo" style="font-size: 16px">
+          Merchant Dashboard
+        </div>
+        <span style="width: 20px"></span>
+      </div>
+
+      <div style="padding: 16px">
+        <div class="tabs" style="margin-bottom: 16px">
+          <button
+            class="tab active"
+            onclick="switchMerchantTab('listings', this)"
+          >
+            My Listings
+          </button>
+          <button class="tab" onclick="switchMerchantTab('orders', this)">
+            Orders
+          </button>
+        </div>
+
+        <div id="mt-listings">
+          <button class="btn-primary" onclick="openListingForm()">
+            + Create Listing
+          </button>
+          <div id="my-listings-list" style="margin-top: 12px"></div>
+        </div>
+
+        <div id="mt-orders" style="display: none">
+          <div id="my-merchant-orders">
+            <div class="empty-state">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LISTING FORM MODAL -->
+    <div id="listing-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 90vh">
+        <div class="modal-header">
+          <span class="modal-title" id="listing-modal-title"
+            >Create Listing</span
+          >
+          <span class="modal-close" onclick="closeModal('listing-modal')"
+            >✕</span
+          >
+        </div>
+        <div style="padding: 16px; overflow-y: auto">
+          <input type="hidden" id="listing-id" />
+          <div class="form-group">
+            <label>I want to</label>
+            <select id="listing-type">
+              <option value="sell">Sell Crypto (receive fiat)</option>
+              <option value="buy">Buy Crypto (pay fiat)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Crypto</label>
+            <select id="listing-crypto">
+              <option value="USDT">USDT</option>
+              <option value="BTC">BTC</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Currency</label>
+            <select
+              id="listing-currency"
+              onchange="updateListingMethods()"
+            ></select>
+          </div>
+          <div class="form-group">
+            <label>Rate (price per 1 unit of crypto, in currency)</label>
+            <input type="number" id="listing-rate" placeholder="e.g. 124.50" />
+          </div>
+          <div class="form-group">
+            <label>Min Limit (in currency)</label>
+            <input type="number" id="listing-min" placeholder="e.g. 500" />
+          </div>
+          <div class="form-group">
+            <label>Max Limit (in currency)</label>
+            <input type="number" id="listing-max" placeholder="e.g. 50000" />
+          </div>
+          <div class="form-group">
+            <label>Available Amount (in crypto)</label>
+            <input
+              type="number"
+              id="listing-available"
+              placeholder="e.g. 1000"
+            />
+          </div>
+          <div class="form-group">
+            <label>Payment Methods</label>
+            <div id="listing-methods"></div>
+          </div>
+          <div class="form-group">
+            <label>Your Payment Details (for receiving fiat)</label>
+            <input
+              type="text"
+              id="listing-payment-details"
+              placeholder="e.g. CBE 1000xxxxxx, Name: ..."
+            />
+          </div>
+          <button class="btn-primary" onclick="saveListing()">
+            Save Listing
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="currencies.js"></script>
+    <script src="listings.js"></script>
+    <script src="merchant.js"></script>
+  </body>
+</html>

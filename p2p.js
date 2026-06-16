@@ -107,12 +107,57 @@ function filterByAmount() {
 
 // ---- RENDER LISTINGS ----
 function renderListings() {
-  currentListings = generateListings(
+  const fakeListings = generateListings(
     currentCurrency,
     currentCrypto,
     currentType
   );
-  renderListingsDisplay();
+
+  db.collection("listings")
+    .where("status", "==", "active")
+    .get()
+    .then((snapshot) => {
+      const realListings = [];
+      snapshot.forEach((doc) => {
+        const d = doc.data();
+        if (
+          d.currency !== currentCurrency ||
+          d.crypto !== currentCrypto ||
+          d.type !== currentType
+        )
+          return;
+        realListings.push({
+          id: doc.id,
+          listingId: doc.id,
+          merchantUid: d.merchantUid,
+          name: d.merchantName,
+          initials: getInitials(d.merchantName),
+          color: getAvatarColor(d.merchantName),
+          verified: true,
+          online: true,
+          trades: "Merchant",
+          completion: "100",
+          price: d.rate,
+          currency: d.currency,
+          crypto: d.crypto,
+          type: d.type,
+          minLimit: d.minLimit,
+          maxLimit: d.maxLimit,
+          available: d.available,
+          methods: d.methods,
+        });
+      });
+
+      currentListings = [...realListings, ...fakeListings];
+      currentListings.sort((a, b) =>
+        currentType === "sell" ? a.price - b.price : b.price - a.price
+      );
+      renderListingsDisplay();
+    })
+    .catch(() => {
+      currentListings = fakeListings;
+      renderListingsDisplay();
+    });
 }
 
 function renderListingsDisplay() {
@@ -162,9 +207,11 @@ function renderListingsDisplay() {
               }"></span>
               ${l.online ? "Online" : "Offline"}
               <span>•</span>
-              ${l.trades} trades
-              <span>•</span>
-              ${l.completion}%
+              ${
+                typeof l.trades === "number"
+                  ? `${l.trades} trades<span>•</span>${l.completion}%`
+                  : l.trades
+              }
             </div>
           </div>
         </div>

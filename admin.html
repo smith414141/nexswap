@@ -89,6 +89,9 @@
         <button class="filter-tab" onclick="switchAdminTab('admins', this)">
           Admins
         </button>
+        <button class="filter-tab" onclick="switchAdminTab('listings', this)">
+          Listings
+        </button>
       </div>
 
       <!-- DASHBOARD -->
@@ -258,6 +261,11 @@
       </div>
 
       <!-- ADMINS -->
+      <div id="tab-listings" class="admin-tab-content" style="display: none">
+        <div id="admin-listings-list">
+          <div class="empty-state">Loading...</div>
+        </div>
+      </div>
       <div id="tab-admins" class="admin-tab-content" style="display: none">
         <div class="card" style="margin-bottom: 16px">
           <p class="section-title">Add New Admin</p>

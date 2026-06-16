@@ -46,6 +46,11 @@ function initCanvas() {
 }
 
 // ---- TOAST ----
+// Apply saved theme on every page load
+(function () {
+  const theme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", theme);
+})();
 function showToast(message, type = "success") {
   let container = document.getElementById("toast-container");
   if (!container) {

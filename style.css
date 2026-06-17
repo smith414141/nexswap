@@ -1400,6 +1400,11 @@ body {
     box-sizing: border-box;
     width: calc(100vw - 220px);
     max-width: calc(100vw - 220px);
+    overflow-x: hidden;
+  }
+
+  .pc-main > div {
+    max-width: 800px;
   }
 
   .pc-main > div,

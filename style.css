@@ -1398,7 +1398,13 @@ body {
     padding: 28px 36px;
     min-height: calc(100vh - 60px);
     box-sizing: border-box;
-    max-width: 900px;
+    width: calc(100vw - 220px);
+    max-width: calc(100vw - 220px);
+  }
+
+  .pc-main > div,
+  .pc-main > .card {
+    max-width: 860px;
   }
 
   /* Hide mobile elements */

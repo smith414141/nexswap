@@ -16,106 +16,103 @@
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
 
+    <div class="pc-nav">
+      <div class="pc-nav-logo">⚡ CryptoSwap</div>
+      <div class="pc-nav-right">
+        <span class="kyc-badge none" id="kyc-badge-pc">No KYC</span>
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <div class="pc-sidebar">
+      <a class="pc-sidebar-link" href="home.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+          /></svg
+        >Home</a
+      >
+      <a class="pc-sidebar-link" href="p2p.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M7 3L3 7l4 4" />
+          <path d="M3 7h13a4 4 0 014 4v1" />
+          <path d="M17 21l4-4-4-4" />
+          <path d="M21 17H8a4 4 0 01-4-4v-1" /></svg
+        >P2P</a
+      >
+      <a class="pc-sidebar-link active" href="deposit.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 3v12" />
+          <path d="M7 10l5 5 5-5" />
+          <path d="M5 19h14" /></svg
+        >Deposit</a
+      >
+      <a class="pc-sidebar-link" href="withdraw.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 19V7" />
+          <path d="M7 12l5-5 5 5" />
+          <path d="M5 19h14" /></svg
+        >Withdraw</a
+      >
+      <a class="pc-sidebar-link" href="messages.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+          /></svg
+        >Messages</a
+      >
+      <a class="pc-sidebar-link" href="profile.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
+        >Profile</a
+      >
+      <a class="pc-sidebar-link" href="settings.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
+          /></svg
+        >Settings</a
+      >
+    </div>
+
     <div class="page">
-      <!-- PC NAV -->
-      <div class="pc-nav">
-        <div class="pc-nav-logo">⚡ CryptoSwap</div>
-        <div class="pc-nav-right">
-          <span class="kyc-badge none" id="kyc-badge-pc">No KYC</span>
-          <button class="btn-logout" onclick="logoutUser()">Logout</button>
-        </div>
-      </div>
-
-      <!-- PC SIDEBAR -->
-      <div class="pc-sidebar">
-        <a class="pc-sidebar-link" href="home.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-            /></svg
-          >Home
-        </a>
-        <a class="pc-sidebar-link" href="p2p.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M7 3L3 7l4 4" />
-            <path d="M3 7h13a4 4 0 014 4v1" />
-            <path d="M17 21l4-4-4-4" />
-            <path d="M21 17H8a4 4 0 01-4-4v-1" /></svg
-          >P2P
-        </a>
-        <a class="pc-sidebar-link active" href="deposit.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M12 3v12" />
-            <path d="M7 10l5 5 5-5" />
-            <path d="M5 19h14" /></svg
-          >Deposit
-        </a>
-        <a class="pc-sidebar-link" href="withdraw.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M12 19V7" />
-            <path d="M7 12l5-5 5 5" />
-            <path d="M5 19h14" /></svg
-          >Withdraw
-        </a>
-        <a class="pc-sidebar-link" href="messages.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
-            /></svg
-          >Messages
-        </a>
-        <a class="pc-sidebar-link" href="profile.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="8" r="4" />
-            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
-          >Profile
-        </a>
-        <a class="pc-sidebar-link" href="settings.html">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="3" />
-            <path
-              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
-            /></svg
-          >Settings
-        </a>
-      </div>
-
-      <!-- MAIN -->
       <div class="pc-main">
         <div class="top-bar">
           <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
@@ -126,7 +123,6 @@
         </div>
 
         <div style="padding: 16px">
-          <!-- STEP 1: SELECT COIN -->
           <div id="step-coin">
             <div
               style="
@@ -155,8 +151,6 @@
               </div>
               <span style="font-weight: 700; font-size: 15px">Select Coin</span>
             </div>
-
-            <!-- SEARCH -->
             <div class="input-row" style="margin-bottom: 12px">
               <input
                 type="text"
@@ -165,15 +159,12 @@
                 oninput="filterCoins()"
               />
             </div>
-
-            <!-- COIN GRID -->
             <div
               id="coin-grid"
               style="display: flex; flex-direction: column; gap: 8px"
             ></div>
           </div>
 
-          <!-- STEP 2: SELECT NETWORK -->
           <div id="step-network" style="display: none">
             <div
               style="
@@ -211,7 +202,6 @@
                 </div>
               </div>
             </div>
-
             <div
               style="
                 display: flex;
@@ -241,7 +231,6 @@
                 >Select Network</span
               >
             </div>
-
             <div
               style="
                 background: rgba(246, 70, 93, 0.08);
@@ -257,14 +246,12 @@
                 lost.
               </p>
             </div>
-
             <div
               id="network-list"
               style="display: flex; flex-direction: column; gap: 8px"
             ></div>
           </div>
 
-          <!-- STEP 3: ADDRESS -->
           <div id="step-address" style="display: none">
             <div
               style="
@@ -303,7 +290,6 @@
                 </div>
               </div>
             </div>
-
             <div class="card" style="text-align: center; margin-bottom: 16px">
               <p
                 style="
@@ -315,7 +301,6 @@
                 Send only <strong id="addr-crypto-warn"></strong> via
                 <strong id="addr-network-warn"></strong> to this address
               </p>
-
               <div
                 style="
                   width: 160px;
@@ -331,7 +316,6 @@
               >
                 <canvas id="qr-canvas" width="150" height="150"></canvas>
               </div>
-
               <div
                 style="
                   background: var(--bg);
@@ -348,12 +332,10 @@
               >
                 Loading...
               </div>
-
               <button class="btn-primary" onclick="copyDepositAddress()">
                 📋 Copy Address
               </button>
             </div>
-
             <div class="card" style="margin-bottom: 16px">
               <div class="payment-info-row">
                 <span>Network</span><strong id="info-network">--</strong>
@@ -368,7 +350,6 @@
                 <span>Min Deposit</span><strong>0.00001</strong>
               </div>
             </div>
-
             <div
               style="
                 background: rgba(240, 185, 11, 0.06);
@@ -387,7 +368,6 @@
       </div>
     </div>
 
-    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'">
         <svg

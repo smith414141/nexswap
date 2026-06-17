@@ -1285,6 +1285,22 @@ body {
     grid-template-rows: auto;
     align-items: start;
     padding-bottom: 0 !important;
+    position: relative;
+  }
+
+  .pc-nav {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .pc-sidebar {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .pc-main {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   /* Left sidebar */
@@ -1454,4 +1470,12 @@ body {
 [data-theme="light"] .chat-msg.theirs {
   background: #e0e0e0;
   color: #111;
+}
+/* Deposit coin grid PC fix */
+@media (min-width: 768px) {
+  #coin-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 }

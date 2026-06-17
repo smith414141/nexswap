@@ -21,7 +21,11 @@ auth.onAuthStateChanged((user) => {
         badge.className = "kyc-badge none";
       }
     });
-  renderCoinGrid(CRYPTO_LIST);
+  if (typeof CRYPTO_LIST !== "undefined" && CRYPTO_LIST.length > 0) {
+    renderCoinGrid(CRYPTO_LIST);
+  } else {
+    window.addEventListener("load", () => renderCoinGrid(CRYPTO_LIST));
+  }
 });
 
 function renderCoinGrid(coins) {

@@ -4,6 +4,7 @@ let selectedNetwork = null;
 window.addEventListener("load", () => {
   auth.onAuthStateChanged((user) => {
     if (!user || !user.emailVerified) return;
+
     db.collection("users")
       .doc(user.uid)
       .get()
@@ -22,12 +23,23 @@ window.addEventListener("load", () => {
           badge.className = "kyc-badge none";
         }
       });
-    renderCoinGrid(CRYPTO_LIST);
+
+    // Guard: wait until CRYPTO_LIST is ready (wallets.js race condition fix)
+    if (typeof CRYPTO_LIST === "undefined" || !CRYPTO_LIST.length) {
+      setTimeout(() => renderCoinGrid(CRYPTO_LIST), 300);
+    } else {
+      renderCoinGrid(CRYPTO_LIST);
+    }
   });
 });
 
 function renderCoinGrid(coins) {
   const grid = document.getElementById("coin-grid");
+  if (!coins || !coins.length) {
+    grid.innerHTML =
+      '<div class="empty-state">Could not load coins. Please refresh.</div>';
+    return;
+  }
   grid.innerHTML = coins
     .map(
       (c) => `

@@ -1530,9 +1530,27 @@ body {
     margin-top: 60px;
     min-height: calc(100vh - 60px);
     width: calc(100vw - 240px);
-    padding: 24px 40px;
-    grid-column: unset !important;
+    max-width: calc(100vw - 240px);
+    padding: 24px 32px;
     box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .pc-main .card {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Responsive for smaller laptops */
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .pc-sidebar {
+      width: 200px;
+    }
+    .pc-main {
+      margin-left: 200px;
+      width: calc(100vw - 200px);
+      max-width: calc(100vw - 200px);
+      padding: 20px 24px;
+    }
   }
 
   .bottom-nav {

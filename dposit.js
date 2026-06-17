@@ -1,31 +1,29 @@
 let selectedCoin = null;
 let selectedNetwork = null;
 
-auth.onAuthStateChanged((user) => {
-  if (!user || !user.emailVerified) return;
-  db.collection("users")
-    .doc(user.uid)
-    .get()
-    .then((doc) => {
-      if (!doc.exists) return;
-      const data = doc.data();
-      const badge = document.getElementById("kyc-badge");
-      if (data.kycStatus === "approved") {
-        badge.textContent = "Verified";
-        badge.className = "kyc-badge approved";
-      } else if (data.kycStatus === "pending") {
-        badge.textContent = "KYC Pending";
-        badge.className = "kyc-badge pending";
-      } else {
-        badge.textContent = "No KYC";
-        badge.className = "kyc-badge none";
-      }
-    });
-  if (typeof CRYPTO_LIST !== "undefined" && CRYPTO_LIST.length > 0) {
+window.addEventListener("load", () => {
+  auth.onAuthStateChanged((user) => {
+    if (!user || !user.emailVerified) return;
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) return;
+        const data = doc.data();
+        const badge = document.getElementById("kyc-badge");
+        if (data.kycStatus === "approved") {
+          badge.textContent = "Verified";
+          badge.className = "kyc-badge approved";
+        } else if (data.kycStatus === "pending") {
+          badge.textContent = "KYC Pending";
+          badge.className = "kyc-badge pending";
+        } else {
+          badge.textContent = "No KYC";
+          badge.className = "kyc-badge none";
+        }
+      });
     renderCoinGrid(CRYPTO_LIST);
-  } else {
-    window.addEventListener("load", () => renderCoinGrid(CRYPTO_LIST));
-  }
+  });
 });
 
 function renderCoinGrid(coins) {

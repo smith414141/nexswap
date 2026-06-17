@@ -1269,94 +1269,24 @@ body {
 .nav-item.active .nav-icon-svg {
   transform: scale(1.1);
 }
+
 /* ============ PC LAYOUT ============ */
 /* ============ PC LAYOUT ============ */
 @media (min-width: 768px) {
+  html,
+  body {
+    height: 100%;
+  }
+
   body.has-pc-nav {
-    padding-top: 60px;
+    display: block;
+    width: 100%;
+    overflow-x: hidden;
   }
 
-  /* Full width on PC — no more centered mobile card */
-  .page {
-    max-width: 100%;
-    min-height: calc(100vh - 60px);
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    grid-template-rows: auto;
-    align-items: start;
-    padding-bottom: 0 !important;
-    position: relative;
-  }
-
+  /* Fixed top bar */
   .pc-nav {
-    grid-column: 1 / -1;
-    grid-row: 1;
-  }
-
-  .pc-sidebar {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .pc-main {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  /* Left sidebar */
-  .pc-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 24px 16px;
-    border-right: 1px solid var(--border);
-    min-height: calc(100vh - 60px);
-    position: sticky;
-    top: 60px;
-  }
-
-  .pc-sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-
-  .pc-sidebar-link:hover {
-    background: var(--bg2);
-    color: var(--text);
-  }
-  .pc-sidebar-link.active {
-    background: rgba(240, 185, 11, 0.1);
-    color: var(--yellow);
-  }
-  .pc-sidebar-link svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-  }
-
-  /* Main content area */
-  .pc-main {
-    padding: 24px 32px;
-    max-width: 900px;
-  }
-
-  /* Hide mobile bottom nav on PC */
-  .bottom-nav {
-    display: none !important;
-  }
-
-  /* Top nav */
-  .pc-nav {
-    display: flex;
+    display: flex !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -1367,7 +1297,8 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
-    z-index: 100;
+    z-index: 200;
+    box-sizing: border-box;
   }
 
   .pc-nav-logo {
@@ -1385,10 +1316,7 @@ body {
     gap: 16px;
   }
 
-  .pc-nav-right .kyc-badge {
-    font-size: 12px;
-  }
-  .pc-nav-right .btn-logout {
+  .btn-logout {
     padding: 8px 16px;
     background: var(--bg3);
     border: 1px solid var(--border);
@@ -1398,13 +1326,90 @@ body {
     font-weight: 600;
     cursor: pointer;
     font-family: "Inter", sans-serif;
+    transition: all 0.2s;
   }
-  .pc-nav-right .btn-logout:hover {
+  .btn-logout:hover {
     color: var(--red);
     border-color: var(--red);
   }
 
-  /* Modal stays centered */
+  /* Fixed sidebar */
+  .pc-sidebar {
+    display: flex !important;
+    flex-direction: column;
+    gap: 4px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 60px);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    overflow-y: auto;
+    z-index: 100;
+    box-sizing: border-box;
+  }
+
+  .pc-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .pc-sidebar-link svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  .pc-sidebar-link:hover {
+    background: var(--bg3);
+    color: var(--text);
+  }
+  .pc-sidebar-link.active {
+    background: rgba(240, 185, 11, 0.12);
+    color: var(--yellow);
+  }
+
+  /* Main content — sits to the right of sidebar */
+  .page {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh;
+  }
+
+  .pc-main {
+    display: block;
+    margin-left: 220px;
+    margin-top: 60px;
+    padding: 28px 36px;
+    min-height: calc(100vh - 60px);
+    box-sizing: border-box;
+    max-width: 900px;
+  }
+
+  /* Hide mobile elements */
+  .bottom-nav {
+    display: none !important;
+  }
+  .top-bar {
+    display: none !important;
+  }
+
+  /* Modal centered */
   .modal-overlay {
     align-items: center;
   }
@@ -1412,16 +1417,6 @@ body {
     max-width: 520px;
     width: 100%;
     border-radius: 16px;
-  }
-
-  /* Cards slightly wider on PC */
-  .card {
-    padding: 20px;
-  }
-
-  /* Top bar hidden on PC (we use pc-nav instead) */
-  .top-bar {
-    display: none;
   }
 }
 
@@ -1433,9 +1428,11 @@ body {
     display: none !important;
   }
   .pc-main {
+    margin: 0 !important;
     padding: 0 !important;
   }
 }
+
 [data-theme="light"] #bg-canvas {
   opacity: 0.03;
 }

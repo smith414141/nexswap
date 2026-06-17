@@ -227,3 +227,10 @@ function forgotPassword() {
 document.addEventListener("DOMContentLoaded", () => {
   initCanvas();
 });
+
+// ---- LOGOUT ----
+function logoutUser() {
+  auth.signOut().then(() => {
+    window.location.href = "/index.html";
+  });
+}

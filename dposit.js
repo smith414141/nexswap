@@ -1,19 +1,18 @@
 let selectedCoin = null;
 let selectedNetwork = null;
+let qrInstance = null;
 
-// Render coin grid immediately — no auth needed for this
-function waitForCryptoList(callback) {
+// Poll until wallets.js is ready, then render coin list immediately
+function waitForCryptoList(cb) {
   if (typeof CRYPTO_LIST !== "undefined" && CRYPTO_LIST.length) {
-    callback();
+    cb();
   } else {
-    setTimeout(() => waitForCryptoList(callback), 50);
+    setTimeout(() => waitForCryptoList(cb), 50);
   }
 }
-
-// Render coin list as soon as wallets.js is ready — don't wait for auth
 waitForCryptoList(() => renderCoinGrid(CRYPTO_LIST));
 
-// Auth only needed for KYC badge
+// Auth only for KYC badge
 auth.onAuthStateChanged((user) => {
   if (!user || !user.emailVerified) return;
   db.collection("users")
@@ -21,54 +20,47 @@ auth.onAuthStateChanged((user) => {
     .get()
     .then((doc) => {
       if (!doc.exists) return;
-      const data = doc.data();
-      const badge = document.getElementById("kyc-badge");
-      if (data.kycStatus === "approved") {
-        badge.textContent = "Verified";
-        badge.className = "kyc-badge approved";
-      } else if (data.kycStatus === "pending") {
-        badge.textContent = "KYC Pending";
-        badge.className = "kyc-badge pending";
-      } else {
-        badge.textContent = "No KYC";
-        badge.className = "kyc-badge none";
-      }
+      const d = doc.data();
+      ["kyc-badge", "kyc-badge-pc"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (d.kycStatus === "approved") {
+          el.textContent = "Verified";
+          el.className = "kyc-badge approved";
+        } else if (d.kycStatus === "pending") {
+          el.textContent = "KYC Pending";
+          el.className = "kyc-badge pending";
+        } else {
+          el.textContent = "No KYC";
+          el.className = "kyc-badge none";
+        }
+      });
     });
 });
 
+// ── STEP 1: COIN LIST ──
 function renderCoinGrid(coins) {
-  const grid = document.getElementById("coin-grid");
+  const grid = document.getElementById("coin-grid-inner");
   if (!coins || !coins.length) {
     grid.innerHTML =
       '<div class="empty-state">Could not load coins. Please refresh.</div>';
     return;
   }
   grid.innerHTML = coins
-    .map(
-      (c) => `
-    <div class="card" style="display:flex;align-items:center;gap:12px;cursor:pointer;padding:14px 16px;" onclick="selectCoin('${
-      c.symbol
-    }')">
-      <div style="width:40px;height:40px;border-radius:50%;background:${
+    .map((c) => {
+      const nets = (DEPOSIT_NETWORKS[c.symbol] || []).length;
+      return `
+    <div class="dep-coin-row" onclick="selectCoin('${c.symbol}')">
+      <div class="dep-coin-avatar" style="background:${c.color}22; color:${
         c.color
-      }22;border:1px solid ${
-        c.color
-      }44;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:${
-        c.color
-      };flex-shrink:0;">${c.icon}</div>
-      <div style="flex:1;">
-        <div style="font-weight:700;font-size:14px;">${c.symbol}</div>
-        <div style="font-size:11px;color:var(--text2);">${c.name}</div>
+      }; border:1px solid ${c.color}44;">${c.icon}</div>
+      <div>
+        <div class="dep-coin-symbol">${c.symbol}</div>
+        <div class="dep-coin-name">${c.name}</div>
       </div>
-      <div style="font-size:11px;color:var(--text3);">${
-        (DEPOSIT_NETWORKS[c.symbol] || []).length
-      } network${
-        (DEPOSIT_NETWORKS[c.symbol] || []).length !== 1 ? "s" : ""
-      }</div>
-      <span style="color:var(--text3);">›</span>
-    </div>
-  `
-    )
+      <div class="dep-coin-nets">${nets} network${nets !== 1 ? "s" : ""} ›</div>
+    </div>`;
+    })
     .join("");
 }
 
@@ -81,6 +73,7 @@ function filterCoins() {
   renderCoinGrid(filtered);
 }
 
+// ── STEP 2: NETWORK ──
 function selectCoin(symbol) {
   selectedCoin = CRYPTO_LIST.find((c) => c.symbol === symbol);
   if (!selectedCoin) return;
@@ -88,31 +81,32 @@ function selectCoin(symbol) {
   document.getElementById("step-coin").style.display = "none";
   document.getElementById("step-network").style.display = "block";
 
-  const icon = document.getElementById("selected-coin-icon");
-  icon.textContent = selectedCoin.icon;
-  icon.style.background = selectedCoin.color + "22";
-  icon.style.color = selectedCoin.color;
-  document.getElementById("selected-coin-name").textContent =
-    selectedCoin.symbol + " — " + selectedCoin.name;
+  const iconEl = document.getElementById("selected-coin-icon");
+  iconEl.textContent = selectedCoin.icon;
+  iconEl.style.background = selectedCoin.color + "22";
+  iconEl.style.color = selectedCoin.color;
+  iconEl.style.border = "1px solid " + selectedCoin.color + "44";
+  document.getElementById("selected-coin-symbol").textContent =
+    selectedCoin.symbol;
+  document.getElementById("selected-coin-fullname").textContent =
+    selectedCoin.name;
 
   const networks = DEPOSIT_NETWORKS[symbol] || [];
   const list = document.getElementById("network-list");
   if (!networks.length) {
-    list.innerHTML =
-      '<div class="empty-state">No networks available for this coin yet</div>';
+    list.innerHTML = '<div class="empty-state">No networks available yet</div>';
     return;
   }
   list.innerHTML = networks
     .map(
       (n) => `
-    <div class="card" style="cursor:pointer;padding:16px;" onclick="selectNetwork('${n.key}')">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-        <span style="font-weight:800;font-size:14px;">${n.key}</span>
-        <span style="font-size:11px;color:var(--text2);">${n.time}</span>
-      </div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">${n.name}</div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);">
-        <span>${n.fee}</span><span>${n.confirms}</span>
+    <div class="net-card" onclick="selectNetwork('${n.key}')">
+      <div class="net-key">${n.key}</div>
+      <div class="net-name">${n.name}</div>
+      <div class="net-meta">
+        <span>⏱ ${n.time}</span>
+        <span>💸 ${n.fee}</span>
+        <span>✅ ${n.confirms}</span>
       </div>
     </div>
   `
@@ -120,6 +114,13 @@ function selectCoin(symbol) {
     .join("");
 }
 
+function backToCoin() {
+  document.getElementById("step-network").style.display = "none";
+  document.getElementById("step-coin").style.display = "block";
+  selectedCoin = null;
+}
+
+// ── STEP 3: ADDRESS + QR ──
 function selectNetwork(networkKey) {
   if (!selectedCoin) return;
   const networks = DEPOSIT_NETWORKS[selectedCoin.symbol] || [];
@@ -133,10 +134,13 @@ function selectNetwork(networkKey) {
   document.getElementById("step-network").style.display = "none";
   document.getElementById("step-address").style.display = "block";
 
+  // Coin icon
   const addrIcon = document.getElementById("addr-coin-icon");
   addrIcon.textContent = selectedCoin.icon;
   addrIcon.style.background = selectedCoin.color + "22";
   addrIcon.style.color = selectedCoin.color;
+  addrIcon.style.border = "1px solid " + selectedCoin.color + "44";
+
   document.getElementById("addr-coin-name").textContent =
     selectedCoin.symbol + " — " + selectedCoin.name;
   document.getElementById("addr-network-name").textContent =
@@ -152,25 +156,53 @@ function selectNetwork(networkKey) {
   document.getElementById("info-confirms").textContent =
     selectedNetwork.confirms;
   document.getElementById("info-time").textContent = selectedNetwork.time;
+  document.getElementById("info-fee").textContent = selectedNetwork.fee;
 
   generateQR(address);
 }
 
-function generateQR(text) {
+function generateQR(address) {
   const canvas = document.getElementById("qr-canvas");
+  // Clear previous QR
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, 150, 150);
-  ctx.fillStyle = "#000000";
-  ctx.font = "9px monospace";
-  ctx.textAlign = "center";
-  ctx.fillText("Scan in wallet app", 75, 67);
-  ctx.fillText("to get address", 75, 83);
-}
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function backToCoin() {
-  document.getElementById("step-network").style.display = "none";
-  document.getElementById("step-coin").style.display = "block";
+  if (typeof QRCode === "undefined") {
+    // Fallback if qrcode.js didn't load
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, 190, 190);
+    ctx.fillStyle = "#000";
+    ctx.font = "10px monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("QR unavailable", 95, 95);
+    return;
+  }
+
+  // Use QRCode library to draw directly onto canvas
+  const qr = qrcode(0, "M");
+  qr.addData(address);
+  qr.make();
+
+  const moduleCount = qr.getModuleCount();
+  const cellSize = Math.floor(190 / moduleCount);
+  const margin = Math.floor((190 - cellSize * moduleCount) / 2);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, 190, 190);
+  ctx.fillStyle = "#000000";
+
+  for (let row = 0; row < moduleCount; row++) {
+    for (let col = 0; col < moduleCount; col++) {
+      if (qr.isDark(row, col)) {
+        ctx.fillRect(
+          margin + col * cellSize,
+          margin + row * cellSize,
+          cellSize,
+          cellSize
+        );
+      }
+    }
+  }
 }
 
 function backToNetwork() {
@@ -182,7 +214,39 @@ function copyDepositAddress() {
   const address = document.getElementById(
     "deposit-address-display"
   ).textContent;
+  if (address === "Address not configured yet") {
+    showToast("Address not configured yet", "warning");
+    return;
+  }
   navigator.clipboard
     .writeText(address)
-    .then(() => showToast("Address copied!", "success"));
+    .then(() => {
+      showToast("Address copied!", "success");
+    })
+    .catch(() => {
+      // Fallback for older browsers
+      const el = document.createElement("textarea");
+      el.value = address;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      showToast("Address copied!", "success");
+    });
+}
+
+function shareAddress() {
+  const address = document.getElementById(
+    "deposit-address-display"
+  ).textContent;
+  if (navigator.share) {
+    navigator
+      .share({
+        title: `${selectedCoin?.symbol} Deposit Address`,
+        text: address,
+      })
+      .catch(() => {});
+  } else {
+    copyDepositAddress();
+  }
 }

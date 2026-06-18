@@ -12,10 +12,263 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── Deposit-specific styles ── */
+      .dep-coin-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .dep-coin-row:last-child {
+        border-bottom: none;
+      }
+      .dep-coin-row:hover {
+        background: var(--bg3);
+      }
+      .dep-coin-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 17px;
+        flex-shrink: 0;
+      }
+      .dep-coin-symbol {
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .dep-coin-name {
+        font-size: 11px;
+        color: var(--text2);
+        margin-top: 2px;
+      }
+      .dep-coin-nets {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--text3);
+      }
+
+      .net-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .net-card:hover {
+        border-color: var(--yellow);
+        background: var(--bg3);
+      }
+      .net-card.selected {
+        border-color: var(--yellow);
+        background: rgba(240, 185, 11, 0.06);
+      }
+      .net-key {
+        font-weight: 800;
+        font-size: 15px;
+      }
+      .net-name {
+        font-size: 12px;
+        color: var(--text2);
+        margin-top: 3px;
+      }
+      .net-meta {
+        display: flex;
+        gap: 16px;
+        margin-top: 8px;
+        font-size: 11px;
+        color: var(--text3);
+      }
+
+      .addr-box {
+        background: var(--bg);
+        border: 1px solid var(--border2);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-family: monospace;
+        font-size: 13px;
+        word-break: break-all;
+        color: var(--yellow);
+        letter-spacing: 0.3px;
+        line-height: 1.6;
+      }
+      .qr-wrap {
+        width: 200px;
+        height: 200px;
+        background: #fff;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      .copy-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 13px;
+        border-radius: 10px;
+        background: var(--yellow);
+        color: #000;
+        font-weight: 700;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        transition: opacity 0.15s;
+        margin-bottom: 16px;
+      }
+      .copy-btn:hover {
+        opacity: 0.88;
+      }
+      .share-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        background: var(--bg3);
+        color: var(--text);
+        font-weight: 600;
+        font-size: 13px;
+        border: 1px solid var(--border2);
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        margin-bottom: 20px;
+      }
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .info-cell {
+        background: var(--bg3);
+        border-radius: 10px;
+        padding: 12px 14px;
+      }
+      .info-cell-label {
+        font-size: 10px;
+        color: var(--text3);
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .info-cell-val {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .warn-box {
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .warn-red {
+        background: rgba(246, 70, 93, 0.08);
+        border: 1px solid rgba(246, 70, 93, 0.2);
+        color: var(--red);
+      }
+      .warn-yellow {
+        background: rgba(240, 185, 11, 0.07);
+        border: 1px solid rgba(240, 185, 11, 0.2);
+        color: #c9930a;
+      }
+      .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .step-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--yellow);
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .step-label {
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .back-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+      .back-row:hover {
+        opacity: 0.8;
+      }
+      .selected-coin-chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--bg3);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin-bottom: 20px;
+      }
+      .chip-change {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--yellow);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* PC two-col layout on address step */
+      @media (min-width: 768px) {
+        .addr-layout {
+          display: grid;
+          grid-template-columns: 280px 1fr;
+          gap: 24px;
+          align-items: start;
+        }
+        .addr-qr-col {
+          position: sticky;
+          top: 80px;
+        }
+        #coin-grid-inner {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0;
+        }
+        #coin-grid-inner .dep-coin-row {
+          border-right: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+        }
+        #coin-grid-inner .dep-coin-row:nth-child(2n) {
+          border-right: none;
+        }
+      }
+    </style>
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
 
+    <!-- PC NAV -->
     <div class="pc-nav">
       <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
         >⚡ CryptoSwap</a
@@ -26,6 +279,7 @@
       </div>
     </div>
 
+    <!-- PC SIDEBAR -->
     <div class="pc-sidebar">
       <a class="pc-sidebar-link" href="home.html"
         ><svg
@@ -116,6 +370,7 @@
 
     <div class="page">
       <div class="pc-main">
+        <!-- Mobile top bar -->
         <div class="top-bar">
           <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
             >←</span
@@ -124,36 +379,14 @@
           <span class="kyc-badge none" id="kyc-badge">No KYC</span>
         </div>
 
-        <div style="padding: 16px">
+        <div style="padding: 16px; max-width: 780px">
+          <!-- ── STEP 1: SELECT COIN ── -->
           <div id="step-coin">
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 16px;
-              "
-            >
-              <div
-                style="
-                  width: 28px;
-                  height: 28px;
-                  border-radius: 50%;
-                  background: var(--yellow);
-                  color: #000;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-weight: 900;
-                  font-size: 13px;
-                  flex-shrink: 0;
-                "
-              >
-                1
-              </div>
-              <span style="font-weight: 700; font-size: 15px">Select Coin</span>
+            <div class="step-indicator">
+              <div class="step-num">1</div>
+              <span class="step-label">Select Coin</span>
             </div>
-            <div class="input-row" style="margin-bottom: 12px">
+            <div class="input-row" style="margin-bottom: 14px">
               <input
                 type="text"
                 id="coin-search"
@@ -161,215 +394,179 @@
                 oninput="filterCoins()"
               />
             </div>
-            <div
-              id="coin-grid"
-              style="display: flex; flex-direction: column; gap: 8px"
-            ></div>
+            <div class="card" style="padding: 0; overflow: hidden">
+              <div id="coin-grid-inner"></div>
+            </div>
           </div>
 
+          <!-- ── STEP 2: SELECT NETWORK ── -->
           <div id="step-network" style="display: none">
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 16px;
-                cursor: pointer;
-              "
-              onclick="backToCoin()"
-            >
-              <span style="font-size: 18px">←</span>
-              <div style="display: flex; align-items: center; gap: 8px">
+            <div class="back-row" onclick="backToCoin()">
+              <span style="font-size: 20px">←</span>
+              <span style="font-size: 14px; color: var(--text2)"
+                >Back to coin list</span
+              >
+            </div>
+
+            <div class="selected-coin-chip">
+              <div id="selected-coin-icon" class="dep-coin-avatar"></div>
+              <div>
                 <div
-                  id="selected-coin-icon"
-                  style="
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: 800;
-                    font-size: 16px;
-                  "
+                  id="selected-coin-symbol"
+                  style="font-weight: 800; font-size: 15px"
                 ></div>
-                <div>
-                  <div
-                    style="font-weight: 800; font-size: 15px"
-                    id="selected-coin-name"
-                  ></div>
-                  <div style="font-size: 11px; color: var(--yellow)">
-                    Tap to change coin
+                <div
+                  id="selected-coin-fullname"
+                  style="font-size: 11px; color: var(--text2)"
+                ></div>
+              </div>
+              <span class="chip-change" onclick="backToCoin()">Change</span>
+            </div>
+
+            <div class="step-indicator">
+              <div class="step-num">2</div>
+              <span class="step-label">Select Network</span>
+            </div>
+
+            <div class="warn-box warn-red" style="margin-bottom: 16px">
+              ⚠️ Make sure to select the correct network. Depositing via the
+              wrong network may result in permanent loss of funds.
+            </div>
+
+            <div id="network-list"></div>
+          </div>
+
+          <!-- ── STEP 3: ADDRESS + QR ── -->
+          <div id="step-address" style="display: none">
+            <div class="back-row" onclick="backToNetwork()">
+              <span style="font-size: 20px">←</span>
+              <span style="font-size: 14px; color: var(--text2)"
+                >Back to network</span
+              >
+            </div>
+
+            <div class="selected-coin-chip">
+              <div id="addr-coin-icon" class="dep-coin-avatar"></div>
+              <div>
+                <div
+                  id="addr-coin-name"
+                  style="font-weight: 800; font-size: 15px"
+                ></div>
+                <div
+                  id="addr-network-name"
+                  style="font-size: 11px; color: var(--yellow)"
+                ></div>
+              </div>
+            </div>
+
+            <div class="addr-layout">
+              <!-- QR column -->
+              <div class="addr-qr-col">
+                <div
+                  class="card"
+                  style="text-align: center; padding: 24px 16px"
+                >
+                  <p
+                    style="
+                      font-size: 11px;
+                      color: var(--text2);
+                      margin-bottom: 16px;
+                    "
+                  >
+                    Scan QR code to get deposit address
+                  </p>
+                  <div class="qr-wrap">
+                    <canvas id="qr-canvas" width="190" height="190"></canvas>
+                  </div>
+                  <p style="font-size: 11px; color: var(--text3)">
+                    Only send
+                    <strong
+                      id="addr-crypto-warn"
+                      style="color: var(--text)"
+                    ></strong
+                    ><br />
+                    via
+                    <strong
+                      id="addr-network-warn"
+                      style="color: var(--text)"
+                    ></strong>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Details column -->
+              <div>
+                <div class="card" style="margin-bottom: 16px">
+                  <p
+                    style="
+                      font-size: 11px;
+                      color: var(--text2);
+                      margin-bottom: 10px;
+                      font-weight: 600;
+                      text-transform: uppercase;
+                      letter-spacing: 0.5px;
+                    "
+                  >
+                    Deposit Address
+                  </p>
+                  <div class="addr-box" id="deposit-address-display">
+                    Loading...
+                  </div>
+                  <div style="display: flex; gap: 10px; margin-top: 12px">
+                    <button
+                      class="copy-btn"
+                      onclick="copyDepositAddress()"
+                      style="margin-bottom: 0; flex: 1"
+                    >
+                      📋 Copy Address
+                    </button>
+                    <button
+                      class="share-btn"
+                      onclick="shareAddress()"
+                      style="margin-bottom: 0; flex: 1"
+                    >
+                      ↗ Share
+                    </button>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 16px;
-              "
-            >
-              <div
-                style="
-                  width: 28px;
-                  height: 28px;
-                  border-radius: 50%;
-                  background: var(--yellow);
-                  color: #000;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-weight: 900;
-                  font-size: 13px;
-                  flex-shrink: 0;
-                "
-              >
-                2
-              </div>
-              <span style="font-weight: 700; font-size: 15px"
-                >Select Network</span
-              >
-            </div>
-            <div
-              style="
-                background: rgba(246, 70, 93, 0.08);
-                border: 1px solid rgba(246, 70, 93, 0.2);
-                border-radius: 10px;
-                padding: 12px;
-                margin-bottom: 16px;
-              "
-            >
-              <p style="font-size: 12px; color: var(--red); line-height: 1.5">
-                ⚠️ Please note that only supported networks on Binance platform
-                are shown. If you deposit via another network your assets may be
-                lost.
-              </p>
-            </div>
-            <div
-              id="network-list"
-              style="display: flex; flex-direction: column; gap: 8px"
-            ></div>
-          </div>
 
-          <div id="step-address" style="display: none">
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 16px;
-                cursor: pointer;
-              "
-              onclick="backToNetwork()"
-            >
-              <span style="font-size: 18px">←</span>
-              <div style="display: flex; align-items: center; gap: 8px">
-                <div
-                  id="addr-coin-icon"
-                  style="
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: 800;
-                    font-size: 16px;
-                  "
-                ></div>
-                <div>
-                  <div
-                    style="font-weight: 800; font-size: 15px"
-                    id="addr-coin-name"
-                  ></div>
-                  <div
-                    style="font-size: 11px; color: var(--yellow)"
-                    id="addr-network-name"
-                  ></div>
+                <div class="info-grid">
+                  <div class="info-cell">
+                    <div class="info-cell-label">Network</div>
+                    <div class="info-cell-val" id="info-network">--</div>
+                  </div>
+                  <div class="info-cell">
+                    <div class="info-cell-label">Confirmations</div>
+                    <div class="info-cell-val" id="info-confirms">--</div>
+                  </div>
+                  <div class="info-cell">
+                    <div class="info-cell-label">Est. Arrival</div>
+                    <div class="info-cell-val" id="info-time">--</div>
+                  </div>
+                  <div class="info-cell">
+                    <div class="info-cell-label">Network Fee</div>
+                    <div class="info-cell-val" id="info-fee">--</div>
+                  </div>
+                </div>
+
+                <div class="warn-box warn-yellow" style="margin-bottom: 12px">
+                  ⚠️ Send only <strong id="addr-crypto-warn2"></strong> to this
+                  address. Sending any other coin or token may result in
+                  permanent loss.
+                </div>
+
+                <div class="warn-box warn-red">
+                  ⚠️ Do NOT send from exchanges that don't support this network.
+                  Always double-check the network before sending.
                 </div>
               </div>
-            </div>
-            <div class="card" style="text-align: center; margin-bottom: 16px">
-              <p
-                style="
-                  font-size: 12px;
-                  color: var(--text2);
-                  margin-bottom: 16px;
-                "
-              >
-                Send only <strong id="addr-crypto-warn"></strong> via
-                <strong id="addr-network-warn"></strong> to this address
-              </p>
-              <div
-                style="
-                  width: 160px;
-                  height: 160px;
-                  margin: 0 auto 16px;
-                  background: #fff;
-                  border-radius: 12px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  overflow: hidden;
-                "
-              >
-                <canvas id="qr-canvas" width="150" height="150"></canvas>
-              </div>
-              <div
-                style="
-                  background: var(--bg);
-                  border: 1px solid var(--border);
-                  border-radius: 10px;
-                  padding: 12px;
-                  font-family: monospace;
-                  font-size: 12px;
-                  word-break: break-all;
-                  color: var(--yellow);
-                  margin-bottom: 12px;
-                "
-                id="deposit-address-display"
-              >
-                Loading...
-              </div>
-              <button class="btn-primary" onclick="copyDepositAddress()">
-                📋 Copy Address
-              </button>
-            </div>
-            <div class="card" style="margin-bottom: 16px">
-              <div class="payment-info-row">
-                <span>Network</span><strong id="info-network">--</strong>
-              </div>
-              <div class="payment-info-row">
-                <span>Confirmation</span><strong id="info-confirms">--</strong>
-              </div>
-              <div class="payment-info-row">
-                <span>Est. Arrival</span><strong id="info-time">--</strong>
-              </div>
-              <div class="payment-info-row">
-                <span>Min Deposit</span><strong>0.00001</strong>
-              </div>
-            </div>
-            <div
-              style="
-                background: rgba(240, 185, 11, 0.06);
-                border: 1px solid rgba(240, 185, 11, 0.15);
-                border-radius: 10px;
-                padding: 12px;
-              "
-            >
-              <p style="font-size: 11px; color: var(--text2); line-height: 1.6">
-                ⚠️ Send only <strong id="addr-crypto-warn2"></strong> to this
-                address. Sending any other coin may result in permanent loss.
-              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- BOTTOM NAV (mobile) -->
     <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'">
         <svg
@@ -456,6 +653,8 @@
 
     <div id="toast-container"></div>
 
+    <!-- QR code library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>

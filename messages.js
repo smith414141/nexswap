@@ -134,12 +134,10 @@ function loadAnnouncements() {
 
 function formatAnnTime(ts) {
   if (!ts || !ts.toDate) return "--";
-  return ts
-    .toDate()
-    .toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  return ts.toDate().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }

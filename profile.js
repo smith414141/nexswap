@@ -554,12 +554,10 @@ function getTxnColor(type) {
 
 function formatTxnTime(timestamp) {
   if (!timestamp || !timestamp.toDate) return "--";
-  return timestamp
-    .toDate()
-    .toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  return timestamp.toDate().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }

@@ -1407,11 +1407,7 @@ body {
     box-sizing: border-box;
     width: calc(100vw - 220px);
     max-width: calc(100vw - 220px);
-    overflow-x: hidden;
-  }
-
-  .pc-main > * {
-    max-width: 860px;
+    overflow-x: visible;
   }
 
   .pc-main .card {

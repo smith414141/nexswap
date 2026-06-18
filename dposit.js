@@ -1,19 +1,21 @@
 let selectedCoin = null;
 let selectedNetwork = null;
 
-// Wait for both auth AND CRYPTO_LIST to be ready — no race condition
+// Render coin grid immediately — no auth needed for this
 function waitForCryptoList(callback) {
   if (typeof CRYPTO_LIST !== "undefined" && CRYPTO_LIST.length) {
     callback();
   } else {
-    setTimeout(() => waitForCryptoList(callback), 100);
+    setTimeout(() => waitForCryptoList(callback), 50);
   }
 }
 
+// Render coin list as soon as wallets.js is ready — don't wait for auth
+waitForCryptoList(() => renderCoinGrid(CRYPTO_LIST));
+
+// Auth only needed for KYC badge
 auth.onAuthStateChanged((user) => {
   if (!user || !user.emailVerified) return;
-
-  // Load KYC badge
   db.collection("users")
     .doc(user.uid)
     .get()
@@ -32,9 +34,6 @@ auth.onAuthStateChanged((user) => {
         badge.className = "kyc-badge none";
       }
     });
-
-  // Wait until wallets.js has loaded CRYPTO_LIST, then render
-  waitForCryptoList(() => renderCoinGrid(CRYPTO_LIST));
 });
 
 function renderCoinGrid(coins) {

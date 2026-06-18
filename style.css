@@ -61,16 +61,80 @@ body {
 
 @media (min-width: 481px) {
   body {
-    background: linear-gradient(135deg, #050709 0%, #0b0e11 100%);
+    background: var(
+      --body-bg,
+      linear-gradient(135deg, #050709 0%, #0b0e11 100%)
+    );
   }
 
   .page,
   .auth-wrapper,
   .verify-wrapper {
     background: var(--bg);
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.15);
     min-height: 100vh;
   }
+}
+
+[data-theme="light"] body {
+  background: #e8eaed !important;
+}
+[data-theme="light"] .page,
+[data-theme="light"] .auth-wrapper,
+[data-theme="light"] .verify-wrapper {
+  background: #f5f5f5 !important;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08) !important;
+}
+[data-theme="light"] .pc-nav {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+[data-theme="light"] .pc-sidebar {
+  background: #ffffff !important;
+  border-right: 1px solid #e0e0e0 !important;
+}
+[data-theme="light"] .pc-sidebar-link {
+  color: #444444 !important;
+}
+[data-theme="light"] .pc-sidebar-link:hover {
+  background: #f0f0f0 !important;
+  color: #111 !important;
+}
+[data-theme="light"] .pc-sidebar-link.active {
+  background: rgba(212, 160, 23, 0.12) !important;
+  color: #d4a017 !important;
+}
+[data-theme="light"] .listing-card {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+}
+[data-theme="light"] .listing-card:hover {
+  background: #f5f5f5 !important;
+}
+[data-theme="light"] .net-card {
+  border-color: #e0e0e0 !important;
+  background: #ffffff !important;
+}
+[data-theme="light"] .net-card:hover {
+  border-color: #d4a017 !important;
+  background: #fafafa !important;
+}
+[data-theme="light"] .dep-coin-row {
+  border-bottom: 1px solid #e8e8e8 !important;
+}
+[data-theme="light"] .dep-coin-row:hover {
+  background: #f5f5f5 !important;
+}
+[data-theme="light"] .timer-box {
+  background: rgba(212, 160, 23, 0.1) !important;
+  border-color: rgba(212, 160, 23, 0.3) !important;
+}
+[data-theme="light"] .badge-grey {
+  background: #e8e8e8 !important;
+  color: #444 !important;
+}
+[data-theme="light"] canvas#bg-canvas {
+  opacity: 0.02 !important;
 }
 
 /* PC layout — remove mobile constraints */
@@ -662,6 +726,79 @@ body {
 
 .listing-card:active {
   background: var(--bg3);
+}
+
+/* ---- DEPOSIT COIN ROWS ---- */
+.dep-coin-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.dep-coin-row:last-child {
+  border-bottom: none;
+}
+.dep-coin-row:hover {
+  background: var(--bg3);
+}
+.dep-coin-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.dep-coin-symbol {
+  font-weight: 700;
+  font-size: 14px;
+}
+.dep-coin-name {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+.dep-coin-nets {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+/* ---- NETWORK CARDS ---- */
+.net-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.net-card:hover {
+  border-color: var(--yellow);
+  background: var(--bg3);
+}
+.net-key {
+  font-weight: 800;
+  font-size: 15px;
+}
+.net-name {
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 3px;
+}
+.net-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text3);
 }
 
 /* ---- ORDER TYPE ---- */
@@ -1466,10 +1603,10 @@ body {
   }
 
   /* Deposit coin grid — 2 columns on PC */
-  #coin-grid {
+  /* Deposit coin grid — 2 columns on PC */
+  #coin-grid-inner {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
   }
 }
 

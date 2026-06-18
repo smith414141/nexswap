@@ -295,5 +295,12 @@ function openOrder(listingId) {
     });
 }
 
-// Initial render
-setTimeout(renderListings, 500);
+// Initial render — wait for CRYPTO_PRICES then render immediately, don't wait for auth
+function waitForPrices(cb) {
+  if (typeof CRYPTO_PRICES !== "undefined" && CRYPTO_PRICES.BTC) {
+    cb();
+  } else {
+    setTimeout(() => waitForPrices(cb), 100);
+  }
+}
+waitForPrices(renderListings);

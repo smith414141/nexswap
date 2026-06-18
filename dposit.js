@@ -1,8 +1,7 @@
 let selectedCoin = null;
 let selectedNetwork = null;
-let qrInstance = null;
 
-// Poll until wallets.js is ready, then render coin list immediately
+// Poll until wallets.js is ready, then render coin list immediately — no auth needed
 function waitForCryptoList(cb) {
   if (typeof CRYPTO_LIST !== "undefined" && CRYPTO_LIST.length) {
     cb();
@@ -51,9 +50,9 @@ function renderCoinGrid(coins) {
       const nets = (DEPOSIT_NETWORKS[c.symbol] || []).length;
       return `
     <div class="dep-coin-row" onclick="selectCoin('${c.symbol}')">
-      <div class="dep-coin-avatar" style="background:${c.color}22; color:${
+      <div class="dep-coin-avatar" style="background:${c.color}22;color:${
         c.color
-      }; border:1px solid ${c.color}44;">${c.icon}</div>
+      };border:1px solid ${c.color}44;">${c.icon}</div>
       <div>
         <div class="dep-coin-symbol">${c.symbol}</div>
         <div class="dep-coin-name">${c.name}</div>
@@ -66,11 +65,12 @@ function renderCoinGrid(coins) {
 
 function filterCoins() {
   const q = document.getElementById("coin-search").value.toLowerCase();
-  const filtered = CRYPTO_LIST.filter(
-    (c) =>
-      c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)
+  renderCoinGrid(
+    CRYPTO_LIST.filter(
+      (c) =>
+        c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)
+    )
   );
-  renderCoinGrid(filtered);
 }
 
 // ── STEP 2: NETWORK ──
@@ -83,9 +83,7 @@ function selectCoin(symbol) {
 
   const iconEl = document.getElementById("selected-coin-icon");
   iconEl.textContent = selectedCoin.icon;
-  iconEl.style.background = selectedCoin.color + "22";
-  iconEl.style.color = selectedCoin.color;
-  iconEl.style.border = "1px solid " + selectedCoin.color + "44";
+  iconEl.style.cssText = `background:${selectedCoin.color}22;color:${selectedCoin.color};border:1px solid ${selectedCoin.color}44;`;
   document.getElementById("selected-coin-symbol").textContent =
     selectedCoin.symbol;
   document.getElementById("selected-coin-fullname").textContent =
@@ -117,14 +115,14 @@ function selectCoin(symbol) {
 function backToCoin() {
   document.getElementById("step-network").style.display = "none";
   document.getElementById("step-coin").style.display = "block";
-  selectedCoin = null;
 }
 
 // ── STEP 3: ADDRESS + QR ──
 function selectNetwork(networkKey) {
   if (!selectedCoin) return;
-  const networks = DEPOSIT_NETWORKS[selectedCoin.symbol] || [];
-  selectedNetwork = networks.find((n) => n.key === networkKey);
+  selectedNetwork = (DEPOSIT_NETWORKS[selectedCoin.symbol] || []).find(
+    (n) => n.key === networkKey
+  );
   if (!selectedNetwork) return;
 
   const address =
@@ -134,12 +132,9 @@ function selectNetwork(networkKey) {
   document.getElementById("step-network").style.display = "none";
   document.getElementById("step-address").style.display = "block";
 
-  // Coin icon
   const addrIcon = document.getElementById("addr-coin-icon");
   addrIcon.textContent = selectedCoin.icon;
-  addrIcon.style.background = selectedCoin.color + "22";
-  addrIcon.style.color = selectedCoin.color;
-  addrIcon.style.border = "1px solid " + selectedCoin.color + "44";
+  addrIcon.style.cssText = `background:${selectedCoin.color}22;color:${selectedCoin.color};border:1px solid ${selectedCoin.color}44;`;
 
   document.getElementById("addr-coin-name").textContent =
     selectedCoin.symbol + " — " + selectedCoin.name;
@@ -162,46 +157,29 @@ function selectNetwork(networkKey) {
 }
 
 function generateQR(address) {
-  const canvas = document.getElementById("qr-canvas");
-  // Clear previous QR
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Clear old QR
+  const container = document.getElementById("qr-container");
+  container.innerHTML = "";
 
-  if (typeof QRCode === "undefined") {
-    // Fallback if qrcode.js didn't load
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, 190, 190);
-    ctx.fillStyle = "#000";
-    ctx.font = "10px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("QR unavailable", 95, 95);
+  if (address === "Address not configured yet") {
+    container.innerHTML =
+      '<div style="color:#888;font-size:12px;text-align:center;padding:20px;">No address configured</div>';
     return;
   }
 
-  // Use QRCode library to draw directly onto canvas
-  const qr = qrcode(0, "M");
-  qr.addData(address);
-  qr.make();
-
-  const moduleCount = qr.getModuleCount();
-  const cellSize = Math.floor(190 / moduleCount);
-  const margin = Math.floor((190 - cellSize * moduleCount) / 2);
-
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, 190, 190);
-  ctx.fillStyle = "#000000";
-
-  for (let row = 0; row < moduleCount; row++) {
-    for (let col = 0; col < moduleCount; col++) {
-      if (qr.isDark(row, col)) {
-        ctx.fillRect(
-          margin + col * cellSize,
-          margin + row * cellSize,
-          cellSize,
-          cellSize
-        );
-      }
-    }
+  // QRCode library (qrcodejs) — renders into a div, creates its own canvas/img
+  try {
+    new QRCode(container, {
+      text: address,
+      width: 190,
+      height: 190,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+  } catch (e) {
+    container.innerHTML =
+      '<div style="color:#888;font-size:12px;text-align:center;padding:20px;">QR unavailable</div>';
   }
 }
 
@@ -220,11 +198,8 @@ function copyDepositAddress() {
   }
   navigator.clipboard
     .writeText(address)
-    .then(() => {
-      showToast("Address copied!", "success");
-    })
+    .then(() => showToast("Address copied!", "success"))
     .catch(() => {
-      // Fallback for older browsers
       const el = document.createElement("textarea");
       el.value = address;
       document.body.appendChild(el);

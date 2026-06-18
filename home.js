@@ -6,23 +6,27 @@ auth.onAuthStateChanged((user) => {
 });
 
 function loadKycStatus(uid) {
+  // onSnapshot = real-time, so badge updates immediately if KYC approved
   db.collection("users")
     .doc(uid)
-    .get()
-    .then((doc) => {
+    .onSnapshot((doc) => {
       if (!doc.exists) return;
       const data = doc.data();
-      const badge = document.getElementById("kyc-badge");
-      if (data.kycStatus === "approved") {
-        badge.textContent = "Verified";
-        badge.className = "kyc-badge approved";
-      } else if (data.kycStatus === "pending") {
-        badge.textContent = "KYC Pending";
-        badge.className = "kyc-badge pending";
-      } else {
-        badge.textContent = "No KYC";
-        badge.className = "kyc-badge none";
-      }
+      // Update both mobile and PC badges
+      ["kyc-badge", "kyc-badge-pc"].forEach((id) => {
+        const badge = document.getElementById(id);
+        if (!badge) return;
+        if (data.kycStatus === "approved") {
+          badge.textContent = "Verified";
+          badge.className = "kyc-badge approved";
+        } else if (data.kycStatus === "pending") {
+          badge.textContent = "KYC Pending";
+          badge.className = "kyc-badge pending";
+        } else {
+          badge.textContent = "No KYC";
+          badge.className = "kyc-badge none";
+        }
+      });
     });
 }
 
@@ -86,13 +90,11 @@ function fetchPrices() {
       currentPrices.SOL = data.solana.usd;
       currentPrices.XRP = data.ripple.usd;
 
-      // Update CRYPTO_PRICES used by listings
       if (typeof CRYPTO_PRICES !== "undefined") {
         CRYPTO_PRICES.BTC = data.bitcoin.usd;
         CRYPTO_PRICES.USDT = data.tether.usd;
       }
 
-      // Refresh balance display with new prices
       const btc = parseFloat(
         document.getElementById("btc-balance").textContent
       );
@@ -108,6 +110,7 @@ function updatePriceDisplay(coin, data) {
   if (!data) return;
   const priceEl = document.getElementById(`price-${coin}`);
   const changeEl = document.getElementById(`change-${coin}`);
+  if (!priceEl || !changeEl) return;
 
   const price = data.usd;
   const change = data.usd_24h_change;
@@ -123,44 +126,43 @@ function updatePriceDisplay(coin, data) {
   changeEl.className = `ticker-change ${change >= 0 ? "up" : "down"}`;
 }
 
-// Fetch immediately and every 60 seconds
 fetchPrices();
 setInterval(fetchPrices, 60000);
 
-// ---- LOAD RECENT ACTIVITY ----
+// ---- RECENT ACTIVITY ----
 function loadRecentActivity() {
   const user = auth.currentUser;
   if (!user) return;
 
-  db.collection("orders")
-    .where("userId", "==", user.uid)
+  db.collection("p2pOrders")
+    .where("buyerUid", "==", user.uid)
     .orderBy("createdAt", "desc")
     .limit(5)
     .get()
     .then((snapshot) => {
       const container = document.getElementById("recent-activity");
       if (snapshot.empty) return;
-
       container.innerHTML = "";
       snapshot.forEach((doc) => {
         const o = doc.data();
         const div = document.createElement("div");
         div.className = "ticker-item";
         div.innerHTML = `
-            <div class="ticker-coin">
-              <span class="order-type ${o.type}">${o.type.toUpperCase()}</span>
-              <div>
-                <div class="coin-name">${o.crypto}</div>
-                <div class="coin-fullname">${o.network || ""}</div>
-              </div>
+          <div class="ticker-coin">
+            <span class="order-type ${o.type}">${o.type.toUpperCase()}</span>
+            <div>
+              <div class="coin-name">${o.crypto}</div>
+              <div class="coin-fullname">${o.currency || ""}</div>
             </div>
-            <div style="text-align:right">
-              <div class="ticker-price">${o.amount}</div>
-              <span class="badge badge-${getStatusColor(o.status)}">${
+          </div>
+          <div style="text-align:right">
+            <div class="ticker-price">${
+              o.cryptoAmount || o.amount || "--"
+            }</div>
+            <span class="badge badge-${getStatusColor(o.status)}">${
           o.status
         }</span>
-            </div>
-          `;
+          </div>`;
         container.appendChild(div);
       });
     })
@@ -168,18 +170,21 @@ function loadRecentActivity() {
 }
 
 function getStatusColor(status) {
-  if (status === "completed" || status === "confirmed") return "green";
-  if (status === "cancelled") return "red";
+  if (status === "completed") return "green";
+  if (status === "cancelled" || status === "disputed") return "red";
   return "yellow";
 }
 
 setTimeout(loadRecentActivity, 1000);
+
 function refreshHomeData() {
   const icon = document.getElementById("refresh-icon");
-  icon.style.transition = "transform 0.5s";
-  icon.style.transform = "rotate(360deg)";
+  if (icon) {
+    icon.style.transition = "transform 0.5s";
+    icon.style.transform = "rotate(360deg)";
+    setTimeout(() => (icon.style.transform = "rotate(0deg)"), 500);
+  }
   fetchPrices();
   loadRecentActivity();
   showToast("Refreshed!", "success");
-  setTimeout(() => (icon.style.transform = "rotate(0deg)"), 500);
 }

@@ -73,6 +73,25 @@ body {
   }
 }
 
+/* PC layout — remove mobile constraints */
+@media (min-width: 768px) {
+  body.has-pc-nav {
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow-x: hidden;
+  }
+  body.has-pc-nav .page {
+    max-width: 100% !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  body.has-pc-nav .bottom-nav {
+    max-width: 100%;
+  }
+}
+
 #bg-canvas {
   position: fixed;
   top: 0;

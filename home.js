@@ -16,6 +16,7 @@ function loadKycStatus(uid) {
       ["kyc-badge", "kyc-badge-pc"].forEach((id) => {
         const badge = document.getElementById(id);
         if (!badge) return;
+        badge.style.display = "inline-flex";
         if (data.kycStatus === "approved") {
           badge.textContent = "Verified";
           badge.className = "kyc-badge approved";

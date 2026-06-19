@@ -13,6 +13,7 @@ auth.onAuthStateChanged((user) => {
       if (!doc.exists) return;
       const data = doc.data();
       const badge = document.getElementById("kyc-badge");
+      badge.style.display = "inline-flex";
       if (data.kycStatus === "approved") {
         badge.textContent = "Verified";
         badge.className = "kyc-badge approved";
@@ -134,7 +135,7 @@ function renderListings() {
           initials: getInitials(d.merchantName),
           color: getAvatarColor(d.merchantName),
           verified: true,
-          online: true,
+          online: d.online === false ? false : true,
           trades: "Merchant",
           completion: "100",
           price: d.rate,

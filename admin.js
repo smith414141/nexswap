@@ -151,12 +151,7 @@ function loadListingsAdmin() {
             l.available
           } ${l.crypto}</strong></div>
           <div style="display:flex; gap:8px; margin-top:10px;">
-            <button class="btn-secondary" style="margin:0; flex:1; padding:8px;" onclick="editListingRate('${id}',${
-          l.rate
-        })">Edit Rate</button>
-            <button class="btn-secondary" style="margin:0; flex:1; padding:8px;" onclick="toggleListingAdmin('${id}','${
-          l.status
-        }')">${l.status === "active" ? "Pause" : "Activate"}</button>
+            <button class="btn-primary" style="margin:0; flex:1; padding:8px;" onclick="openMerchantEditModal('${id}')">🔒 Admin Edit</button>
             <button class="btn-secondary" style="margin:0; flex:1; padding:8px; border-color:var(--red); color:var(--red);" onclick="deleteListingAdmin('${id}')">Delete</button>
           </div>
         </div>
@@ -170,25 +165,87 @@ function loadListingsAdmin() {
     );
 }
 
-function editListingRate(id, currentRate) {
-  const newRate = prompt("Enter new rate:", currentRate);
-  if (newRate === null) return;
+// ---- FULL MERCHANT EDIT (admin impersonation: edit listing + wallet) ----
+function openMerchantEditModal(listingId) {
+  const content = document.getElementById("merchant-edit-modal");
+  document.getElementById("me-listing-id").value = listingId;
+
   db.collection("listings")
-    .doc(id)
-    .update({ rate: parseFloat(newRate) })
-    .then(() => {
-      showToast("Rate updated", "success");
-      loadListingsAdmin();
+    .doc(listingId)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        showToast("Listing not found", "error");
+        return;
+      }
+      const l = doc.data();
+      document.getElementById("me-merchant-uid").value = l.merchantUid;
+      document.getElementById("me-merchant-name").value = l.merchantName || "";
+      document.getElementById("me-online-status").value =
+        l.online === false ? "false" : "true";
+      document.getElementById("me-rate").value = l.rate;
+      document.getElementById("me-min").value = l.minLimit;
+      document.getElementById("me-max").value = l.maxLimit;
+      document.getElementById("me-available").value = l.available;
+      document.getElementById("me-listing-status").value = l.status;
+
+      return db.collection("wallets").doc(l.merchantUid).get();
+    })
+    .then((walletDoc) => {
+      const w =
+        walletDoc && walletDoc.exists ? walletDoc.data() : { BTC: 0, USDT: 0 };
+      document.getElementById("me-wallet-btc").value = w.BTC || 0;
+      document.getElementById("me-wallet-usdt").value = w.USDT || 0;
+      openModal("merchant-edit-modal");
     })
     .catch((err) => showToast(err.message, "error"));
 }
 
-function toggleListingAdmin(id, status) {
-  db.collection("listings")
-    .doc(id)
-    .update({ status: status === "active" ? "paused" : "active" })
+function saveMerchantEdit() {
+  const listingId = document.getElementById("me-listing-id").value;
+  const merchantUid = document.getElementById("me-merchant-uid").value;
+
+  const merchantName = document.getElementById("me-merchant-name").value.trim();
+  const online = document.getElementById("me-online-status").value === "true";
+  const rate = parseFloat(document.getElementById("me-rate").value);
+  const minLimit = parseFloat(document.getElementById("me-min").value);
+  const maxLimit = parseFloat(document.getElementById("me-max").value);
+  const available = parseFloat(document.getElementById("me-available").value);
+  const status = document.getElementById("me-listing-status").value;
+
+  const btc = parseFloat(document.getElementById("me-wallet-btc").value) || 0;
+  const usdt = parseFloat(document.getElementById("me-wallet-usdt").value) || 0;
+
+  if (!merchantName || !rate || !minLimit || !maxLimit || !available) {
+    showToast("Please fill in all listing fields", "error");
+    return;
+  }
+  if (minLimit >= maxLimit) {
+    showToast("Min limit must be less than max limit", "error");
+    return;
+  }
+
+  Promise.all([
+    db.collection("listings").doc(listingId).update({
+      merchantName,
+      online,
+      rate,
+      minLimit,
+      maxLimit,
+      available,
+      status,
+    }),
+    db.collection("users").doc(merchantUid).update({
+      merchantDisplayName: merchantName,
+    }),
+    db
+      .collection("wallets")
+      .doc(merchantUid)
+      .set({ BTC: btc, USDT: usdt }, { merge: true }),
+  ])
     .then(() => {
-      showToast("Updated", "success");
+      showToast("Merchant data updated!", "success");
+      closeModal("merchant-edit-modal");
       loadListingsAdmin();
     })
     .catch((err) => showToast(err.message, "error"));

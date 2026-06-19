@@ -108,46 +108,53 @@ function filterByAmount() {
 
 // ---- RENDER LISTINGS ----
 function renderListings() {
-  const fakeListings = generateListings(
+  const fakeListingsRaw = generateListings(
     currentCurrency,
     currentCrypto,
     currentType
   );
 
-  db.collection("listings")
-    .where("status", "==", "active")
-    .get()
-    .then((snapshot) => {
+  Promise.all([
+    applyListingOverrides(fakeListingsRaw),
+    db
+      .collection("listings")
+      .where("status", "==", "active")
+      .get()
+      .catch(() => null),
+  ])
+    .then(([fakeListings, snapshot]) => {
       const realListings = [];
-      snapshot.forEach((doc) => {
-        const d = doc.data();
-        if (
-          d.currency !== currentCurrency ||
-          d.crypto !== currentCrypto ||
-          d.type !== currentType
-        )
-          return;
-        realListings.push({
-          id: doc.id,
-          listingId: doc.id,
-          merchantUid: d.merchantUid,
-          name: d.merchantName,
-          initials: getInitials(d.merchantName),
-          color: getAvatarColor(d.merchantName),
-          verified: true,
-          online: d.online === false ? false : true,
-          trades: "Merchant",
-          completion: "100",
-          price: d.rate,
-          currency: d.currency,
-          crypto: d.crypto,
-          type: d.type,
-          minLimit: d.minLimit,
-          maxLimit: d.maxLimit,
-          available: d.available,
-          methods: d.methods,
+      if (snapshot) {
+        snapshot.forEach((doc) => {
+          const d = doc.data();
+          if (
+            d.currency !== currentCurrency ||
+            d.crypto !== currentCrypto ||
+            d.type !== currentType
+          )
+            return;
+          realListings.push({
+            id: doc.id,
+            listingId: doc.id,
+            merchantUid: d.merchantUid,
+            name: d.merchantName,
+            initials: getInitials(d.merchantName),
+            color: getAvatarColor(d.merchantName),
+            verified: true,
+            online: d.online === false ? false : true,
+            trades: "Merchant",
+            completion: "100",
+            price: d.rate,
+            currency: d.currency,
+            crypto: d.crypto,
+            type: d.type,
+            minLimit: d.minLimit,
+            maxLimit: d.maxLimit,
+            available: d.available,
+            methods: d.methods,
+          });
         });
-      });
+      }
 
       currentListings = [...realListings, ...fakeListings];
       currentListings.sort((a, b) =>
@@ -156,7 +163,7 @@ function renderListings() {
       renderListingsDisplay();
     })
     .catch(() => {
-      currentListings = fakeListings;
+      currentListings = fakeListingsRaw;
       renderListingsDisplay();
     });
 }

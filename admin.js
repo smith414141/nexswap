@@ -108,10 +108,128 @@ function switchAdminTab(tab, btn) {
   if (tab === "p2p") loadP2pOrders("active");
   if (tab === "users") loadUsersList();
   if (tab === "admins") loadAdminsList();
-  if (tab === "listings") loadListingsAdmin();
+  if (tab === "listings") {
+    populateFakeListingCurrencyDropdown();
+    loadFakeListingsBrowser();
+    loadListingsAdmin();
+  }
   if (tab === "support") loadSupportChats();
   if (tab === "announcements") loadAnnouncementsAdmin();
 }
+// ---- DEMO/FAKE LISTING BROWSER (edit randomly-generated listings) ----
+function populateFakeListingCurrencyDropdown() {
+  const select = document.getElementById("fl-browse-currency");
+  if (select.options.length > 0) return; // already populated
+  select.innerHTML = CURRENCIES.map(
+    (c) => `<option value="${c.code}">${c.flag} ${c.code}</option>`
+  ).join("");
+}
+
+function loadFakeListingsBrowser() {
+  const container = document.getElementById("fake-listings-browser-list");
+  container.innerHTML = '<div class="empty-state">Loading...</div>';
+
+  const currency = document.getElementById("fl-browse-currency").value;
+  const crypto = document.getElementById("fl-browse-crypto").value;
+  const type = document.getElementById("fl-browse-type").value;
+
+  const fakeListings = generateListings(currency, crypto, type);
+
+  applyListingOverrides(fakeListings).then((listings) => {
+    container.innerHTML = listings
+      .map(
+        (l) => `
+      <div class="card" style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="font-weight:700; font-size:13px;">${l.name}</span>
+          <span class="badge badge-${l.online ? "green" : "grey"}">${
+          l.online ? "Online" : "Offline"
+        }</span>
+        </div>
+        <div class="payment-info-row"><span>Price</span><strong>${l.price} ${
+          l.currency
+        }</strong></div>
+        <div class="payment-info-row"><span>Limits</span><strong>${
+          l.minLimit
+        } - ${l.maxLimit} ${l.currency}</strong></div>
+        <div class="payment-info-row"><span>Available</span><strong>${
+          l.available
+        } ${l.crypto}</strong></div>
+        <button class="btn-primary" style="margin-top:8px;" onclick='openFakeListingEditModal(${JSON.stringify(
+          l
+        )})'>Edit</button>
+      </div>
+    `
+      )
+      .join("");
+  });
+}
+
+function openFakeListingEditModal(listing) {
+  document.getElementById("fl-id").value = listing.id;
+  document.getElementById("fl-name").value = listing.name;
+  document.getElementById("fl-online").value = listing.online
+    ? "true"
+    : "false";
+  document.getElementById("fl-price").value = listing.price;
+  document.getElementById("fl-min").value = listing.minLimit;
+  document.getElementById("fl-max").value = listing.maxLimit;
+  document.getElementById("fl-available").value = listing.available;
+  openModal("fake-listing-edit-modal");
+}
+
+function saveFakeListingOverride() {
+  const id = document.getElementById("fl-id").value;
+  const name = document.getElementById("fl-name").value.trim();
+  const online = document.getElementById("fl-online").value === "true";
+  const price = parseFloat(document.getElementById("fl-price").value);
+  const minLimit = parseFloat(document.getElementById("fl-min").value);
+  const maxLimit = parseFloat(document.getElementById("fl-max").value);
+  const available = parseFloat(document.getElementById("fl-available").value);
+
+  if (!name || !price || !minLimit || !maxLimit || !available) {
+    showToast("Fill in all fields", "error");
+    return;
+  }
+  if (minLimit >= maxLimit) {
+    showToast("Min limit must be less than max limit", "error");
+    return;
+  }
+
+  db.collection("listingOverrides")
+    .doc(id)
+    .set({
+      name,
+      online,
+      price,
+      minLimit,
+      maxLimit,
+      available,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      showToast("Saved! Visible to all users now.", "success");
+      closeModal("fake-listing-edit-modal");
+      loadFakeListingsBrowser();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+function resetFakeListingOverride() {
+  const id = document.getElementById("fl-id").value;
+  if (!confirm("Reset this listing back to its default generated values?"))
+    return;
+  db.collection("listingOverrides")
+    .doc(id)
+    .delete()
+    .then(() => {
+      showToast("Reset to default", "success");
+      closeModal("fake-listing-edit-modal");
+      loadFakeListingsBrowser();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
 function loadListingsAdmin() {
   const container = document.getElementById("admin-listings-list");
   container.innerHTML = '<div class="empty-state">Loading...</div>';

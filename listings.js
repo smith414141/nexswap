@@ -152,3 +152,32 @@ function generateListings(currencyCode, crypto, type) {
 
   return listings;
 }
+
+// ---- ADMIN OVERRIDES (lets admin edit fake demo listings, visible to all users) ----
+function applyListingOverrides(listings) {
+  return db
+    .collection("listingOverrides")
+    .get()
+    .then((snapshot) => {
+      const overrides = {};
+      snapshot.forEach((doc) => {
+        overrides[doc.id] = doc.data();
+      });
+      return listings.map((l) => {
+        const o = overrides[l.id];
+        if (!o) return l;
+        return {
+          ...l,
+          name: o.name !== undefined ? o.name : l.name,
+          initials: o.name !== undefined ? getInitials(o.name) : l.initials,
+          color: o.name !== undefined ? getAvatarColor(o.name) : l.color,
+          price: o.price !== undefined ? o.price : l.price,
+          online: o.online !== undefined ? o.online : l.online,
+          minLimit: o.minLimit !== undefined ? o.minLimit : l.minLimit,
+          maxLimit: o.maxLimit !== undefined ? o.maxLimit : l.maxLimit,
+          available: o.available !== undefined ? o.available : l.available,
+        };
+      });
+    })
+    .catch(() => listings); // if Firestore fails, just show originals
+}

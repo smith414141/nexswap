@@ -100,7 +100,12 @@ function generateListings(currencyCode, crypto, type) {
     const verified = seededRandom(seed + 3) > 0.4;
 
     // Online status
-    const online = seededRandom(seed + 4) > 0.35;
+    // Hardcoded offline demo merchants (for school project demo)
+    const id = `${currencyCode}-${crypto}-${type}-${i}`;
+    const FORCED_OFFLINE_IDS = ["ETB-USDT-sell-0", "ETB-USDT-sell-1"];
+    const online = FORCED_OFFLINE_IDS.includes(id)
+      ? false
+      : seededRandom(seed + 4) > 0.35;
 
     // Limits
     const minLimit = Math.round((50 * currency.rate) / 10) * 10;
@@ -121,7 +126,7 @@ function generateListings(currencyCode, crypto, type) {
     if (selectedMethods.length === 0) selectedMethods.push(methods[0]);
 
     listings.push({
-      id: `${currencyCode}-${crypto}-${type}-${i}`,
+      id,
       name,
       initials: getInitials(name),
       color: getAvatarColor(name),

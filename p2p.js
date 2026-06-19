@@ -186,7 +186,9 @@ function renderListingsDisplay() {
   container.innerHTML = listings
     .map(
       (l) => `
-    <div class="listing-card" onclick="openOrder('${l.id}')">
+    <div class="listing-card" style="${
+      l.online ? "" : "opacity:0.5;"
+    }" onclick="openOrder('${l.id}')">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
         <div style="display:flex; align-items:center; gap:10px;">
           <div style="width:38px; height:38px; border-radius:50%; background:${
@@ -266,6 +268,15 @@ function formatNumber(num) {
 
 // ---- OPEN ORDER ----
 function openOrder(listingId) {
+  const listing = currentListings.find((l) => l.id === listingId);
+  if (listing && !listing.online) {
+    showToast(
+      "This merchant is currently offline. Please try another merchant.",
+      "error"
+    );
+    return;
+  }
+
   const user = auth.currentUser;
   if (!user) return;
 
@@ -289,7 +300,6 @@ function openOrder(listingId) {
       }
 
       sessionStorage.removeItem("activeOrderId");
-      const listing = currentListings.find((l) => l.id === listingId);
       sessionStorage.setItem("currentOrder", JSON.stringify(listing));
       window.location.href = `order.html?id=${listingId}`;
     });

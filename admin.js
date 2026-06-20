@@ -178,7 +178,21 @@ function openFakeListingEditModal(listing) {
   openModal("fake-listing-edit-modal");
 }
 
+function recalcFakeAvailable() {
+  const price = parseFloat(document.getElementById("fl-price").value);
+  const max = parseFloat(document.getElementById("fl-max").value);
+  const availableField = document.getElementById("fl-available");
+
+  if (!price || price <= 0 || !max || max <= 0) {
+    availableField.value = "";
+    return;
+  }
+  // Available crypto = Max limit (in local currency) ÷ Price (local currency per 1 crypto)
+  availableField.value = (max / price).toFixed(4);
+}
+
 function saveFakeListingOverride() {
+  recalcFakeAvailable();
   const id = document.getElementById("fl-id").value;
   const name = document.getElementById("fl-name").value.trim();
   const online = document.getElementById("fl-online").value === "true";

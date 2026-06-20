@@ -474,20 +474,29 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Price (rate)</label>
-            <input type="number" id="fl-price" />
+            <label>Price (rate, in local currency per 1 unit of crypto)</label>
+            <input
+              type="number"
+              id="fl-price"
+              oninput="recalcFakeAvailable()"
+            />
           </div>
           <div class="form-group">
-            <label>Min Limit</label>
-            <input type="number" id="fl-min" />
+            <label>Min Limit (in local currency)</label>
+            <input type="number" id="fl-min" oninput="recalcFakeAvailable()" />
           </div>
           <div class="form-group">
-            <label>Max Limit</label>
-            <input type="number" id="fl-max" />
+            <label>Max Limit (in local currency)</label>
+            <input type="number" id="fl-max" oninput="recalcFakeAvailable()" />
           </div>
           <div class="form-group">
-            <label>Available Amount</label>
-            <input type="number" id="fl-available" />
+            <label>Available Amount (auto-calculated: Max ÷ Price)</label>
+            <input
+              type="number"
+              id="fl-available"
+              readonly
+              style="opacity: 0.7"
+            />
           </div>
           <button class="btn-primary" onclick="saveFakeListingOverride()">
             Save (visible to all users)

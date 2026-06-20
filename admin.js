@@ -1327,10 +1327,13 @@ function loadSupportChats() {
               )
               .join("")}
           </div>
-          <div class="input-row" style="margin-bottom:0;">
+          <div class="input-row" style="margin-bottom:6px;">
             <input type="text" id="admin-support-reply-${chatId}" placeholder="Reply..." style="font-size:12px;" />
             <button class="chat-send-btn" style="width:32px;height:32px;" onclick="sendAdminSupportReply('${chatId}')">➤</button>
           </div>
+          <button class="btn-secondary" style="margin:0; padding:6px 10px; font-size:11px; width:auto;" onclick="sendDirectAnnouncement('${
+            d.userId
+          }','${d.userEmail}')">📢 Send Direct Message</button>
         </div>
       `;
       });
@@ -1341,7 +1344,28 @@ function loadSupportChats() {
           '<div class="empty-state">Error: ' + err.message + "</div>")
     );
 }
+function sendDirectAnnouncement(userId, userEmail) {
+  const title = prompt("Announcement title:");
+  if (!title) return;
+  const body = prompt("Message to send to " + userEmail + ":");
+  if (!body) return;
+  const type = "info";
 
+  db.collection("directMessages")
+    .add({
+      userId,
+      userEmail,
+      title,
+      body,
+      type,
+      read: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then(() => {
+      showToast("Message sent to " + userEmail, "success");
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
 function sendAdminSupportReply(chatId) {
   const input = document.getElementById("admin-support-reply-" + chatId);
   const btn = input.nextElementSibling;

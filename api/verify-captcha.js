@@ -23,8 +23,13 @@ module.exports = async function handler(req, res) {
     );
     const data = await response.json();
 
-    if (data.success && data.score >= 0.5) {
-      return res.status(200).json({ success: true, score: data.score });
+    // v2 checkbox responses have no "score" field (that's v3 only).
+    // If score is present, enforce the v3 threshold; otherwise just trust
+    // Google's pass/fail "success" flag, which is what v2 returns.
+    const passesScore = data.score === undefined || data.score >= 0.5;
+
+    if (data.success && passesScore) {
+      return res.status(200).json({ success: true, score: data.score ?? null });
     } else {
       return res.status(200).json({ success: false, score: data.score || 0 });
     }

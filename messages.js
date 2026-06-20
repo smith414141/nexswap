@@ -23,11 +23,13 @@ function switchMsgTab(tab, btn) {
 function loadSupportChat(user) {
   // Clear badge immediately
   localStorage.setItem("chatLastRead_" + user.uid, Date.now());
+  localStorage.setItem("annLastRead_" + user.uid, Date.now());
   markDirectMessagesRead(user.uid);
   document.querySelectorAll(".msg-badge").forEach((b) => b.remove());
   document.querySelectorAll(".float-badge").forEach((b) => b.remove());
   // Mark chat as read
   localStorage.setItem("chatLastRead_" + user.uid, Date.now());
+  localStorage.setItem("annLastRead_" + user.uid, Date.now());
   markDirectMessagesRead(user.uid);
   const chatId = "support_" + user.uid;
   if (msgSupportUnsub) msgSupportUnsub();

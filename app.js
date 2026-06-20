@@ -360,7 +360,9 @@ function initUnreadBadge() {
   if (
     page.includes("index") ||
     page.includes("verify") ||
-    page.includes("admin")
+    page.includes("admin") ||
+    page === "/" ||
+    page === ""
   )
     return;
 
@@ -368,41 +370,16 @@ function initUnreadBadge() {
   if (!user) return;
 
   const chatId = "support_" + user.uid;
+  const lastReadKey = "chatLastRead_" + user.uid;
+  const annReadKey = "annLastRead_" + user.uid;
 
-  // Listen to unread direct messages
-  db.collection("directMessages")
-    .where("userId", "==", user.uid)
-    .where("read", "==", false)
-    .onSnapshot((dmSnapshot) => {
-      // Also check unread announcements
-      db.collection("announcementReads")
-        .doc(user.uid)
-        .get()
-        .then((readDoc) => {
-          const readIds = readDoc.exists ? readDoc.data().readIds || [] : [];
-          db.collection("announcements")
-            .get()
-            .then((annSnapshot) => {
-              const unreadAnns = annSnapshot.docs.filter(
-                (d) => !readIds.includes(d.id)
-              ).length;
-              const unreadDMs = dmSnapshot.size;
-              const total = unreadAnns + unreadDMs;
-              updateMessageBadge(total);
-            });
-        });
-    });
-
-  // Listen to unread support chat replies
+  // Real-time listener — recalculates whenever anything changes
   db.collection("chats")
     .doc(chatId)
     .onSnapshot((doc) => {
-      if (!doc.exists) return;
-      const messages = doc.data().messages || [];
-      const lastRead = parseInt(
-        localStorage.getItem("chatLastRead_" + user.uid) || "0"
-      );
-      const unreadReplies = messages.filter(
+      const messages = doc.exists ? doc.data().messages || [] : [];
+      const lastRead = parseInt(localStorage.getItem(lastReadKey) || "0");
+      const unreadChat = messages.filter(
         (m) => m.sender !== user.uid && m.time > lastRead
       ).length;
 
@@ -411,27 +388,21 @@ function initUnreadBadge() {
         .where("read", "==", false)
         .get()
         .then((dmSnap) => {
-          db.collection("announcementReads")
-            .doc(user.uid)
+          const annLastRead = parseInt(localStorage.getItem(annReadKey) || "0");
+          db.collection("announcements")
+            .orderBy("createdAt", "desc")
             .get()
-            .then((readDoc) => {
-              const readIds = readDoc.exists
-                ? readDoc.data().readIds || []
-                : [];
-              db.collection("announcements")
-                .get()
-                .then((annSnap) => {
-                  const unreadAnns = annSnap.docs.filter(
-                    (d) => !readIds.includes(d.id)
-                  ).length;
-                  const total = unreadReplies + dmSnap.size + unreadAnns;
-                  updateMessageBadge(total);
-                });
+            .then((annSnap) => {
+              const unreadAnns = annSnap.docs.filter((d) => {
+                const ts = d.data().createdAt?.toMillis?.() || 0;
+                return ts > annLastRead;
+              }).length;
+              const total = unreadChat + dmSnap.size + unreadAnns;
+              updateMessageBadge(total);
             });
         });
     });
 }
-
 function updateMessageBadge(count) {
   // Remove existing badge
   document.querySelectorAll(".msg-badge").forEach((b) => b.remove());
@@ -471,9 +442,19 @@ function initFloatingChat() {
     page.includes("settings") ||
     page.includes("admin") ||
     page.includes("index") ||
-    page.includes("verify")
+    page.includes("verify") ||
+    page === "/" ||
+    page === ""
   )
     return;
+
+  // Only show if user is logged in
+  if (!auth.currentUser) {
+    auth.onAuthStateChanged((u) => {
+      if (u && u.emailVerified) initFloatingChat();
+    });
+    return;
+  }
 
   const btn = document.createElement("button");
   btn.className = "float-chat-btn";

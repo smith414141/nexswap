@@ -42,7 +42,61 @@ function getStatusBadgeClassAdmin(status) {
   if (status === "cancelled" || status === "disputed") return "badge-red";
   return "badge-yellow";
 }
+// ---- ADMIN NOTIFICATIONS ----
+function startAdminNotifPolling() {
+  checkAdminNotifs();
+  setInterval(checkAdminNotifs, 60000);
+}
 
+function checkAdminNotifs() {
+  Promise.all([
+    db.collection("kyc").where("status", "==", "pending").get(),
+    db
+      .collection("merchantApplications")
+      .where("status", "==", "pending")
+      .get(),
+    db.collection("withdrawals").where("status", "==", "pending").get(),
+    db
+      .collection("p2pOrders")
+      .where("status", "in", ["awaiting_payment", "awaiting_release"])
+      .get(),
+    db.collection("p2pOrders").where("status", "==", "disputed").get(),
+    db.collection("chats").orderBy("updatedAt", "desc").limit(1).get(),
+  ]).then(([kyc, merch, wd, p2p, disputed, chats]) => {
+    const total = kyc.size + merch.size + wd.size + p2p.size + disputed.size;
+    const badge = document.getElementById("admin-notif-badge");
+    if (!badge) return;
+    if (total > 0) {
+      badge.textContent = total > 99 ? "99+" : total;
+      badge.style.display = "flex";
+    } else {
+      badge.style.display = "none";
+    }
+
+    // Check for new chat messages
+    if (!chats.empty) {
+      const lastChat = chats.docs[0].data();
+      const lastMsg = (lastChat.messages || []).slice(-1)[0];
+      const lastSeen = parseInt(localStorage.getItem("adminLastSeen") || "0");
+      if (lastMsg && lastMsg.time > lastSeen && lastMsg.sender !== "admin") {
+        // New user message — show browser notification if permitted
+        if (Notification.permission === "granted") {
+          new Notification("New support message — Kripex Admin", {
+            body: lastMsg.text || "Image received",
+            icon: "/favicon.ico",
+          });
+        }
+        localStorage.setItem("adminLastSeen", Date.now());
+      }
+    }
+  });
+}
+
+function requestAdminNotifPermission() {
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+}
 // ---- AUTH ----
 function adminLogin() {
   const email = document.getElementById("admin-email").value.trim();
@@ -77,6 +131,8 @@ function enterAdminDashboard() {
   document.getElementById("admin-login").style.display = "none";
   document.getElementById("admin-dashboard").style.display = "block";
   loadDashboardStats();
+  startAdminNotifPolling();
+  requestAdminNotifPermission();
 }
 
 auth.onAuthStateChanged((user) => {

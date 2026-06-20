@@ -69,6 +69,29 @@ function renderListingInfo() {
     listing.minLimit
   )} - ${formatNumber(listing.maxLimit)} ${listing.currency}`;
 
+  // SELL: input box takes crypto amount, shows ETB result.
+  // BUY: input box takes ETB amount, shows crypto result (unchanged).
+  if (listing.type === "sell") {
+    document.getElementById("amount-entry-title").textContent =
+      "Enter Amount to Sell";
+    document.getElementById("fiat-amount").placeholder = "0";
+    document.getElementById("fiat-currency-label").textContent = listing.crypto;
+    document.getElementById("crypto-label").textContent = listing.currency;
+    document.getElementById(
+      "limit-display"
+    ).textContent = `Limit: ${formatNumber(
+      (listing.minLimit / listing.price).toFixed(
+        listing.crypto === "BTC" ? 8 : 4
+      )
+    )} - ${formatNumber(
+      (listing.maxLimit / listing.price).toFixed(
+        listing.crypto === "BTC" ? 8 : 4
+      )
+    )} ${listing.crypto}`;
+  } else {
+    document.getElementById("amount-entry-title").textContent = "Enter Amount";
+  }
+
   document.getElementById("confirm-order-btn").textContent =
     listing.type === "buy" ? "Buy " + listing.crypto : "Sell " + listing.crypto;
 }
@@ -78,32 +101,67 @@ function formatNumber(n) {
 }
 
 function calcCrypto() {
-  const fiat = parseFloat(document.getElementById("fiat-amount").value) || 0;
-  const crypto = fiat / listing.price;
+  const inputVal =
+    parseFloat(document.getElementById("fiat-amount").value) || 0;
   const decimals = listing.crypto === "BTC" ? 8 : 4;
-  document.getElementById("crypto-amount-display").textContent =
-    crypto.toFixed(decimals);
+
+  if (listing.type === "sell") {
+    // Input box holds CRYPTO amount here; show ETB (fiat) result instead.
+    const fiatResult = inputVal * listing.price;
+    document.getElementById("crypto-amount-display").textContent =
+      fiatResult.toFixed(2);
+  } else {
+    // Input box holds FIAT amount (unchanged); show crypto result.
+    const cryptoResult = inputVal / listing.price;
+    document.getElementById("crypto-amount-display").textContent =
+      cryptoResult.toFixed(decimals);
+  }
 }
 
 function confirmOrder() {
   const user = auth.currentUser;
-  const fiatAmount = parseFloat(document.getElementById("fiat-amount").value);
+  const inputVal = parseFloat(document.getElementById("fiat-amount").value);
 
-  if (!fiatAmount || fiatAmount <= 0) {
+  if (!inputVal || inputVal <= 0) {
     showToast("Enter a valid amount", "error");
     return;
   }
-  if (fiatAmount < listing.minLimit || fiatAmount > listing.maxLimit) {
-    showToast(
-      `Amount must be between ${formatNumber(
-        listing.minLimit
-      )} and ${formatNumber(listing.maxLimit)} ${listing.currency}`,
-      "error"
-    );
-    return;
-  }
 
-  const cryptoAmount = fiatAmount / listing.price;
+  let fiatAmount, cryptoAmount;
+
+  if (listing.type === "sell") {
+    // User typed a CRYPTO amount. Derive fiat from it.
+    cryptoAmount = inputVal;
+    fiatAmount = inputVal * listing.price;
+
+    if (fiatAmount < listing.minLimit || fiatAmount > listing.maxLimit) {
+      const minCrypto = (listing.minLimit / listing.price).toFixed(
+        listing.crypto === "BTC" ? 8 : 4
+      );
+      const maxCrypto = (listing.maxLimit / listing.price).toFixed(
+        listing.crypto === "BTC" ? 8 : 4
+      );
+      showToast(
+        `Amount must be between ${minCrypto} and ${maxCrypto} ${listing.crypto}`,
+        "error"
+      );
+      return;
+    }
+  } else {
+    // User typed a FIAT amount (unchanged behavior).
+    fiatAmount = inputVal;
+    cryptoAmount = inputVal / listing.price;
+
+    if (fiatAmount < listing.minLimit || fiatAmount > listing.maxLimit) {
+      showToast(
+        `Amount must be between ${formatNumber(
+          listing.minLimit
+        )} and ${formatNumber(listing.maxLimit)} ${listing.currency}`,
+        "error"
+      );
+      return;
+    }
+  }
 
   if (listing.type === "sell") {
     const payoutMethod = document.getElementById("payout-method").value;

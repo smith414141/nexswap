@@ -128,34 +128,59 @@ function register() {
   btn.disabled = true;
   btn.textContent = "Verifying...";
 
-  grecaptcha.ready(() => {
-    grecaptcha
-      .execute("6Ldt_x8tAAAAAC5nOTlZno2TujGj2Frsq4wb4saJ", {
-        action: "register",
-      })
-      .then((token) => {
-        return fetch("/api/verify-captcha", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
-        });
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.success) {
+  let settled = false;
+  const failSafe = setTimeout(() => {
+    if (settled) return;
+    settled = true;
+    showToast("Security check timed out. Please try again.", "error");
+    btn.disabled = false;
+    btn.textContent = "Create Account";
+  }, 10000);
+
+  try {
+    grecaptcha.ready(() => {
+      grecaptcha
+        .execute("6Ldt_x8tAAAAAC5nOTlZno2TujGj2Frsq4wb4saJ", {
+          action: "register",
+        })
+        .then((token) => {
+          return fetch("/api/verify-captcha", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(failSafe);
+          if (!data.success) {
+            showToast("Security check failed. Please try again.", "error");
+            btn.disabled = false;
+            btn.textContent = "Create Account";
+            return;
+          }
+          proceedWithRegistration(name, email, password, phone, btn);
+        })
+        .catch(() => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(failSafe);
           showToast("Security check failed. Please try again.", "error");
           btn.disabled = false;
           btn.textContent = "Create Account";
-          return;
-        }
-        proceedWithRegistration(name, email, password, phone, btn);
-      })
-      .catch(() => {
-        showToast("Security check failed. Please try again.", "error");
-        btn.disabled = false;
-        btn.textContent = "Create Account";
-      });
-  });
+        });
+    });
+  } catch (e) {
+    if (!settled) {
+      settled = true;
+      clearTimeout(failSafe);
+      showToast("Security check failed. Please try again.", "error");
+      btn.disabled = false;
+      btn.textContent = "Create Account";
+    }
+  }
 }
 
 function proceedWithRegistration(name, email, password, phone, btn) {

@@ -2,11 +2,6 @@ let withdrawCrypto = "USDT";
 let withdrawNetwork = "";
 let userBalance = { BTC: 0, USDT: 0 };
 
-const WITHDRAW_FEES = {
-  USDT: { TRC20: 1, ERC20: 5, BEP20: 0.5 },
-  BTC: { "BTC Network": 0.0001, Lightning: 0.00001 },
-};
-
 auth.onAuthStateChanged((user) => {
   if (!user || !user.emailVerified) return;
 
@@ -16,17 +11,21 @@ auth.onAuthStateChanged((user) => {
     .then((doc) => {
       if (!doc.exists) return;
       const data = doc.data();
-      const badge = document.getElementById("kyc-badge");
-      if (data.kycStatus === "approved") {
-        badge.textContent = "Verified";
-        badge.className = "kyc-badge approved";
-      } else if (data.kycStatus === "pending") {
-        badge.textContent = "KYC Pending";
-        badge.className = "kyc-badge pending";
-      } else {
-        badge.textContent = "No KYC";
-        badge.className = "kyc-badge none";
-      }
+      ["kyc-badge", "kyc-badge-pc"].forEach((id) => {
+        const badge = document.getElementById(id);
+        if (!badge) return;
+        badge.style.display = "inline-flex";
+        if (data.kycStatus === "approved") {
+          badge.textContent = "Verified";
+          badge.className = "kyc-badge approved";
+        } else if (data.kycStatus === "pending") {
+          badge.textContent = "KYC Pending";
+          badge.className = "kyc-badge pending";
+        } else {
+          badge.textContent = "No KYC";
+          badge.className = "kyc-badge none";
+        }
+      });
 
       if (data.kycStatus !== "approved") {
         showToast("Complete KYC to withdraw", "warning");
@@ -70,9 +69,22 @@ function selectWithdrawCrypto(crypto) {
   updateWdSummary();
 }
 
+// Uses the same DEPOSIT_NETWORKS data from wallet.js — keeps fees/networks
+// consistent between deposit and withdraw instead of duplicating fake data.
 function renderWdNetworks() {
   const container = document.getElementById("wd-network-options");
-  const networks = NETWORK_INFO[withdrawCrypto];
+  const networks =
+    (typeof DEPOSIT_NETWORKS !== "undefined" &&
+      DEPOSIT_NETWORKS[withdrawCrypto]) ||
+    [];
+
+  if (!networks.length) {
+    container.innerHTML =
+      '<div class="empty-state">No networks available</div>';
+    withdrawNetwork = "";
+    updateWdSummary();
+    return;
+  }
 
   container.innerHTML = networks
     .map(
@@ -105,9 +117,20 @@ function setMaxWithdraw() {
   updateWdSummary();
 }
 
+// Extracts a numeric fee from text like "~1 USDT" or "~0.0001 BTC" so it can
+// be subtracted from the withdrawal amount.
+function getNumericFee(crypto, networkKey) {
+  const networks =
+    (typeof DEPOSIT_NETWORKS !== "undefined" && DEPOSIT_NETWORKS[crypto]) || [];
+  const net = networks.find((n) => n.key === networkKey);
+  if (!net || !net.fee) return 0;
+  const match = net.fee.match(/[\d.]+/);
+  return match ? parseFloat(match[0]) : 0;
+}
+
 function updateWdSummary() {
   const amount = parseFloat(document.getElementById("wd-amount").value) || 0;
-  const fee = WITHDRAW_FEES[withdrawCrypto]?.[withdrawNetwork] || 0;
+  const fee = getNumericFee(withdrawCrypto, withdrawNetwork);
   const receive = Math.max(0, amount - fee);
   const decimals = withdrawCrypto === "BTC" ? 8 : 2;
 
@@ -122,7 +145,7 @@ function submitWithdrawal() {
   const address = document.getElementById("wd-address").value.trim();
   const amount = parseFloat(document.getElementById("wd-amount").value);
   const balance = userBalance[withdrawCrypto] || 0;
-  const fee = WITHDRAW_FEES[withdrawCrypto]?.[withdrawNetwork] || 0;
+  const fee = getNumericFee(withdrawCrypto, withdrawNetwork);
 
   if (!address) {
     showToast("Please enter withdrawal address", "error");

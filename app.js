@@ -124,6 +124,13 @@ function register() {
     return;
   }
 
+  // reCAPTCHA v2 checkbox — user must tick "I'm not a robot" first
+  const captchaToken = grecaptcha.getResponse();
+  if (!captchaToken) {
+    showToast("Please complete the captcha", "error");
+    return;
+  }
+
   const btn = document.querySelector("#register-form .btn-primary");
   btn.disabled = true;
   btn.textContent = "Verifying...";
@@ -135,52 +142,37 @@ function register() {
     showToast("Security check timed out. Please try again.", "error");
     btn.disabled = false;
     btn.textContent = "Create Account";
+    grecaptcha.reset();
   }, 10000);
 
-  try {
-    grecaptcha.ready(() => {
-      grecaptcha
-        .execute("6Ldt_x8tAAAAAC5nOTlZno2TujGj2Frsq4wb4saJ", {
-          action: "register",
-        })
-        .then((token) => {
-          return fetch("/api/verify-captcha", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token }),
-          });
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          if (settled) return;
-          settled = true;
-          clearTimeout(failSafe);
-          if (!data.success) {
-            showToast("Security check failed. Please try again.", "error");
-            btn.disabled = false;
-            btn.textContent = "Create Account";
-            return;
-          }
-          proceedWithRegistration(name, email, password, phone, btn);
-        })
-        .catch(() => {
-          if (settled) return;
-          settled = true;
-          clearTimeout(failSafe);
-          showToast("Security check failed. Please try again.", "error");
-          btn.disabled = false;
-          btn.textContent = "Create Account";
-        });
-    });
-  } catch (e) {
-    if (!settled) {
+  fetch("/api/verify-captcha", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: captchaToken }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(failSafe);
+      if (!data.success) {
+        showToast("Security check failed. Please try again.", "error");
+        btn.disabled = false;
+        btn.textContent = "Create Account";
+        grecaptcha.reset();
+        return;
+      }
+      proceedWithRegistration(name, email, password, phone, btn);
+    })
+    .catch(() => {
+      if (settled) return;
       settled = true;
       clearTimeout(failSafe);
       showToast("Security check failed. Please try again.", "error");
       btn.disabled = false;
       btn.textContent = "Create Account";
-    }
-  }
+      grecaptcha.reset();
+    });
 }
 
 function proceedWithRegistration(name, email, password, phone, btn) {
@@ -323,275 +315,11 @@ function forgotPassword() {
 // ---- INIT ----
 document.addEventListener("DOMContentLoaded", () => {
   initCanvas();
-  initFloatingChat();
 });
 
-auth.onAuthStateChanged((user) => {
-  if (!user || !user.emailVerified) return;
-  const page = window.location.pathname;
-  if (page.includes("messages")) {
-    // On messages page — clear everything immediately
-    localStorage.setItem("chatLastRead_" + user.uid, Date.now());
-    document.querySelectorAll(".msg-badge").forEach((b) => b.remove());
-    document.querySelectorAll(".float-badge").forEach((b) => b.remove());
-    // Mark direct messages read
-    db.collection("directMessages")
-      .where("userId", "==", user.uid)
-      .where("read", "==", false)
-      .get()
-      .then((snap) => {
-        const batch = db.batch();
-        snap.forEach((doc) => batch.update(doc.ref, { read: true }));
-        return batch.commit();
-      });
-  } else {
-    initUnreadBadge();
-  }
-});
 // ---- LOGOUT ----
 function logoutUser() {
   auth.signOut().then(() => {
     window.location.href = "/index.html";
   });
-}
-// ============ UNREAD BADGE ============
-function initUnreadBadge() {
-  const page = window.location.pathname;
-  if (
-    page.includes("index") ||
-    page.includes("verify") ||
-    page.includes("admin") ||
-    page === "/" ||
-    page === ""
-  )
-    return;
-
-  const user = auth.currentUser;
-  if (!user) return;
-
-  const chatId = "support_" + user.uid;
-  const lastReadKey = "chatLastRead_" + user.uid;
-  const annReadKey = "annLastRead_" + user.uid;
-
-  // Real-time listener — recalculates whenever anything changes
-  db.collection("chats")
-    .doc(chatId)
-    .onSnapshot((doc) => {
-      const messages = doc.exists ? doc.data().messages || [] : [];
-      const lastRead = parseInt(localStorage.getItem(lastReadKey) || "0");
-      const unreadChat = messages.filter(
-        (m) => m.sender !== user.uid && m.time > lastRead
-      ).length;
-
-      db.collection("directMessages")
-        .where("userId", "==", user.uid)
-        .where("read", "==", false)
-        .get()
-        .then((dmSnap) => {
-          const annLastRead = parseInt(localStorage.getItem(annReadKey) || "0");
-          db.collection("announcements")
-            .orderBy("createdAt", "desc")
-            .get()
-            .then((annSnap) => {
-              const unreadAnns = annSnap.docs.filter((d) => {
-                const ts = d.data().createdAt?.toMillis?.() || 0;
-                return ts > annLastRead;
-              }).length;
-              const total = unreadChat + dmSnap.size + unreadAnns;
-              updateMessageBadge(total);
-            });
-        });
-    });
-}
-function updateMessageBadge(count) {
-  // Remove existing badge
-  document.querySelectorAll(".msg-badge").forEach((b) => b.remove());
-  if (count <= 0) return;
-
-  // Find messages nav button
-  const navItems = document.querySelectorAll(".nav-item");
-  navItems.forEach((item) => {
-    if (item.onclick && item.onclick.toString().includes("messages.html")) {
-      const badge = document.createElement("span");
-      badge.className = "msg-badge";
-      badge.textContent = count > 9 ? "9+" : count;
-      item.style.position = "relative";
-      item.appendChild(badge);
-    }
-  });
-
-  // Also update floating chat button if exists
-  const floatBtn = document.querySelector(".float-chat-btn");
-  if (floatBtn) {
-    const existing = floatBtn.querySelector(".float-badge");
-    if (existing) existing.remove();
-    if (count > 0) {
-      const b = document.createElement("span");
-      b.className = "float-badge";
-      b.textContent = count > 9 ? "9+" : count;
-      floatBtn.appendChild(b);
-    }
-  }
-}
-// ============ FLOATING CHAT ============
-function initFloatingChat() {
-  // Don't show on messages or settings page
-  const page = window.location.pathname;
-  if (
-    page.includes("messages") ||
-    page.includes("settings") ||
-    page.includes("admin") ||
-    page.includes("index") ||
-    page.includes("verify") ||
-    page === "/" ||
-    page === ""
-  )
-    return;
-
-  // Only show if user is logged in
-  if (!auth.currentUser) {
-    auth.onAuthStateChanged((u) => {
-      if (u && u.emailVerified) initFloatingChat();
-    });
-    return;
-  }
-
-  const btn = document.createElement("button");
-  btn.className = "float-chat-btn";
-  btn.innerHTML = "💬";
-  btn.onclick = toggleFloatChat;
-  document.body.appendChild(btn);
-
-  const modal = document.createElement("div");
-  modal.className = "float-chat-modal";
-  modal.id = "float-chat-modal";
-  modal.innerHTML = `
-    <div class="float-chat-header">
-      <span>💬 Support Chat</span>
-      <span style="cursor:pointer; font-size:16px;" onclick="toggleFloatChat()">✕</span>
-    </div>
-    <div class="float-chat-messages" id="float-chat-messages">
-      <div style="text-align:center; color:var(--text3); font-size:12px; padding:20px 0;">
-        Send us a message — we typically reply within a few hours.
-      </div>
-    </div>
-    <div class="float-chat-input-area">
-      <div class="chat-input-row" style="margin-bottom:6px;">
-        <input type="text" id="float-chat-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendFloatMessage()" style="font-size:12px;" />
-        <button class="chat-send-btn" onclick="sendFloatMessage()">➤</button>
-      </div>
-      <label style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text2); cursor:pointer;">
-        📎 <span>Attach image</span>
-        <input type="file" id="float-image-input" accept="image/*" style="display:none;" onchange="sendFloatImage()" />
-      </label>
-    </div>
-  `;
-  document.body.appendChild(modal);
-}
-
-function toggleFloatChat() {
-  const modal = document.getElementById("float-chat-modal");
-  if (!modal) return;
-  modal.classList.toggle("open");
-  if (modal.classList.contains("open")) loadFloatChat();
-}
-
-let floatChatUnsub = null;
-
-function loadFloatChat() {
-  const user = auth.currentUser;
-  if (!user) return;
-  const chatId = "support_" + user.uid;
-  if (floatChatUnsub) floatChatUnsub();
-
-  floatChatUnsub = db
-    .collection("chats")
-    .doc(chatId)
-    .onSnapshot((doc) => {
-      const messages = doc.exists ? doc.data().messages || [] : [];
-      const container = document.getElementById("float-chat-messages");
-      if (!container) return;
-      if (messages.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color:var(--text3); font-size:12px; padding:20px 0;">Send us a message — we typically reply within a few hours.</div>`;
-        return;
-      }
-      container.innerHTML = messages
-        .map(
-          (m) => `
-      <div class="chat-msg ${
-        m.sender === user.uid ? "mine" : "theirs"
-      }" style="font-size:12px;">
-        ${
-          m.type === "image"
-            ? `<img src="${m.image}" style="max-width:160px; border-radius:8px;" />`
-            : m.text
-        }
-      </div>
-    `
-        )
-        .join("");
-      container.scrollTop = container.scrollHeight;
-    });
-}
-
-function sendFloatMessage() {
-  const user = auth.currentUser;
-  const input = document.getElementById("float-chat-input");
-  const text = input.value.trim();
-  if (!text || !user) return;
-  const chatId = "support_" + user.uid;
-  db.collection("chats")
-    .doc(chatId)
-    .set(
-      {
-        userId: user.uid,
-        userEmail: user.email,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        messages: firebase.firestore.FieldValue.arrayUnion({
-          sender: user.uid,
-          text,
-          time: Date.now(),
-        }),
-      },
-      { merge: true }
-    )
-    .then(() => {
-      input.value = "";
-    });
-}
-
-function sendFloatImage() {
-  const user = auth.currentUser;
-  const input = document.getElementById("float-image-input");
-  const file = input.files[0];
-  if (!file || !user) return;
-  if (file.size > 3 * 1024 * 1024) {
-    showToast("Max 3MB", "error");
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const chatId = "support_" + user.uid;
-    db.collection("chats")
-      .doc(chatId)
-      .set(
-        {
-          userId: user.uid,
-          userEmail: user.email,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-          messages: firebase.firestore.FieldValue.arrayUnion({
-            sender: user.uid,
-            type: "image",
-            image: e.target.result,
-            time: Date.now(),
-          }),
-        },
-        { merge: true }
-      )
-      .then(() => {
-        input.value = "";
-        showToast("Image sent!", "success");
-      });
-  };
-  reader.readAsDataURL(file);
 }

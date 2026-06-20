@@ -130,10 +130,7 @@
 
         <!-- PROFILE HEADER -->
         <div style="padding: 20px 16px">
-          <div
-            class="card"
-            style="display: flex; align-items: center; gap: 14px"
-          >
+          <div class="card" style="display: flex; align-items: center; gap: 14px">
             <div
               style="
                 width: 56px;
@@ -191,11 +188,19 @@
             <span class="profile-menu-icon">🆔</span>
             <div class="profile-menu-text">
               <div class="profile-menu-title">Identity Verification</div>
-              <div class="profile-menu-sub" id="kyc-menu-sub">
-                Not submitted
-              </div>
+              <div class="profile-menu-sub" id="kyc-menu-sub">Not submitted</div>
             </div>
             <span class="profile-menu-status" id="kyc-menu-status">❌</span>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+
+          <div class="profile-menu-item" onclick="open2faSetup()">
+            <span class="profile-menu-icon">🔐</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Two-Factor Authentication</div>
+              <div class="profile-menu-sub" id="twofa-menu-sub">Not enabled</div>
+            </div>
+            <span class="profile-menu-status" id="twofa-menu-status">❌</span>
             <span class="profile-menu-arrow">›</span>
           </div>
 
@@ -272,9 +277,7 @@
 
         <!-- LOGOUT -->
         <div style="padding: 0 16px 20px">
-          <button class="btn-secondary" onclick="logoutUser()">
-            🚪 Logout
-          </button>
+          <button class="btn-secondary" onclick="logoutUser()">🚪 Logout</button>
         </div>
       </div>
     </div>
@@ -500,6 +503,53 @@
       </div>
     </div>
 
+    <!-- ============ 2FA MODAL ============ -->
+    <div id="twofa-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 92vh">
+        <div class="modal-header">
+          <span class="modal-title">Two-Factor Authentication</span>
+          <span class="modal-close" onclick="closeModal('twofa-modal')">✕</span>
+        </div>
+        <div style="padding: 16px; overflow-y: auto">
+          <!-- STATE: NOT SET UP -->
+          <div id="twofa-state-none">
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.6;">
+              2FA adds an extra layer of security and is required to become a P2P merchant.
+              Scan the QR code below with Google Authenticator (or any TOTP app), then enter
+              the 6-digit code it shows to confirm setup.
+            </p>
+            <div style="display:flex; justify-content:center; margin-bottom:16px;">
+              <div id="twofa-qr-container"></div>
+            </div>
+            <div class="form-group">
+              <label>Can't scan? Enter this code manually</label>
+              <input type="text" id="twofa-secret-display" readonly style="font-family:monospace; letter-spacing:1px;" />
+            </div>
+            <div class="form-group">
+              <label>Enter 6-digit code from your app</label>
+              <input type="text" id="twofa-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" />
+            </div>
+            <button class="btn-primary" onclick="confirm2faSetup()">
+              Confirm & Enable 2FA
+            </button>
+          </div>
+
+          <!-- STATE: ENABLED -->
+          <div id="twofa-state-enabled" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">✅</div>
+              <div>
+                <div class="kyc-step-title">2FA Enabled</div>
+                <div class="kyc-step-desc">
+                  Two-factor authentication is active on your account.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ============ MERCHANT MODAL ============ -->
     <div id="merchant-modal" class="modal-overlay" style="display: none">
       <div class="modal-sheet" style="max-height: 92vh">
@@ -553,6 +603,11 @@
               <span class="merchant-req-icon">🏠</span>
               <span class="merchant-req-text">Proof of Residence</span>
               <span class="merchant-req-status" id="merchant-req-3">❌</span>
+            </div>
+            <div class="merchant-req">
+              <span class="merchant-req-icon">🔐</span>
+              <span class="merchant-req-text">2FA Enabled</span>
+              <span class="merchant-req-status" id="merchant-req-4">❌</span>
             </div>
 
             <div style="margin-top: 16px">
@@ -717,7 +772,10 @@
     </div>
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-      <button class="nav-item" onclick="window.location.href='home.html'">
+      <button
+        class="nav-item"
+        onclick="window.location.href='home.html'"
+      >
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -780,10 +838,7 @@
         </svg>
         <span class="nav-label">Messages</span>
       </button>
-      <button
-        class="nav-item active"
-        onclick="window.location.href='profile.html'"
-      >
+      <button class="nav-item active" onclick="window.location.href='profile.html'">
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -800,6 +855,57 @@
       </button>
     </div>
 
+    <!-- ============ 2FA MODAL ============ -->
+    <div id="twofa-modal" class="modal-overlay" style="display: none">
+      <div class="modal-sheet" style="max-height: 92vh">
+        <div class="modal-header">
+          <span class="modal-title">Two-Factor Authentication</span>
+          <span class="modal-close" onclick="closeModal('twofa-modal')">✕</span>
+        </div>
+        <div style="padding: 16px; overflow-y: auto">
+
+          <div id="twofa-step-qr">
+            <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.6;">
+              1. Install Google Authenticator on your phone.<br />
+              2. Scan this QR code with the app.<br />
+              3. Enter the 6-digit code it shows below.
+            </p>
+            <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+              <div id="twofa-qr-container"></div>
+            </div>
+            <p style="font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 16px; word-break: break-all;">
+              Can't scan? Enter manually: <strong id="twofa-secret-text"></strong>
+            </p>
+            <div class="form-group">
+              <label>6-Digit Code</label>
+              <input type="text" id="twofa-code-input" placeholder="123456" maxlength="6" inputmode="numeric" />
+            </div>
+            <button class="btn-primary" id="twofa-confirm-btn" onclick="confirm2faCode()">
+              Confirm
+            </button>
+          </div>
+
+          <div id="twofa-step-done" style="display: none">
+            <div class="kyc-step">
+              <div class="kyc-step-icon">✅</div>
+              <div>
+                <div class="kyc-step-title">Authenticator Linked</div>
+                <div class="kyc-step-desc">
+                  2FA will fully activate once your identity verification (KYC) is
+                  also approved. You'll see "Active" in your profile once both are
+                  done.
+                </div>
+              </div>
+            </div>
+            <button class="btn-primary" onclick="closeModal('twofa-modal')">
+              Done
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <div id="toast-container"></div>
 
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -807,6 +913,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="2fa.js"></script>
     <script src="profile.js"></script>
   </body>
 </html>

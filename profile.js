@@ -68,6 +68,9 @@ function openMerchantPage() {
     document.getElementById("merchant-modal-none").style.display = "none";
     document.getElementById("merchant-modal-pending").style.display = "none";
     document.getElementById("merchant-modal-approved").style.display = "none";
+  } else {
+    checkMerchantBalance();
+    checkMerchantTwoFa();
   }
   openModal("merchant-modal");
 }
@@ -164,6 +167,7 @@ function updateMerchantDisplay(merchantStatus, kycStatus) {
     sub.textContent = "Tap to apply";
     cta.style.display = "block";
     checkMerchantBalance();
+    checkMerchantTwoFa();
   }
 
   // Set modal state
@@ -195,6 +199,23 @@ function checkMerchantBalance() {
 
   const req2 = document.getElementById("merchant-req-2");
   if (req2) req2.textContent = total >= 300 ? "✅" : "❌";
+}
+
+// Checks 2FA status (live from Firestore) and reflects it on the merchant
+// checklist row. Runs whenever the merchant modal opens, so it's always
+// current even if the user just enabled 2FA moments before.
+function checkMerchantTwoFa() {
+  const user = auth.currentUser;
+  if (!user) return;
+  db.collection("users")
+    .doc(user.uid)
+    .get()
+    .then((doc) => {
+      const data = doc.data() || {};
+      const req4 = document.getElementById("merchant-req-4");
+      if (req4) req4.textContent = data.twoFaEnabled ? "✅" : "❌";
+      currentUserData = { ...currentUserData, twoFaEnabled: data.twoFaEnabled };
+    });
 }
 
 // ---- PERSONAL INFO ----
@@ -373,40 +394,58 @@ function applyMerchant() {
   }
 
   const user = auth.currentUser;
-  const btn = document.querySelector("#merchant-modal-none .btn-primary");
-  btn.disabled = true;
-  btn.textContent = "Submitting...";
 
-  fileToBase64(input)
-    .then((base64) => {
-      return db
-        .collection("merchantApplications")
-        .doc(user.uid)
-        .set({
-          userId: user.uid,
-          userEmail: user.email,
-          userName: currentUserData ? currentUserData.name : "",
-          residenceImage: base64,
-          balanceAtApplication: total,
-          status: "pending",
-          submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  // 2FA is required before a merchant application can be submitted.
+  // Re-checked live here (not just from cached currentUserData) so a stale
+  // page state can't bypass the requirement.
+  db.collection("users")
+    .doc(user.uid)
+    .get()
+    .then((doc) => {
+      const data = doc.data() || {};
+      if (!data.twoFaEnabled) {
+        showToast("Enable 2FA before applying as a merchant", "error");
+        const req4 = document.getElementById("merchant-req-4");
+        if (req4) req4.textContent = "❌";
+        return;
+      }
+
+      const btn = document.querySelector("#merchant-modal-none .btn-primary");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      fileToBase64(input)
+        .then((base64) => {
+          return db
+            .collection("merchantApplications")
+            .doc(user.uid)
+            .set({
+              userId: user.uid,
+              userEmail: user.email,
+              userName: currentUserData ? currentUserData.name : "",
+              residenceImage: base64,
+              balanceAtApplication: total,
+              twoFaEnabled: true,
+              status: "pending",
+              submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+        })
+        .then(() => {
+          return db
+            .collection("users")
+            .doc(user.uid)
+            .update({ merchantStatus: "pending" });
+        })
+        .then(() => {
+          showToast("Merchant application submitted!", "success");
+          updateMerchantDisplay("pending", "approved");
+          setTimeout(() => closeModal("merchant-modal"), 1000);
+        })
+        .catch((err) => {
+          showToast(err.message, "error");
+          btn.disabled = false;
+          btn.textContent = "Apply to Become Merchant";
         });
-    })
-    .then(() => {
-      return db
-        .collection("users")
-        .doc(user.uid)
-        .update({ merchantStatus: "pending" });
-    })
-    .then(() => {
-      showToast("Merchant application submitted!", "success");
-      updateMerchantDisplay("pending", "approved");
-      setTimeout(() => closeModal("merchant-modal"), 1000);
-    })
-    .catch((err) => {
-      showToast(err.message, "error");
-      btn.disabled = false;
-      btn.textContent = "Apply to Become Merchant";
     });
 }
 
@@ -478,7 +517,9 @@ function logoutUser() {
   auth.signOut().then(() => {
     window.location.href = "/";
   });
-} // ---- TRANSACTIONS ----
+}
+
+// ---- TRANSACTIONS ----
 function loadTransactions() {
   const user = auth.currentUser;
   const container = document.getElementById("transactions-list");

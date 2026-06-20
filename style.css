@@ -1664,6 +1664,42 @@ body {
   background: #e0e0e0;
   color: #111;
 }
+/* ============ MESSAGE BADGE ============ */
+.msg-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: "Inter", sans-serif;
+}
+
+.float-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  font-family: "Inter", sans-serif;
+}
 /* ============ FLOATING CHAT BUTTON ============ */
 .float-chat-btn {
   position: fixed;

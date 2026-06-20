@@ -14,10 +14,16 @@ function switchMsgTab(tab, btn) {
     tab === "support" ? "block" : "none";
   document.getElementById("msg-announcements").style.display =
     tab === "announcements" ? "block" : "none";
-  if (tab === "announcements") loadAnnouncements();
+  if (tab === "announcements") {
+    loadAnnouncements();
+    markAnnouncementsRead(auth.currentUser.uid);
+  }
 }
 
 function loadSupportChat(user) {
+  // Mark chat as read
+  localStorage.setItem("chatLastRead_" + user.uid, Date.now());
+  markDirectMessagesRead(user.uid);
   const chatId = "support_" + user.uid;
   if (msgSupportUnsub) msgSupportUnsub();
 
@@ -127,49 +133,75 @@ function sendMsgImage() {
   reader.readAsDataURL(file);
 }
 function loadAnnouncements() {
+  const user = auth.currentUser;
   const container = document.getElementById("announcements-list");
   container.innerHTML = '<div class="empty-state">Loading...</div>';
 
-  db.collection("announcements")
-    .orderBy("createdAt", "desc")
-    .limit(20)
-    .get()
-    .then((snapshot) => {
-      if (snapshot.empty) {
+  Promise.all([
+    db.collection("announcements").orderBy("createdAt", "desc").limit(20).get(),
+    db
+      .collection("directMessages")
+      .where("userId", "==", user.uid)
+      .orderBy("createdAt", "desc")
+      .get(),
+  ])
+    .then(([annSnap, dmSnap]) => {
+      const items = [];
+
+      annSnap.forEach((doc) => {
+        const a = doc.data();
+        items.push({ ...a, id: doc.id, isDirect: false });
+      });
+
+      dmSnap.forEach((doc) => {
+        const d = doc.data();
+        items.push({ ...d, id: doc.id, isDirect: true });
+      });
+
+      items.sort(
+        (a, b) =>
+          (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0)
+      );
+
+      if (items.length === 0) {
         container.innerHTML =
           '<div class="empty-state">No announcements yet</div>';
         return;
       }
-      container.innerHTML = "";
-      snapshot.forEach((doc) => {
-        const a = doc.data();
-        container.innerHTML += `
-        <div class="card" style="margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span style="font-weight:800; font-size:14px;">${a.title}</span>
-            <span class="badge badge-${
-              a.type === "warning"
-                ? "yellow"
-                : a.type === "success"
-                ? "green"
-                : "grey"
-            }">${a.type || "info"}</span>
-          </div>
-          <p style="font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:6px;">${
-            a.body
-          }</p>
-          <p style="font-size:10px; color:var(--text3);">${formatAnnTime(
-            a.createdAt
-          )}</p>
+
+      container.innerHTML = items
+        .map(
+          (a) => `
+      <div class="card" style="margin-bottom:10px; ${
+        !a.read && a.isDirect ? "border-left:3px solid var(--yellow);" : ""
+      }">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="font-weight:800; font-size:14px;">${a.title}</span>
+          <span class="badge badge-${
+            a.isDirect
+              ? "yellow"
+              : a.type === "warning"
+              ? "yellow"
+              : a.type === "success"
+              ? "green"
+              : "grey"
+          }">${a.isDirect ? "Personal" : a.type || "info"}</span>
         </div>
-      `;
-      });
+        <p style="font-size:13px; color:var(--text2); line-height:1.6; margin-bottom:6px;">${
+          a.body
+        }</p>
+        <p style="font-size:10px; color:var(--text3);">${formatAnnTime(
+          a.createdAt
+        )}</p>
+      </div>
+    `
+        )
+        .join("");
     })
-    .catch(
-      (err) =>
-        (container.innerHTML =
-          '<div class="empty-state">Error: ' + err.message + "</div>")
-    );
+    .catch((err) => {
+      container.innerHTML =
+        '<div class="empty-state">Error: ' + err.message + "</div>";
+    });
 }
 
 function formatAnnTime(ts) {
@@ -180,4 +212,29 @@ function formatAnnTime(ts) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+function markDirectMessagesRead(userId) {
+  db.collection("directMessages")
+    .where("userId", "==", userId)
+    .where("read", "==", false)
+    .get()
+    .then((snapshot) => {
+      const batch = db.batch();
+      snapshot.forEach((doc) => batch.update(doc.ref, { read: true }));
+      return batch.commit();
+    });
+}
+
+function markAnnouncementsRead(userId) {
+  db.collection("announcements")
+    .get()
+    .then((snapshot) => {
+      const allIds = snapshot.docs.map((d) => d.id);
+      db.collection("announcementReads").doc(userId).set(
+        {
+          readIds: allIds,
+        },
+        { merge: true }
+      );
+    });
 }

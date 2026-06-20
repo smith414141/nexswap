@@ -1316,13 +1316,14 @@ function loadSupportChats() {
             ${messages
               .map(
                 (m) =>
-                  `<div style="font-size:11px; margin-bottom:4px;"><strong>${
-                    m.sender === d.userId ? d.userEmail : "Admin"
-                  }:</strong> ${
-                    m.type === "image"
-                      ? `<img src="${m.image}" style="max-width:150px; border-radius:6px; display:block; margin-top:4px;" onclick="openImage('${m.image}')" />`
-                      : m.text
-                  }</div>`
+                  `<div style="font-size:11px; margin-bottom:4px;">
+  <strong>${m.sender === d.userId ? d.userEmail : "Admin"}:</strong>
+  ${
+    m.type === "image"
+      ? `<img src="${m.image}" style="max-width:150px; border-radius:6px; display:block; margin-top:4px; cursor:pointer;" onclick="openImage('${m.image}')" />`
+      : m.text
+  }
+</div>`
               )
               .join("")}
           </div>
@@ -1343,8 +1344,12 @@ function loadSupportChats() {
 
 function sendAdminSupportReply(chatId) {
   const input = document.getElementById("admin-support-reply-" + chatId);
+  const btn = input.nextElementSibling;
   const text = input.value.trim();
   if (!text) return;
+
+  input.value = "";
+  if (btn) btn.disabled = true;
 
   db.collection("chats")
     .doc(chatId)
@@ -1358,12 +1363,16 @@ function sendAdminSupportReply(chatId) {
     })
     .then(() => {
       showToast("Reply sent!", "success");
-      input.value = "";
       loadSupportChats();
     })
-    .catch((err) => showToast(err.message, "error"));
+    .catch((err) => {
+      showToast(err.message, "error");
+      input.value = text;
+    })
+    .finally(() => {
+      if (btn) btn.disabled = false;
+    });
 }
-
 // ---- ANNOUNCEMENTS ----
 function loadAnnouncementsAdmin() {
   const container = document.getElementById("announcements-admin-list");

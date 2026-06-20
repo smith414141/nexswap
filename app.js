@@ -103,9 +103,13 @@ function register() {
   const name = document.getElementById("reg-name").value.trim();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value;
-  const phone = document.getElementById("reg-phone").value.trim();
+  const phoneCode = document.getElementById("reg-phone-code").value;
+  const phoneNumber = document.getElementById("reg-phone").value.trim();
+  const phone = phoneNumber
+    ? `${phoneCode}${phoneNumber.replace(/\s/g, "")}`
+    : "";
 
-  if (!name || !email || !password || !phone) {
+  if (!name || !email || !password || !phoneNumber) {
     showToast("Please fill in all fields", "error");
     return;
   }
@@ -117,10 +121,7 @@ function register() {
   const phoneClean = phone.replace(/\s/g, "");
   const phoneRegex = /^\+[1-9]\d{9,14}$/;
   if (!phoneRegex.test(phoneClean)) {
-    showToast(
-      "Enter a valid phone number with country code (e.g. +251912345678)",
-      "error"
-    );
+    showToast("Enter a valid phone number (e.g. 912345678)", "error");
     return;
   }
 
@@ -197,6 +198,11 @@ function proceedWithRegistration(name, email, password, phone, btn) {
           USDT: 0,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         }),
+        // Minimal phone -> email mapping only, used so users can log in
+        // with their phone number instead of typing their email.
+        db.collection("phoneIndex").doc(phone).set({
+          email,
+        }),
         user.sendEmailVerification(),
       ]);
     })
@@ -215,10 +221,10 @@ function proceedWithRegistration(name, email, password, phone, btn) {
 }
 
 function login() {
-  const email = document.getElementById("login-email").value.trim();
+  const rawInput = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
 
-  if (!email || !password) {
+  if (!rawInput || !password) {
     showToast("Please fill in all fields", "error");
     return;
   }
@@ -236,8 +242,24 @@ function login() {
     );
   }, 10000);
 
-  auth
-    .signInWithEmailAndPassword(email, password)
+  // If the input doesn't look like an email, treat it as a phone number
+  // and look up the matching email first.
+  const looksLikeEmail = rawInput.includes("@");
+  const resolveEmail = looksLikeEmail
+    ? Promise.resolve(rawInput)
+    : db
+        .collection("phoneIndex")
+        .doc(rawInput.replace(/\s/g, ""))
+        .get()
+        .then((doc) => {
+          if (!doc.exists) {
+            throw { message: "No account found with that phone number" };
+          }
+          return doc.data().email;
+        });
+
+  resolveEmail
+    .then((email) => auth.signInWithEmailAndPassword(email, password))
     .then((cred) => {
       clearTimeout(timeout);
       if (!cred.user.emailVerified) {

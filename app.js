@@ -324,11 +324,30 @@ function forgotPassword() {
 document.addEventListener("DOMContentLoaded", () => {
   initCanvas();
   initFloatingChat();
-  auth.onAuthStateChanged((user) => {
-    if (user && user.emailVerified) initUnreadBadge();
-  });
 });
 
+auth.onAuthStateChanged((user) => {
+  if (!user || !user.emailVerified) return;
+  const page = window.location.pathname;
+  if (page.includes("messages")) {
+    // On messages page — clear everything immediately
+    localStorage.setItem("chatLastRead_" + user.uid, Date.now());
+    document.querySelectorAll(".msg-badge").forEach((b) => b.remove());
+    document.querySelectorAll(".float-badge").forEach((b) => b.remove());
+    // Mark direct messages read
+    db.collection("directMessages")
+      .where("userId", "==", user.uid)
+      .where("read", "==", false)
+      .get()
+      .then((snap) => {
+        const batch = db.batch();
+        snap.forEach((doc) => batch.update(doc.ref, { read: true }));
+        return batch.commit();
+      });
+  } else {
+    initUnreadBadge();
+  }
+});
 // ---- LOGOUT ----
 function logoutUser() {
   auth.signOut().then(() => {

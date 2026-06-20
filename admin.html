@@ -271,6 +271,24 @@
 
       <!-- ADMINS -->
       <div id="tab-support" class="admin-tab-content" style="display: none">
+        <div
+          style="display: flex; justify-content: flex-end; margin-bottom: 12px"
+        >
+          <button
+            class="btn-secondary"
+            style="
+              margin: 0;
+              padding: 8px 14px;
+              width: auto;
+              border-color: var(--red);
+              color: var(--red);
+              font-size: 12px;
+            "
+            onclick="deleteAllChats()"
+          >
+            🗑️ Clear All Chats
+          </button>
+        </div>
         <div id="support-chats-list">
           <div class="empty-state">Loading...</div>
         </div>

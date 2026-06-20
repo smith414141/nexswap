@@ -1328,12 +1328,15 @@ function loadSupportChats() {
               .join("")}
           </div>
           <div class="input-row" style="margin-bottom:6px;">
-            <input type="text" id="admin-support-reply-${chatId}" placeholder="Reply..." style="font-size:12px;" />
-            <button class="chat-send-btn" style="width:32px;height:32px;" onclick="sendAdminSupportReply('${chatId}')">➤</button>
-          </div>
-          <button class="btn-secondary" style="margin:0; padding:6px 10px; font-size:11px; width:auto;" onclick="sendDirectAnnouncement('${
+          <input type="text" id="admin-support-reply-${chatId}" placeholder="Reply..." style="font-size:12px;" />
+          <button class="chat-send-btn" style="width:32px;height:32px;" onclick="sendAdminSupportReply('${chatId}')">➤</button>
+        </div>
+        <div style="display:flex; gap:6px; margin-top:6px;">
+          <button class="btn-secondary" style="margin:0; padding:6px 10px; font-size:11px; flex:1;" onclick="sendDirectAnnouncement('${
             d.userId
-          }','${d.userEmail}')">📢 Send Direct Message</button>
+          }','${d.userEmail}')">📢 Direct Message</button>
+          <button class="btn-secondary" style="margin:0; padding:6px 10px; font-size:11px; border-color:var(--red); color:var(--red); flex:1;" onclick="deleteChat('${chatId}')">🗑️ Delete Chat</button>
+        </div>
         </div>
       `;
       });
@@ -1466,6 +1469,33 @@ function deleteAnnouncement(id) {
     .then(() => {
       showToast("Deleted", "success");
       loadAnnouncementsAdmin();
+    })
+    .catch((err) => showToast(err.message, "error"));
+} // ---- CHAT MANAGEMENT ----
+function deleteChat(chatId) {
+  if (!confirm("Delete this entire chat history?")) return;
+  db.collection("chats")
+    .doc(chatId)
+    .delete()
+    .then(() => {
+      showToast("Chat deleted", "success");
+      loadSupportChats();
+    })
+    .catch((err) => showToast(err.message, "error"));
+}
+
+function deleteAllChats() {
+  if (!confirm("Delete ALL chat histories? This cannot be undone.")) return;
+  db.collection("chats")
+    .get()
+    .then((snapshot) => {
+      const batch = db.batch();
+      snapshot.forEach((doc) => batch.delete(doc.ref));
+      return batch.commit();
+    })
+    .then(() => {
+      showToast("All chats deleted", "success");
+      loadSupportChats();
     })
     .catch((err) => showToast(err.message, "error"));
 }

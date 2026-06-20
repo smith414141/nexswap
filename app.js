@@ -128,7 +128,34 @@ function register() {
   btn.disabled = true;
   btn.textContent = "Verifying...";
 
-  proceedWithRegistration(name, email, password, phone, btn);
+  grecaptcha.ready(() => {
+    grecaptcha
+      .execute("6Ldt_x8tAAAAAC5nOTlZno2TujGj2Frsq4wb4saJ", {
+        action: "register",
+      })
+      .then((token) => {
+        return fetch("/api/verify-captcha", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        });
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.success) {
+          showToast("Security check failed. Please try again.", "error");
+          btn.disabled = false;
+          btn.textContent = "Create Account";
+          return;
+        }
+        proceedWithRegistration(name, email, password, phone, btn);
+      })
+      .catch(() => {
+        showToast("Security check failed. Please try again.", "error");
+        btn.disabled = false;
+        btn.textContent = "Create Account";
+      });
+  });
 }
 
 function proceedWithRegistration(name, email, password, phone, btn) {
@@ -211,6 +238,51 @@ function login() {
       btn.textContent = "Login";
     });
 }
+// ---- GOOGLE SIGN-IN ----
+function loginWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  auth
+    .signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      const isNewUser = result.additionalUserInfo?.isNewUser;
+
+      if (!isNewUser) {
+        // Returning user — just log them in, don't touch their data
+        window.location.href = "/home.html";
+        return;
+      }
+
+      // New user — create their user + wallet docs, same as email signup
+      return Promise.all([
+        db
+          .collection("users")
+          .doc(user.uid)
+          .set({
+            name: user.displayName || "User",
+            email: user.email,
+            phone: "",
+            kycStatus: "none",
+            merchantStatus: "none",
+            country: "ET",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          }),
+        db.collection("wallets").doc(user.uid).set({
+          BTC: 0,
+          USDT: 0,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        }),
+      ]).then(() => {
+        window.location.href = "/home.html";
+      });
+    })
+    .catch((err) => {
+      if (err.code === "auth/popup-closed-by-user") return;
+      showToast(err.message, "error");
+    });
+}
+
 function forgotPassword() {
   const email = document.getElementById("login-email").value.trim();
   if (!email) {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify Email — CryptoSwap</title>
+    <title>Verify Email — kriptex</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
       rel="stylesheet"
@@ -57,7 +57,7 @@
         }
         user.reload().then(() => {
           if (user.emailVerified) {
-            showToast("Email verified! Welcome to CryptoSwap 🎉", "success");
+            showToast("Email verified! Welcome to kriptex 🎉", "success");
             setTimeout(() => (window.location.href = "/home.html"), 1500);
           } else {
             showToast("Email not verified yet. Check your inbox.", "warning");

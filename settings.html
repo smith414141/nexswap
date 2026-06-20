@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-    <title>CryptoSwap — Settings</title>
+    <title>kriptex — Settings</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
@@ -140,12 +140,12 @@
           </div>
           <div
             class="profile-menu-item"
-            onclick="window.open('mailto:support@cryptoswap.com')"
+            onclick="window.open('mailto:support@kriptex.com')"
           >
             <span class="profile-menu-icon">📨</span>
             <div class="profile-menu-text">
               <div class="profile-menu-title">Contact Us</div>
-              <div class="profile-menu-sub">support@cryptoswap.com</div>
+              <div class="profile-menu-sub">support@kriptex.com</div>
             </div>
             <span class="profile-menu-arrow">›</span>
           </div>
@@ -203,16 +203,42 @@
             id="support-chat-messages"
             style="flex: 1; padding: 12px; overflow-y: auto"
           ></div>
-          <div class="chat-input-row" style="padding: 8px">
-            <input
-              type="text"
-              id="support-chat-input"
-              placeholder="Type a message..."
-              onkeypress="if(event.key==='Enter') sendSupportMessage()"
-            />
-            <button class="chat-send-btn" onclick="sendSupportMessage()">
-              ➤
-            </button>
+          <div style="padding: 8px">
+            <div class="chat-input-row" style="margin-bottom: 6px">
+              <input
+                type="text"
+                id="support-chat-input"
+                placeholder="Type a message..."
+                onkeypress="if(event.key==='Enter') sendSupportMessage()"
+              />
+              <button class="chat-send-btn" onclick="sendSupportMessage()">
+                ➤
+              </button>
+            </div>
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: var(--text2);
+                cursor: pointer;
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 6px 10px;
+                width: fit-content;
+              "
+            >
+              📎 Attach Image
+              <input
+                type="file"
+                id="support-image-input"
+                accept="image/*"
+                style="display: none"
+                onchange="sendSupportImage()"
+              />
+            </label>
           </div>
         </div>
       </div>

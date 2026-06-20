@@ -1318,7 +1318,11 @@ function loadSupportChats() {
                 (m) =>
                   `<div style="font-size:11px; margin-bottom:4px;"><strong>${
                     m.sender === d.userId ? d.userEmail : "Admin"
-                  }:</strong> ${m.text}</div>`
+                  }:</strong> ${
+                    m.type === "image"
+                      ? `<img src="${m.image}" style="max-width:150px; border-radius:6px; display:block; margin-top:4px;" onclick="openImage('${m.image}')" />`
+                      : m.text
+                  }</div>`
               )
               .join("")}
           </div>

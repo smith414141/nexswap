@@ -170,7 +170,11 @@ function renderSupportChat(messages, uid) {
           ? `<div style="font-size:10px; opacity:0.6; margin-bottom:2px;">Support</div>`
           : ""
       }
-      ${m.text}
+      ${
+        m.type === "image"
+          ? `<img src="${m.image}" style="max-width:200px; border-radius:8px;" />`
+          : m.text
+      }
     </div>
   `
     )
@@ -204,6 +208,43 @@ function sendSupportMessage() {
       input.value = "";
     })
     .catch((err) => showToast(err.message, "error"));
+}
+
+function sendSupportImage() {
+  const user = auth.currentUser;
+  const input = document.getElementById("support-image-input");
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) {
+    showToast("Image too large. Max 3MB.", "error");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const chatId = "support_" + user.uid;
+    db.collection("chats")
+      .doc(chatId)
+      .set(
+        {
+          userId: user.uid,
+          userEmail: user.email,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          messages: firebase.firestore.FieldValue.arrayUnion({
+            sender: user.uid,
+            type: "image",
+            image: e.target.result,
+            time: Date.now(),
+          }),
+        },
+        { merge: true }
+      )
+      .then(() => {
+        input.value = "";
+        showToast("Image sent!", "success");
+      })
+      .catch((err) => showToast(err.message, "error"));
+  };
+  reader.readAsDataURL(file);
 }
 
 function openModal(id) {

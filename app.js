@@ -323,6 +323,7 @@ function forgotPassword() {
 // ---- INIT ----
 document.addEventListener("DOMContentLoaded", () => {
   initCanvas();
+  initFloatingChat();
 });
 
 // ---- LOGOUT ----
@@ -330,4 +331,156 @@ function logoutUser() {
   auth.signOut().then(() => {
     window.location.href = "/index.html";
   });
+}
+// ============ FLOATING CHAT ============
+function initFloatingChat() {
+  // Don't show on messages or settings page
+  const page = window.location.pathname;
+  if (
+    page.includes("messages") ||
+    page.includes("settings") ||
+    page.includes("admin") ||
+    page.includes("index") ||
+    page.includes("verify")
+  )
+    return;
+
+  const btn = document.createElement("button");
+  btn.className = "float-chat-btn";
+  btn.innerHTML = "💬";
+  btn.onclick = toggleFloatChat;
+  document.body.appendChild(btn);
+
+  const modal = document.createElement("div");
+  modal.className = "float-chat-modal";
+  modal.id = "float-chat-modal";
+  modal.innerHTML = `
+    <div class="float-chat-header">
+      <span>💬 Support Chat</span>
+      <span style="cursor:pointer; font-size:16px;" onclick="toggleFloatChat()">✕</span>
+    </div>
+    <div class="float-chat-messages" id="float-chat-messages">
+      <div style="text-align:center; color:var(--text3); font-size:12px; padding:20px 0;">
+        Send us a message — we typically reply within a few hours.
+      </div>
+    </div>
+    <div class="float-chat-input-area">
+      <div class="chat-input-row" style="margin-bottom:6px;">
+        <input type="text" id="float-chat-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendFloatMessage()" style="font-size:12px;" />
+        <button class="chat-send-btn" onclick="sendFloatMessage()">➤</button>
+      </div>
+      <label style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text2); cursor:pointer;">
+        📎 <span>Attach image</span>
+        <input type="file" id="float-image-input" accept="image/*" style="display:none;" onchange="sendFloatImage()" />
+      </label>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function toggleFloatChat() {
+  const modal = document.getElementById("float-chat-modal");
+  if (!modal) return;
+  modal.classList.toggle("open");
+  if (modal.classList.contains("open")) loadFloatChat();
+}
+
+let floatChatUnsub = null;
+
+function loadFloatChat() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const chatId = "support_" + user.uid;
+  if (floatChatUnsub) floatChatUnsub();
+
+  floatChatUnsub = db
+    .collection("chats")
+    .doc(chatId)
+    .onSnapshot((doc) => {
+      const messages = doc.exists ? doc.data().messages || [] : [];
+      const container = document.getElementById("float-chat-messages");
+      if (!container) return;
+      if (messages.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:var(--text3); font-size:12px; padding:20px 0;">Send us a message — we typically reply within a few hours.</div>`;
+        return;
+      }
+      container.innerHTML = messages
+        .map(
+          (m) => `
+      <div class="chat-msg ${
+        m.sender === user.uid ? "mine" : "theirs"
+      }" style="font-size:12px;">
+        ${
+          m.type === "image"
+            ? `<img src="${m.image}" style="max-width:160px; border-radius:8px;" />`
+            : m.text
+        }
+      </div>
+    `
+        )
+        .join("");
+      container.scrollTop = container.scrollHeight;
+    });
+}
+
+function sendFloatMessage() {
+  const user = auth.currentUser;
+  const input = document.getElementById("float-chat-input");
+  const text = input.value.trim();
+  if (!text || !user) return;
+  const chatId = "support_" + user.uid;
+  db.collection("chats")
+    .doc(chatId)
+    .set(
+      {
+        userId: user.uid,
+        userEmail: user.email,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        messages: firebase.firestore.FieldValue.arrayUnion({
+          sender: user.uid,
+          text,
+          time: Date.now(),
+        }),
+      },
+      { merge: true }
+    )
+    .then(() => {
+      input.value = "";
+    });
+}
+
+function sendFloatImage() {
+  const user = auth.currentUser;
+  const input = document.getElementById("float-image-input");
+  const file = input.files[0];
+  if (!file || !user) return;
+  if (file.size > 3 * 1024 * 1024) {
+    showToast("Max 3MB", "error");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const chatId = "support_" + user.uid;
+    db.collection("chats")
+      .doc(chatId)
+      .set(
+        {
+          userId: user.uid,
+          userEmail: user.email,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          messages: firebase.firestore.FieldValue.arrayUnion({
+            sender: user.uid,
+            type: "image",
+            image: e.target.result,
+            time: Date.now(),
+          }),
+        },
+        { merge: true }
+      )
+      .then(() => {
+        input.value = "";
+        showToast("Image sent!", "success");
+      });
+  };
+  reader.readAsDataURL(file);
 }

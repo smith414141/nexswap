@@ -1664,3 +1664,84 @@ body {
   background: #e0e0e0;
   color: #111;
 }
+/* ============ FLOATING CHAT BUTTON ============ */
+.float-chat-btn {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: #000;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 20px rgba(240, 185, 11, 0.4);
+  transition: transform 0.2s;
+  border: none;
+}
+.float-chat-btn:hover {
+  transform: scale(1.1);
+}
+
+@media (min-width: 768px) {
+  .float-chat-btn {
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+.float-chat-modal {
+  position: fixed;
+  bottom: 150px;
+  right: 16px;
+  width: 320px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.float-chat-modal.open {
+  display: flex;
+}
+
+.float-chat-header {
+  padding: 14px 16px;
+  background: var(--yellow);
+  color: #000;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.float-chat-messages {
+  height: 260px;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.float-chat-input-area {
+  padding: 8px;
+  border-top: 1px solid var(--border);
+}
+
+@media (min-width: 768px) {
+  .float-chat-modal {
+    bottom: 90px;
+    right: 24px;
+  }
+}

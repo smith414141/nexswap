@@ -47,16 +47,43 @@
             <div class="chat-box" style="flex: 1; margin-bottom: 8px">
               <div class="chat-messages" id="msg-support-messages"></div>
             </div>
-            <div class="chat-input-row">
-              <input
-                type="text"
-                id="msg-support-input"
-                placeholder="Type a message..."
-                onkeypress="if(event.key==='Enter') sendMsgSupport()"
-              />
-              <button class="chat-send-btn" onclick="sendMsgSupport()">
-                ➤
-              </button>
+            <div style="padding: 8px">
+              <div class="chat-input-row" style="margin-bottom: 6px">
+                <input
+                  type="text"
+                  id="msg-support-input"
+                  placeholder="Type a message..."
+                  onkeypress="if(event.key==='Enter') sendMsgSupport()"
+                />
+                <button class="chat-send-btn" onclick="sendMsgSupport()">
+                  ➤
+                </button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    font-size: 12px;
+                    color: var(--text2);
+                    cursor: pointer;
+                    background: var(--bg2);
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    padding: 6px 10px;
+                  "
+                >
+                  📎 Attach Image
+                  <input
+                    type="file"
+                    id="msg-image-input"
+                    accept="image/*"
+                    style="display: none"
+                    onchange="sendMsgImage()"
+                  />
+                </label>
+              </div>
             </div>
           </div>
         </div>

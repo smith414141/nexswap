@@ -6,192 +6,276 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-    <title>CryptoSwap — Profile</title>
+    <title>Kripex — Profile</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
-    <!-- PC NAV (hidden on mobile) -->
+
     <div class="pc-nav">
       <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        >⚡ CryptoSwap</a
+        >⚡ kriptex</a
       >
-      <div class="pc-nav-links">
-        <span
-          class="pc-nav-link active"
-          onclick="window.location.href='home.html'"
-          >Home</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='p2p.html'"
-          >P2P</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='deposit.html'"
-          >Deposit</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='withdraw.html'"
-          >Withdraw</span
-        >
-        <span class="pc-nav-link" onclick="window.location.href='profile.html'"
-          >Profile</span
-        >
+      <div class="pc-nav-right">
+        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
       </div>
     </div>
-    <div class="page">
-      <!-- TOP BAR -->
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
-        <div class="top-bar-logo">⚡ CryptoSwap</div>
-        <div class="top-bar-right">
-          <span class="kyc-badge" id="kyc-badge" style="display: none"></span>
-        </div>
-      </div>
 
-      <!-- PROFILE HEADER -->
-      <div style="padding: 20px 16px">
-        <div class="card" style="display: flex; align-items: center; gap: 14px">
-          <div
-            style="
-              width: 56px;
-              height: 56px;
-              border-radius: 50%;
-              background: linear-gradient(135deg, var(--yellow), #d99c00);
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 24px;
-              flex-shrink: 0;
-              font-weight: 900;
-              color: #000;
-            "
-            id="profile-avatar"
+    <div class="pc-sidebar">
+      <a class="pc-sidebar-link" href="home.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+          /></svg
+        >Home</a
+      >
+      <a class="pc-sidebar-link" href="p2p.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M7 3L3 7l4 4" />
+          <path d="M3 7h13a4 4 0 014 4v1" />
+          <path d="M17 21l4-4-4-4" />
+          <path d="M21 17H8a4 4 0 01-4-4v-1" /></svg
+        >P2P</a
+      >
+      <a class="pc-sidebar-link" href="deposit.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 3v12" />
+          <path d="M7 10l5 5 5-5" />
+          <path d="M5 19h14" /></svg
+        >Deposit</a
+      >
+      <a class="pc-sidebar-link" href="withdraw.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 19V7" />
+          <path d="M7 12l5-5 5 5" />
+          <path d="M5 19h14" /></svg
+        >Withdraw</a
+      >
+      <a class="pc-sidebar-link" href="messages.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+          /></svg
+        >Messages</a
+      >
+      <a class="pc-sidebar-link active" href="profile.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
+        >Profile</a
+      >
+      <a class="pc-sidebar-link" href="settings.html"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
+          /></svg
+        >Settings</a
+      >
+    </div>
+
+    <div class="page">
+      <div class="pc-main">
+        <!-- TOP BAR -->
+        <div class="top-bar">
+          <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
+            >←</span
           >
-            U
+          <div class="top-bar-logo">⚡ kriptex</div>
+          <div class="top-bar-right">
+            <span class="kyc-badge" id="kyc-badge" style="display: none"></span>
           </div>
-          <div style="flex: 1; overflow: hidden">
-            <div style="font-weight: 800; font-size: 16px" id="profile-name">
-              Loading...
-            </div>
+        </div>
+
+        <!-- PROFILE HEADER -->
+        <div style="padding: 20px 16px">
+          <div
+            class="card"
+            style="display: flex; align-items: center; gap: 14px"
+          >
             <div
               style="
-                font-size: 12px;
-                color: var(--text2);
-                overflow: hidden;
-                text-overflow: ellipsis;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, var(--yellow), #d99c00);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                flex-shrink: 0;
+                font-weight: 900;
+                color: #000;
               "
-              id="profile-email"
+              id="profile-avatar"
             >
-              --
+              U
             </div>
+            <div style="flex: 1; overflow: hidden">
+              <div style="font-weight: 800; font-size: 16px" id="profile-name">
+                Loading...
+              </div>
+              <div
+                style="
+                  font-size: 12px;
+                  color: var(--text2);
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+                id="profile-email"
+              >
+                --
+              </div>
+            </div>
+            <span
+              style="font-size: 18px; color: var(--text2)"
+              onclick="openPersonalInfo()"
+              >›</span
+            >
           </div>
-          <span
-            style="font-size: 18px; color: var(--text2)"
-            onclick="openPersonalInfo()"
-            >›</span
+        </div>
+
+        <!-- MENU LIST -->
+        <div class="card" style="padding: 0; overflow: hidden">
+          <div class="profile-menu-item" onclick="openPersonalInfo()">
+            <span class="profile-menu-icon">👤</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Personal Information</div>
+              <div class="profile-menu-sub">Name, phone, country</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+
+          <div class="profile-menu-item" onclick="openKycPage()">
+            <span class="profile-menu-icon">🆔</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Identity Verification</div>
+              <div class="profile-menu-sub" id="kyc-menu-sub">
+                Not submitted
+              </div>
+            </div>
+            <span class="profile-menu-status" id="kyc-menu-status">❌</span>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+
+          <div
+            class="profile-menu-item"
+            onclick="openMerchantPage()"
+            id="merchant-menu-item"
           >
-        </div>
-      </div>
-
-      <!-- MENU LIST -->
-      <div class="card" style="padding: 0; overflow: hidden">
-        <div class="profile-menu-item" onclick="openPersonalInfo()">
-          <span class="profile-menu-icon">👤</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">Personal Information</div>
-            <div class="profile-menu-sub">Name, phone, country</div>
+            <span class="profile-menu-icon">🏆</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">P2P Merchant</div>
+              <div class="profile-menu-sub" id="merchant-menu-sub">
+                Locked — complete KYC first
+              </div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
           </div>
-          <span class="profile-menu-arrow">›</span>
-        </div>
 
-        <div class="profile-menu-item" onclick="openKycPage()">
-          <span class="profile-menu-icon">🆔</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">Identity Verification</div>
-            <div class="profile-menu-sub" id="kyc-menu-sub">Not submitted</div>
+          <div
+            class="profile-menu-item"
+            onclick="openModal('orders-modal'); loadOrderHistory(auth.currentUser.uid)"
+          >
+            <span class="profile-menu-icon">📋</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Order History</div>
+              <div class="profile-menu-sub">View past trades</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
           </div>
-          <span class="profile-menu-status" id="kyc-menu-status">❌</span>
-          <span class="profile-menu-arrow">›</span>
-        </div>
 
-        <div
-          class="profile-menu-item"
-          onclick="openMerchantPage()"
-          id="merchant-menu-item"
-        >
-          <span class="profile-menu-icon">🏆</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">P2P Merchant</div>
-            <div class="profile-menu-sub" id="merchant-menu-sub">
-              Locked — complete KYC first
+          <div
+            class="profile-menu-item"
+            onclick="openModal('transactions-modal'); loadTransactions()"
+          >
+            <span class="profile-menu-icon">📊</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Transaction History</div>
+              <div class="profile-menu-sub">Deposits, withdrawals, trades</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+          <div
+            class="profile-menu-item"
+            onclick="window.location.href='settings.html'"
+          >
+            <span class="profile-menu-icon">⚙️</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">Settings</div>
+              <div class="profile-menu-sub">Theme, security, notifications</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+          <div class="profile-menu-item" onclick="openModal('about-modal')">
+            <span class="profile-menu-icon">ℹ️</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">About</div>
+              <div class="profile-menu-sub">App info & support</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+        </div>
+        <!-- MERCHANT GLOW CTA (only if eligible) -->
+        <div style="padding: 0 16px 20px; display: none" id="merchant-cta">
+          <div class="merchant-glow-card" onclick="openMerchantPage()">
+            <div style="font-size: 28px; margin-bottom: 6px">🏆</div>
+            <div style="font-weight: 800; font-size: 15px; margin-bottom: 4px">
+              Become a P2P Merchant
+            </div>
+            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7)">
+              Post your own listings and set your own rates
             </div>
           </div>
-          <span class="profile-menu-arrow">›</span>
         </div>
 
-        <div
-          class="profile-menu-item"
-          onclick="openModal('orders-modal'); loadOrderHistory(auth.currentUser.uid)"
-        >
-          <span class="profile-menu-icon">📋</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">Order History</div>
-            <div class="profile-menu-sub">View past trades</div>
-          </div>
-          <span class="profile-menu-arrow">›</span>
+        <!-- LOGOUT -->
+        <div style="padding: 0 16px 20px">
+          <button class="btn-secondary" onclick="logoutUser()">
+            🚪 Logout
+          </button>
         </div>
-
-        <div
-          class="profile-menu-item"
-          onclick="openModal('transactions-modal'); loadTransactions()"
-        >
-          <span class="profile-menu-icon">📊</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">Transaction History</div>
-            <div class="profile-menu-sub">Deposits, withdrawals, trades</div>
-          </div>
-          <span class="profile-menu-arrow">›</span>
-        </div>
-        <div
-          class="profile-menu-item"
-          onclick="window.location.href='settings.html'"
-        >
-          <span class="profile-menu-icon">⚙️</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">Settings</div>
-            <div class="profile-menu-sub">Theme, security, notifications</div>
-          </div>
-          <span class="profile-menu-arrow">›</span>
-        </div>
-        <div class="profile-menu-item" onclick="openModal('about-modal')">
-          <span class="profile-menu-icon">ℹ️</span>
-          <div class="profile-menu-text">
-            <div class="profile-menu-title">About</div>
-            <div class="profile-menu-sub">App info & support</div>
-          </div>
-          <span class="profile-menu-arrow">›</span>
-        </div>
-      </div>
-      <!-- MERCHANT GLOW CTA (only if eligible) -->
-      <div style="padding: 0 16px 20px; display: none" id="merchant-cta">
-        <div class="merchant-glow-card" onclick="openMerchantPage()">
-          <div style="font-size: 28px; margin-bottom: 6px">🏆</div>
-          <div style="font-weight: 800; font-size: 15px; margin-bottom: 4px">
-            Become a P2P Merchant
-          </div>
-          <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7)">
-            Post your own listings and set your own rates
-          </div>
-        </div>
-      </div>
-
-      <!-- LOGOUT -->
-      <div style="padding: 0 16px 20px">
-        <button class="btn-secondary" onclick="logoutUser()">🚪 Logout</button>
       </div>
     </div>
 
@@ -223,106 +307,6 @@
               <option value="ET">🇪🇹 Ethiopia</option>
               <option value="US">🇺🇸 United States</option>
               <option value="GB">🇬🇧 United Kingdom</option>
-              <option value="CA">🇨🇦 Canada</option>
-              <option value="AU">🇦🇺 Australia</option>
-              <option value="DE">🇩🇪 Germany</option>
-              <option value="FR">🇫🇷 France</option>
-              <option value="IT">🇮🇹 Italy</option>
-              <option value="ES">🇪🇸 Spain</option>
-              <option value="PT">🇵🇹 Portugal</option>
-              <option value="NL">🇳🇱 Netherlands</option>
-              <option value="BE">🇧🇪 Belgium</option>
-              <option value="CH">🇨🇭 Switzerland</option>
-              <option value="SE">🇸🇪 Sweden</option>
-              <option value="NO">🇳🇴 Norway</option>
-              <option value="DK">🇩🇰 Denmark</option>
-              <option value="FI">🇫🇮 Finland</option>
-              <option value="PL">🇵🇱 Poland</option>
-              <option value="CZ">🇨🇿 Czech Republic</option>
-              <option value="AT">🇦🇹 Austria</option>
-              <option value="GR">🇬🇷 Greece</option>
-              <option value="IE">🇮🇪 Ireland</option>
-              <option value="RU">🇷🇺 Russia</option>
-              <option value="UA">🇺🇦 Ukraine</option>
-              <option value="TR">🇹🇷 Turkey</option>
-              <option value="EG">🇪🇬 Egypt</option>
-              <option value="NG">🇳🇬 Nigeria</option>
-              <option value="KE">🇰🇪 Kenya</option>
-              <option value="GH">🇬🇭 Ghana</option>
-              <option value="ZA">🇿🇦 South Africa</option>
-              <option value="TZ">🇹🇿 Tanzania</option>
-              <option value="UG">🇺🇬 Uganda</option>
-              <option value="RW">🇷🇼 Rwanda</option>
-              <option value="ET">🇪🇹 Ethiopia (dup)</option>
-              <option value="MA">🇲🇦 Morocco</option>
-              <option value="DZ">🇩🇿 Algeria</option>
-              <option value="TN">🇹🇳 Tunisia</option>
-              <option value="SN">🇸🇳 Senegal</option>
-              <option value="CI">🇨🇮 Ivory Coast</option>
-              <option value="CM">🇨🇲 Cameroon</option>
-              <option value="ZM">🇿🇲 Zambia</option>
-              <option value="ZW">🇿🇼 Zimbabwe</option>
-              <option value="MZ">🇲🇿 Mozambique</option>
-              <option value="AO">🇦🇴 Angola</option>
-              <option value="SD">🇸🇩 Sudan</option>
-              <option value="SO">🇸🇴 Somalia</option>
-              <option value="DJ">🇩🇯 Djibouti</option>
-              <option value="ER">🇪🇷 Eritrea</option>
-              <option value="SS">🇸🇸 South Sudan</option>
-              <option value="AE">🇦🇪 UAE</option>
-              <option value="SA">🇸🇦 Saudi Arabia</option>
-              <option value="QA">🇶🇦 Qatar</option>
-              <option value="KW">🇰🇼 Kuwait</option>
-              <option value="BH">🇧🇭 Bahrain</option>
-              <option value="OM">🇴🇲 Oman</option>
-              <option value="JO">🇯🇴 Jordan</option>
-              <option value="LB">🇱🇧 Lebanon</option>
-              <option value="IQ">🇮🇶 Iraq</option>
-              <option value="IL">🇮🇱 Israel</option>
-              <option value="IR">🇮🇷 Iran</option>
-              <option value="PK">🇵🇰 Pakistan</option>
-              <option value="IN">🇮🇳 India</option>
-              <option value="BD">🇧🇩 Bangladesh</option>
-              <option value="LK">🇱🇰 Sri Lanka</option>
-              <option value="NP">🇳🇵 Nepal</option>
-              <option value="CN">🇨🇳 China</option>
-              <option value="JP">🇯🇵 Japan</option>
-              <option value="KR">🇰🇷 South Korea</option>
-              <option value="VN">🇻🇳 Vietnam</option>
-              <option value="TH">🇹🇭 Thailand</option>
-              <option value="MY">🇲🇾 Malaysia</option>
-              <option value="SG">🇸🇬 Singapore</option>
-              <option value="ID">🇮🇩 Indonesia</option>
-              <option value="PH">🇵🇭 Philippines</option>
-              <option value="MM">🇲🇲 Myanmar</option>
-              <option value="KH">🇰🇭 Cambodia</option>
-              <option value="BR">🇧🇷 Brazil</option>
-              <option value="AR">🇦🇷 Argentina</option>
-              <option value="MX">🇲🇽 Mexico</option>
-              <option value="CO">🇨🇴 Colombia</option>
-              <option value="CL">🇨🇱 Chile</option>
-              <option value="PE">🇵🇪 Peru</option>
-              <option value="VE">🇻🇪 Venezuela</option>
-              <option value="EC">🇪🇨 Ecuador</option>
-              <option value="BO">🇧🇴 Bolivia</option>
-              <option value="UY">🇺🇾 Uruguay</option>
-              <option value="PY">🇵🇾 Paraguay</option>
-              <option value="CU">🇨🇺 Cuba</option>
-              <option value="DO">🇩🇴 Dominican Republic</option>
-              <option value="JM">🇯🇲 Jamaica</option>
-              <option value="HT">🇭🇹 Haiti</option>
-              <option value="NZ">🇳🇿 New Zealand</option>
-              <option value="HU">🇭🇺 Hungary</option>
-              <option value="RO">🇷🇴 Romania</option>
-              <option value="BG">🇧🇬 Bulgaria</option>
-              <option value="HR">🇭🇷 Croatia</option>
-              <option value="RS">🇷🇸 Serbia</option>
-              <option value="SK">🇸🇰 Slovakia</option>
-              <option value="SI">🇸🇮 Slovenia</option>
-              <option value="LT">🇱🇹 Lithuania</option>
-              <option value="LV">🇱🇻 Latvia</option>
-              <option value="EE">🇪🇪 Estonia</option>
-              <option value="IS">🇮🇸 Iceland</option>
               <option value="OTHER">🌍 Other</option>
             </select>
             <p style="font-size: 11px; color: var(--text3); margin-top: 6px">
@@ -733,10 +717,7 @@
     </div>
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-      <button
-        class="nav-item active"
-        onclick="window.location.href='home.html'"
-      >
+      <button class="nav-item" onclick="window.location.href='home.html'">
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -799,7 +780,10 @@
         </svg>
         <span class="nav-label">Messages</span>
       </button>
-      <button class="nav-item" onclick="window.location.href='profile.html'">
+      <button
+        class="nav-item active"
+        onclick="window.location.href='profile.html'"
+      >
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"

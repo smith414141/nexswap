@@ -6,22 +6,23 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
     />
-    <title>CryptoSwap — Withdraw</title>
+    <title>kriptex — Withdraw</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
 
     <div class="pc-nav">
       <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        >⚡ CryptoSwap</a
+        >⚡ kriptex</a
       >
       <div class="pc-nav-right">
-        <span class="kyc-badge none" id="kyc-badge-pc">No KYC</span>
+        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
         <button class="btn-logout" onclick="logoutUser()">Logout</button>
       </div>
     </div>
@@ -120,9 +121,9 @@
           <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
             >←</span
           >
-          <div class="top-bar-logo">⚡ CryptoSwap</div>
+          <div class="top-bar-logo">⚡ kriptex</div>
           <div class="top-bar-right">
-            <span class="kyc-badge none" id="kyc-badge">No KYC</span>
+            <span class="kyc-badge" id="kyc-badge" style="display: none"></span>
           </div>
         </div>
 
@@ -338,7 +339,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
-    <script src="wallets.js"></script>
+    <script src="wallet.js"></script>
     <script src="withdraw.js"></script>
   </body>
 </html>

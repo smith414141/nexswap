@@ -1,11 +1,3 @@
 {
-  "rewrites": [{ "source": "/", "destination": "/landing.html" }],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "https://kripex.it.com/",
-      "permanent": true,
-      "has": [{ "type": "host", "value": "www.kripex.it.com" }]
-    }
-  ]
+  "rewrites": [{ "source": "/", "destination": "/landing.html" }]
 }

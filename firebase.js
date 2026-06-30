@@ -16,7 +16,7 @@ const db = firebase.firestore();
 // Auth state — runs on every page
 auth.onAuthStateChanged((user) => {
   const page = window.location.pathname;
-  const publicPages = ["/index.html", "/", "/admin.html"];
+  const publicPages = ["/index.html", "/", "/admin.html", "/landing.html"];
   const isPublicPage = publicPages.some((p) => page.endsWith(p));
 
   if (!user && !isPublicPage) {

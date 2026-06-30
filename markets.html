@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Markets — Kripex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="markets.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <!-- TOP BAR -->
+    <div class="page-header">
+      <h1>Markets</h1>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="market-search-wrap">
+      <input
+        type="text"
+        id="market-search"
+        class="market-search-input"
+        placeholder="Search coin name or symbol..."
+      />
+    </div>
+
+    <!-- SORT PILLS -->
+    <div class="sort-pills">
+      <button class="sort-pill active" onclick="setSort('market_cap', this)">
+        Market Cap
+      </button>
+      <button class="sort-pill" onclick="setSort('gainers', this)">
+        Gainers
+      </button>
+      <button class="sort-pill" onclick="setSort('losers', this)">
+        Losers
+      </button>
+      <button class="sort-pill" onclick="setSort('volume', this)">
+        Volume
+      </button>
+    </div>
+
+    <!-- LIST -->
+    <div id="market-list" class="market-list">
+      <div class="empty-state">Loading markets...</div>
+    </div>
+
+    <!-- BOTTOM NAV (reuse from home.html) -->
+    <nav class="bottom-nav">
+      <a href="home.html" class="nav-item">🏠<span>Home</span></a>
+      <a href="markets.html" class="nav-item active">📊<span>Markets</span></a>
+      <a href="p2p.html" class="nav-item">🔄<span>P2P</span></a>
+      <a href="wallet.html" class="nav-item">👛<span>Wallet</span></a>
+      <a href="profile.html" class="nav-item">👤<span>Profile</span></a>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="markets.js"></script>
+  </body>
+</html>

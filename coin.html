@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coin Detail — Kripex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="coin.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <!-- TOP BAR -->
+    <div class="page-header">
+      <a href="markets.html" class="back-btn">←</a>
+      <h1>Coin Detail</h1>
+    </div>
+
+    <!-- COIN HEADER -->
+    <div class="coin-detail-header">
+      <img id="coin-icon" class="coin-detail-icon" src="" alt="" />
+      <div class="coin-detail-titles">
+        <div id="coin-name" class="coin-detail-name">Loading...</div>
+        <div id="coin-symbol" class="coin-detail-symbol"></div>
+      </div>
+      <button
+        id="fav-toggle"
+        class="fav-toggle-btn"
+        onclick="toggleCoinFavorite()"
+      >
+        ☆ Save
+      </button>
+    </div>
+
+    <!-- PRICE -->
+    <div class="coin-price-block-large">
+      <div id="coin-price" class="coin-detail-price">$0.00</div>
+      <div id="coin-change" class="coin-detail-change">+0.00% (24h)</div>
+    </div>
+
+    <!-- SPARKLINE CHART -->
+    <div class="sparkline-wrap">
+      <svg
+        id="coin-sparkline"
+        viewBox="0 0 340 120"
+        preserveAspectRatio="none"
+      ></svg>
+      <div class="sparkline-label">Last 7 days</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="coin-stats-grid">
+      <div class="coin-stat">
+        <div class="coin-stat-label">Market Cap</div>
+        <div id="stat-market-cap" class="coin-stat-value">--</div>
+      </div>
+      <div class="coin-stat">
+        <div class="coin-stat-label">24h Volume</div>
+        <div id="stat-volume" class="coin-stat-value">--</div>
+      </div>
+      <div class="coin-stat">
+        <div class="coin-stat-label">24h High</div>
+        <div id="stat-high" class="coin-stat-value">--</div>
+      </div>
+      <div class="coin-stat">
+        <div class="coin-stat-label">24h Low</div>
+        <div id="stat-low" class="coin-stat-value">--</div>
+      </div>
+      <div class="coin-stat coin-stat-wide">
+        <div class="coin-stat-label">Circulating Supply</div>
+        <div id="stat-supply" class="coin-stat-value">--</div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="coin-actions">
+      <a id="buy-btn" href="trade.html" class="btn-primary coin-buy-btn"
+        >Trade Now</a
+      >
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="coin.js"></script>
+  </body>
+</html>

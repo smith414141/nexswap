@@ -1,0 +1,162 @@
+.page-header {
+  padding: 18px 20px 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-btn {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.page-header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.coin-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.coin-detail-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+.coin-detail-titles {
+  flex: 1;
+}
+
+.coin-detail-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.coin-detail-symbol {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.fav-toggle-btn {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.fav-toggle-btn.active {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.coin-price-block-large {
+  padding: 0 20px 16px;
+}
+
+.coin-detail-price {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.coin-detail-change {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.coin-detail-change.positive {
+  color: var(--green);
+}
+
+.coin-detail-change.negative {
+  color: var(--red);
+}
+
+.sparkline-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin: 0 20px 20px;
+  padding: 16px;
+}
+
+#coin-sparkline {
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+
+.sparkline-label {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 8px;
+  text-align: right;
+}
+
+.coin-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 20px 20px;
+}
+
+.coin-stat {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.coin-stat-wide {
+  grid-column: 1 / -1;
+}
+
+.coin-stat-label {
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+
+.coin-stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.coin-actions {
+  padding: 0 20px 90px;
+}
+
+.coin-buy-btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .coin-stats-grid {
+    max-width: 700px;
+    margin: 0 auto 20px;
+  }
+
+  .sparkline-wrap,
+  .coin-actions {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

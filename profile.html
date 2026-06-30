@@ -130,7 +130,10 @@
 
         <!-- PROFILE HEADER -->
         <div style="padding: 20px 16px">
-          <div class="card" style="display: flex; align-items: center; gap: 14px">
+          <div
+            class="card"
+            style="display: flex; align-items: center; gap: 14px"
+          >
             <div
               style="
                 width: 56px;
@@ -188,7 +191,9 @@
             <span class="profile-menu-icon">🆔</span>
             <div class="profile-menu-text">
               <div class="profile-menu-title">Identity Verification</div>
-              <div class="profile-menu-sub" id="kyc-menu-sub">Not submitted</div>
+              <div class="profile-menu-sub" id="kyc-menu-sub">
+                Not submitted
+              </div>
             </div>
             <span class="profile-menu-status" id="kyc-menu-status">❌</span>
             <span class="profile-menu-arrow">›</span>
@@ -198,7 +203,9 @@
             <span class="profile-menu-icon">🔐</span>
             <div class="profile-menu-text">
               <div class="profile-menu-title">Two-Factor Authentication</div>
-              <div class="profile-menu-sub" id="twofa-menu-sub">Not enabled</div>
+              <div class="profile-menu-sub" id="twofa-menu-sub">
+                Not enabled
+              </div>
             </div>
             <span class="profile-menu-status" id="twofa-menu-status">❌</span>
             <span class="profile-menu-arrow">›</span>
@@ -277,7 +284,9 @@
 
         <!-- LOGOUT -->
         <div style="padding: 0 16px 20px">
-          <button class="btn-secondary" onclick="logoutUser()">🚪 Logout</button>
+          <button class="btn-secondary" onclick="logoutUser()">
+            🚪 Logout
+          </button>
         </div>
       </div>
     </div>
@@ -513,21 +522,46 @@
         <div style="padding: 16px; overflow-y: auto">
           <!-- STATE: NOT SET UP -->
           <div id="twofa-state-none">
-            <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.6;">
-              2FA adds an extra layer of security and is required to become a P2P merchant.
-              Scan the QR code below with Google Authenticator (or any TOTP app), then enter
-              the 6-digit code it shows to confirm setup.
+            <p
+              style="
+                font-size: 13px;
+                color: var(--text2);
+                margin-bottom: 16px;
+                line-height: 1.6;
+              "
+            >
+              2FA adds an extra layer of security and is required to become a
+              P2P merchant. Scan the QR code below with Google Authenticator (or
+              any TOTP app), then enter the 6-digit code it shows to confirm
+              setup.
             </p>
-            <div style="display:flex; justify-content:center; margin-bottom:16px;">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: 16px;
+              "
+            >
               <div id="twofa-qr-container"></div>
             </div>
             <div class="form-group">
               <label>Can't scan? Enter this code manually</label>
-              <input type="text" id="twofa-secret-display" readonly style="font-family:monospace; letter-spacing:1px;" />
+              <input
+                type="text"
+                id="twofa-secret-display"
+                readonly
+                style="font-family: monospace; letter-spacing: 1px"
+              />
             </div>
             <div class="form-group">
               <label>Enter 6-digit code from your app</label>
-              <input type="text" id="twofa-confirm-code" placeholder="000000" maxlength="6" inputmode="numeric" />
+              <input
+                type="text"
+                id="twofa-confirm-code"
+                placeholder="000000"
+                maxlength="6"
+                inputmode="numeric"
+              />
             </div>
             <button class="btn-primary" onclick="confirm2faSetup()">
               Confirm & Enable 2FA
@@ -772,10 +806,7 @@
     </div>
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-      <button
-        class="nav-item"
-        onclick="window.location.href='home.html'"
-      >
+      <button class="nav-item" onclick="window.location.href='home.html'">
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -808,6 +839,23 @@
         </svg>
         <span class="nav-label">P2P</span>
       </button>
+      <button class="nav-item" onclick="window.location.href='markets.html'">
+        <svg
+          class="nav-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 3v18h18" />
+          <path d="M18 17V9" />
+          <path d="M13 17V5" />
+          <path d="M8 17v-3" />
+        </svg>
+        <span class="nav-label">Markets</span>
+      </button>
       <button class="nav-item" onclick="window.location.href='deposit.html'">
         <svg
           class="nav-icon-svg"
@@ -838,7 +886,10 @@
         </svg>
         <span class="nav-label">Messages</span>
       </button>
-      <button class="nav-item active" onclick="window.location.href='profile.html'">
+      <button
+        class="nav-item active"
+        onclick="window.location.href='profile.html'"
+      >
         <svg
           class="nav-icon-svg"
           viewBox="0 0 24 24"
@@ -863,24 +914,55 @@
           <span class="modal-close" onclick="closeModal('twofa-modal')">✕</span>
         </div>
         <div style="padding: 16px; overflow-y: auto">
-
           <div id="twofa-step-qr">
-            <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.6;">
+            <p
+              style="
+                font-size: 13px;
+                color: var(--text2);
+                margin-bottom: 16px;
+                line-height: 1.6;
+              "
+            >
               1. Install Google Authenticator on your phone.<br />
               2. Scan this QR code with the app.<br />
               3. Enter the 6-digit code it shows below.
             </p>
-            <div style="display: flex; justify-content: center; margin-bottom: 16px;">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                margin-bottom: 16px;
+              "
+            >
               <div id="twofa-qr-container"></div>
             </div>
-            <p style="font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 16px; word-break: break-all;">
-              Can't scan? Enter manually: <strong id="twofa-secret-text"></strong>
+            <p
+              style="
+                font-size: 11px;
+                color: var(--text3);
+                text-align: center;
+                margin-bottom: 16px;
+                word-break: break-all;
+              "
+            >
+              Can't scan? Enter manually:
+              <strong id="twofa-secret-text"></strong>
             </p>
             <div class="form-group">
               <label>6-Digit Code</label>
-              <input type="text" id="twofa-code-input" placeholder="123456" maxlength="6" inputmode="numeric" />
+              <input
+                type="text"
+                id="twofa-code-input"
+                placeholder="123456"
+                maxlength="6"
+                inputmode="numeric"
+              />
             </div>
-            <button class="btn-primary" id="twofa-confirm-btn" onclick="confirm2faCode()">
+            <button
+              class="btn-primary"
+              id="twofa-confirm-btn"
+              onclick="confirm2faCode()"
+            >
               Confirm
             </button>
           </div>
@@ -891,9 +973,9 @@
               <div>
                 <div class="kyc-step-title">Authenticator Linked</div>
                 <div class="kyc-step-desc">
-                  2FA will fully activate once your identity verification (KYC) is
-                  also approved. You'll see "Active" in your profile once both are
-                  done.
+                  2FA will fully activate once your identity verification (KYC)
+                  is also approved. You'll see "Active" in your profile once
+                  both are done.
                 </div>
               </div>
             </div>
@@ -901,7 +983,6 @@
               Done
             </button>
           </div>
-
         </div>
       </div>
     </div>

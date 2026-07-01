@@ -119,7 +119,7 @@ function confirmDeleteAccount() {
       return user.delete();
     })
     .then(() => {
-      window.location.href = "index.html";
+      window.location.href = "login.html";
     })
     .catch((err) => {
       if (err.code === "auth/requires-recent-login") {

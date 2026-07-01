@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kripex — Buy & Sell Crypto P2P</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="auth-wrapper">
+      <!-- LOGO -->
+      <div class="auth-logo">
+        <div class="logo-icon">⚡</div>
+        <span>Kripex</span>
+      </div>
+
+      <!-- TABS -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">
+          Login
+        </button>
+        <button class="auth-tab" onclick="switchTab('register')">
+          Register
+        </button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="login-form" class="auth-form">
+        <div class="form-group">
+          <label>Email or Phone Number</label>
+          <input
+            type="text"
+            id="login-email"
+            placeholder="Email or +251 9XX XXX XXX"
+          />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            id="login-password"
+            placeholder="Enter your password"
+          />
+        </div>
+        <button class="btn-primary" onclick="login()">Login</button>
+
+        <div
+          style="display: flex; align-items: center; gap: 10px; margin: 14px 0"
+        >
+          <div style="flex: 1; height: 1px; background: var(--border)"></div>
+          <span style="font-size: 11px; color: var(--text3)">OR</span>
+          <div style="flex: 1; height: 1px; background: var(--border)"></div>
+        </div>
+
+        <button
+          class="btn-secondary"
+          onclick="loginWithGoogle()"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+          "
+        >
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path
+              fill="#FFC107"
+              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+            />
+            <path
+              fill="#FF3D00"
+              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+            />
+            <path
+              fill="#4CAF50"
+              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+            />
+            <path
+              fill="#1976D2"
+              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+            />
+          </svg>
+          Continue with Google
+        </button>
+
+        <p class="auth-link" onclick="switchTab('register')">
+          Don't have an account? <span>Register</span>
+        </p>
+        <p
+          class="auth-link"
+          onclick="forgotPassword()"
+          style="margin-top: -4px"
+        >
+          Forgot password? <span>Reset</span>
+        </p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <div id="register-form" class="auth-form" style="display: none">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="reg-name" placeholder="Enter your full name" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="Enter your email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            id="reg-password"
+            placeholder="Min 6 characters"
+          />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div style="display: flex; gap: 8px">
+            <select id="reg-phone-code" style="flex: 0 0 110px; padding: 0 8px">
+              <option value="+251" selected>🇪🇹 +251</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+254">🇰🇪 +254</option>
+              <option value="+255">🇹🇿 +255</option>
+              <option value="+256">🇺🇬 +256</option>
+              <option value="+20">🇪🇬 +20</option>
+              <option value="+234">🇳🇬 +234</option>
+              <option value="+233">🇬🇭 +233</option>
+              <option value="+27">🇿🇦 +27</option>
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+90">🇹🇷 +90</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+1">🇨🇦 +1</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+52">🇲🇽 +52</option>
+              <option value="+63">🇵🇭 +63</option>
+              <option value="+62">🇮🇩 +62</option>
+              <option value="+92">🇵🇰 +92</option>
+              <option value="+880">🇧🇩 +880</option>
+              <option value="+7">🇷🇺 +7</option>
+            </select>
+            <input
+              type="tel"
+              id="reg-phone"
+              placeholder="9XX XXX XXX"
+              style="flex: 1"
+            />
+          </div>
+        </div>
+        <div
+          class="g-recaptcha"
+          data-sitekey="6LexgSotAAAAAMBLYiVZ7BCC1O-IFPncGy0mOzTG"
+          style="margin-bottom: 14px"
+        ></div>
+        <button class="btn-primary" onclick="register()">Create Account</button>
+
+        <div
+          style="display: flex; align-items: center; gap: 10px; margin: 14px 0"
+        >
+          <div style="flex: 1; height: 1px; background: var(--border)"></div>
+          <span style="font-size: 11px; color: var(--text3)">OR</span>
+          <div style="flex: 1; height: 1px; background: var(--border)"></div>
+        </div>
+
+        <button
+          class="btn-secondary"
+          onclick="loginWithGoogle()"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+          "
+        >
+          <svg width="18" height="18" viewBox="0 0 48 48">
+            <path
+              fill="#FFC107"
+              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+            />
+            <path
+              fill="#FF3D00"
+              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+            />
+            <path
+              fill="#4CAF50"
+              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+            />
+            <path
+              fill="#1976D2"
+              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+            />
+          </svg>
+          Continue with Google
+        </button>
+
+        <p class="auth-link" onclick="switchTab('login')">
+          Already have an account? <span>Login</span>
+        </p>
+      </div>
+
+      <!-- TRUST BADGES -->
+      <div class="trust-badges">
+        <div class="trust-badge">🔒 Secure</div>
+        <div class="trust-badge">⚡ Fast</div>
+        <div class="trust-badge">✅ Verified</div>
+        <div class="trust-badge">🌍 Global</div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast-container"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

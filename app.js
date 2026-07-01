@@ -342,6 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ---- LOGOUT ----
 function logoutUser() {
   auth.signOut().then(() => {
-    window.location.href = "/index.html";
+    window.location.href = "/login.html"; // ← correct
   });
 }

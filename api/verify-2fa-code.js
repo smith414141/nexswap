@@ -19,7 +19,12 @@ function base32Decode(base32) {
 // Standard TOTP (RFC 6238): HMAC-SHA1 over a 30-second time counter,
 // truncated to a 6-digit code. This is exactly what Google Authenticator,
 // Authy, and similar apps compute on their end.
-function generateTOTP(secretBase32, timeStep = 30, digits = 6, counterOffset = 0) {
+function generateTOTP(
+  secretBase32,
+  timeStep = 30,
+  digits = 6,
+  counterOffset = 0
+) {
   const key = base32Decode(secretBase32);
   const counter = Math.floor(Date.now() / 1000 / timeStep) + counterOffset;
 
@@ -39,12 +44,16 @@ function generateTOTP(secretBase32, timeStep = 30, digits = 6, counterOffset = 0
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ success: false, error: "Method not allowed" });
+    return res
+      .status(405)
+      .json({ success: false, error: "Method not allowed" });
   }
 
   const { secret, code } = req.body;
   if (!secret || !code) {
-    return res.status(400).json({ success: false, error: "Secret and code required" });
+    return res
+      .status(400)
+      .json({ success: false, error: "Secret and code required" });
   }
 
   // Check current window plus one step before/after, so a code typed right

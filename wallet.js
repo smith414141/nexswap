@@ -452,3 +452,105 @@ const DEPOSIT_ADDRESSES = {
     THETA: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
   },
 };
+// ── ADD THIS BLOCK at the bottom of your existing wallet.js ──
+// Multi-wallet sub-balance display helper
+// Your wallets Firestore doc already stores all coin balances as flat fields.
+// This function reads them and groups by sub-wallet for display.
+// Sub-wallets are logical groupings only — there is no actual separation in Firestore.
+
+const SUB_WALLET_MAP = {
+  Spot: [
+    "BTC",
+    "ETH",
+    "USDT",
+    "USDC",
+    "BNB",
+    "SOL",
+    "XRP",
+    "ADA",
+    "DOGE",
+    "TRX",
+    "TON",
+    "AVAX",
+    "DOT",
+    "MATIC",
+    "LINK",
+    "LTC",
+    "SHIB",
+    "BCH",
+    "UNI",
+    "XLM",
+    "ATOM",
+    "ETC",
+    "FIL",
+    "APT",
+    "NEAR",
+    "ICP",
+    "HBAR",
+    "AAVE",
+    "XTZ",
+    "THETA",
+  ],
+};
+
+function renderSubWallets(walletData, prices) {
+  // prices = { BTC: 67500, ETH: 3500, USDT: 1, ... }
+  const container = document.getElementById("sub-wallets");
+  if (!container) return;
+
+  const spotCoins = SUB_WALLET_MAP.Spot.map((sym) => {
+    const amount = walletData[sym] || 0;
+    const price = prices[sym] || 0;
+    const usd = amount * price;
+    return { sym, amount, usd };
+  }).filter((c) => c.amount > 0);
+
+  const spotTotal = spotCoins.reduce((sum, c) => sum + c.usd, 0);
+
+  if (!spotCoins.length) {
+    container.innerHTML =
+      '<div class="empty-state">No balances yet. Deposit to get started.</div>';
+    return;
+  }
+
+  container.innerHTML = `
+      <div class="card" style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-weight:700;">Spot Wallet</span>
+          <span style="font-weight:800;color:var(--yellow);">$${spotTotal.toFixed(
+            2
+          )}</span>
+        </div>
+        ${spotCoins
+          .map((c) => {
+            const coin = (typeof CRYPTO_LIST !== "undefined"
+              ? CRYPTO_LIST.find((x) => x.symbol === c.sym)
+              : null) || { icon: c.sym[0], color: "#F0B90B" };
+            const decimals = c.sym === "BTC" ? 8 : c.usd < 1 ? 6 : 4;
+            return `
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+              <div style="width:32px;height:32px;border-radius:50%;background:${
+                coin.color
+              }22;color:${
+              coin.color
+            };display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;">${
+              coin.icon
+            }</div>
+              <div style="flex:1;"><div style="font-size:13px;font-weight:600;">${
+                c.sym
+              }</div></div>
+              <div style="text-align:right;">
+                <div style="font-size:13px;font-weight:700;">${c.amount.toFixed(
+                  decimals
+                )}</div>
+                <div style="font-size:11px;color:var(--text3);">$${c.usd.toFixed(
+                  2
+                )}</div>
+              </div>
+            </div>
+          `;
+          })
+          .join("")}
+      </div>
+    `;
+}

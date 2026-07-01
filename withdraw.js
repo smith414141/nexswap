@@ -206,3 +206,84 @@ function submitWithdrawal() {
       btn.textContent = "Submit Withdrawal Request";
     });
 }
+// ── ADDRESS BOOK — add these functions to withdraw.js ──
+// Saved addresses stored in Firestore addressBook collection per user.
+
+let savedAddresses = [];
+
+function loadAddressBook() {
+  const user = auth.currentUser;
+  if (!user) return;
+  db.collection("addressBook")
+    .doc(user.uid)
+    .get()
+    .then((doc) => {
+      savedAddresses = doc.exists ? doc.data().addresses || [] : [];
+      renderAddressBook();
+    });
+}
+
+function renderAddressBook() {
+  const container = document.getElementById("address-book-list");
+  if (!container) return;
+  if (!savedAddresses.length) {
+    container.innerHTML =
+      '<div style="font-size:12px;color:var(--text3);padding:8px 0;">No saved addresses yet.</div>';
+    return;
+  }
+  container.innerHTML = savedAddresses
+    .map(
+      (a, i) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);" onclick="useAddress('${
+        a.address
+      }')">
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;">${a.label}</div>
+          <div style="font-size:10px;color:var(--text3);">${
+            a.network
+          } · ${a.address.slice(0, 12)}...${a.address.slice(-6)}</div>
+        </div>
+        <button onclick="event.stopPropagation();deleteAddress(${i})" style="background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;">✕</button>
+      </div>
+    `
+    )
+    .join("");
+}
+
+function useAddress(address) {
+  document.getElementById("wd-address").value = address;
+  document.getElementById("address-book-modal").style.display = "none";
+}
+
+function saveCurrentAddress() {
+  const user = auth.currentUser;
+  const address = document.getElementById("wd-address").value.trim();
+  const label = prompt("Label for this address (e.g. My Binance):");
+  if (!label || !address) return;
+
+  savedAddresses.push({
+    label,
+    address,
+    network: withdrawNetwork,
+    crypto: withdrawCrypto,
+  });
+  db.collection("addressBook")
+    .doc(user.uid)
+    .set({ addresses: savedAddresses }, { merge: true })
+    .then(() => showToast("Address saved!", "success"))
+    .catch((err) => showToast(err.message, "error"));
+}
+
+function deleteAddress(index) {
+  savedAddresses.splice(index, 1);
+  const user = auth.currentUser;
+  db.collection("addressBook")
+    .doc(user.uid)
+    .set({ addresses: savedAddresses }, { merge: true })
+    .then(() => renderAddressBook());
+}
+
+function openAddressBook() {
+  loadAddressBook();
+  document.getElementById("address-book-modal").style.display = "flex";
+}

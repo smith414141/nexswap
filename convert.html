@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Convert — Kripex</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page" style="padding-bottom: 24px">
+      <div class="top-bar">
+        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
+          >←</span
+        >
+        <div class="top-bar-logo">Convert</div>
+        <span style="width: 20px"></span>
+      </div>
+
+      <div style="padding: 16px">
+        <!-- FROM -->
+        <p class="section-title">From</p>
+        <div class="card" style="margin-bottom: 12px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 10px;
+            "
+          >
+            <select
+              id="from-coin-select"
+              style="
+                font-size: 16px;
+                font-weight: 800;
+                background: none;
+                border: none;
+                color: var(--text);
+                cursor: pointer;
+              "
+            ></select>
+            <span id="from-balance" style="font-size: 11px; color: var(--text3)"
+              >Available: --</span
+            >
+          </div>
+          <div class="input-row" style="margin: 0">
+            <input
+              type="number"
+              id="convert-amount"
+              placeholder="0.00"
+              min="0"
+              oninput="updateConvertPreview()"
+            />
+            <span id="from-coin-label" class="input-suffix">USDT</span>
+            <button
+              onclick="setMaxConvert()"
+              style="
+                background: var(--yellow);
+                color: #0b0e11;
+                border: none;
+                border-radius: 6px;
+                padding: 4px 10px;
+                font-size: 11px;
+                font-weight: 700;
+                cursor: pointer;
+                margin-left: 4px;
+              "
+            >
+              MAX
+            </button>
+          </div>
+        </div>
+
+        <!-- SWAP DIRECTION -->
+        <div style="text-align: center; margin-bottom: 12px">
+          <button
+            onclick="swapDirection()"
+            style="
+              background: var(--bg2);
+              border: 1px solid var(--border);
+              border-radius: 50%;
+              width: 36px;
+              height: 36px;
+              font-size: 18px;
+              cursor: pointer;
+            "
+          >
+            ⇅
+          </button>
+        </div>
+
+        <!-- TO -->
+        <p class="section-title">To</p>
+        <div class="card" style="margin-bottom: 20px">
+          <div style="margin-bottom: 10px">
+            <select
+              id="to-coin-select"
+              style="
+                font-size: 16px;
+                font-weight: 800;
+                background: none;
+                border: none;
+                color: var(--text);
+                cursor: pointer;
+              "
+            ></select>
+          </div>
+          <div
+            id="convert-preview"
+            style="font-size: 22px; font-weight: 800; color: var(--text)"
+          >
+            -- BTC
+          </div>
+          <div
+            id="convert-rate"
+            style="font-size: 11px; color: var(--text3); margin-top: 4px"
+          >
+            --
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <button id="convert-btn" class="btn-primary" onclick="submitConvert()">
+          Convert
+        </button>
+
+        <div
+          style="
+            background: rgba(240, 185, 11, 0.06);
+            border: 1px solid rgba(240, 185, 11, 0.15);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+          "
+        >
+          <p style="font-size: 11px; color: var(--text2); line-height: 1.5">
+            ⚠️ Conversions use live CoinGecko prices. Market prices fluctuate —
+            the rate shown is indicative and may differ slightly at execution.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="wallet.js"></script>
+    <script src="convert.js"></script>
+  </body>
+</html>

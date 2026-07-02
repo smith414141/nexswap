@@ -1,0 +1,47 @@
+.trade-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 12px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+@media (min-width: 768px) {
+  .trade-grid {
+    grid-template-columns: 2fr 1fr;
+    height: calc(100vh - 70px);
+  }
+}
+.trade-chart-wrap {
+  min-height: 400px;
+}
+.trade-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+.order-book {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  flex: 1;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.order-book div {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+.trade-form .form-group {
+  margin-bottom: 8px;
+}
+.trade-form .form-group input {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+#region-lock-message {
+  display: none;
+}

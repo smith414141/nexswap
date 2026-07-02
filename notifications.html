@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications – Kripex</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page">
+      <div class="top-bar">
+        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
+          >←</span
+        >
+        <div class="top-bar-logo">🔔 Notifications</div>
+        <span style="width: 20px"></span>
+      </div>
+      <div style="padding: 16px">
+        <div class="tabs" style="margin-bottom: 16px">
+          <button class="tab active" onclick="switchNotifTab('all', this)">
+            All
+          </button>
+          <button class="tab" onclick="switchNotifTab('alerts', this)">
+            Price Alerts
+          </button>
+          <button class="tab" onclick="switchNotifTab('system', this)">
+            System
+          </button>
+        </div>
+        <div id="notif-list">
+          <div class="empty-state">No notifications yet.</div>
+        </div>
+        <div style="margin-top: 20px">
+          <p class="section-title">Create Price Alert</p>
+          <div
+            class="card"
+            style="
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+              align-items: center;
+            "
+          >
+            <select
+              id="alert-coin"
+              style="
+                flex: 1;
+                padding: 10px;
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                color: var(--text);
+              "
+            >
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="SOL">SOL</option>
+              <option value="USDT">USDT</option>
+            </select>
+            <select
+              id="alert-condition"
+              style="
+                flex: 1;
+                padding: 10px;
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                color: var(--text);
+              "
+            >
+              <option value="above">Above</option>
+              <option value="below">Below</option>
+            </select>
+            <input
+              type="number"
+              id="alert-price"
+              placeholder="Price"
+              style="
+                flex: 1;
+                padding: 10px;
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                color: var(--text);
+              "
+            />
+            <button
+              class="btn-primary"
+              style="margin: 0; flex: 1"
+              onclick="createPriceAlert()"
+            >
+              Set Alert
+            </button>
+          </div>
+          <div id="active-alerts" style="margin-top: 12px"></div>
+        </div>
+      </div>
+    </div>
+    <div id="toast-container"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="notifications.js"></script>
+  </body>
+</html>

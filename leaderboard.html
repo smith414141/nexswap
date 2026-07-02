@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard – Kripex</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page">
+      <div class="top-bar">
+        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
+          >←</span
+        >
+        <div class="top-bar-logo">🏆 Leaderboard</div>
+        <span style="width: 20px"></span>
+      </div>
+      <div style="padding: 16px">
+        <div class="card">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              padding: 10px 0;
+              border-bottom: 1px solid var(--border);
+            "
+          >
+            <span>🥇 1. CryptoKing</span><span>$2,500,000</span>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              padding: 10px 0;
+              border-bottom: 1px solid var(--border);
+            "
+          >
+            <span>🥈 2. WhaleMaster</span><span>$1,800,000</span>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              padding: 10px 0;
+            "
+          >
+            <span>🥉 3. MoonTrader</span><span>$1,200,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

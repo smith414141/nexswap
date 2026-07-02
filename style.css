@@ -1781,3 +1781,40 @@ body {
     right: 24px;
   }
 }
+/* Admin Panel Redesign */
+.admin-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.admin-stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.admin-stat-card .num {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--yellow);
+}
+.admin-stat-card .label {
+  font-size: 11px;
+  color: var(--text3);
+}
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.admin-table th {
+  text-align: left;
+  color: var(--text3);
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.admin-table td {
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border);
+}

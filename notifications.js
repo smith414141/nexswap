@@ -109,6 +109,6 @@ function switchNotifTab(tab, btn) {
   btn.classList.add("active");
   // Simple filter logic (we just show all in 'all')
   document.getElementById("notif-list").innerHTML =
-    '<div class="empty-state">Filtered view (demo)</div>';
+    '<div class="empty-state">No notifications match this filter.</div>';
   loadSystemNotifs(); // Reload all for now
 }

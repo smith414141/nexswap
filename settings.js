@@ -85,8 +85,16 @@ function openApiKeys() {
   let pub = localStorage.getItem("api_pub");
   let sec = localStorage.getItem("api_sec");
   if (!pub) {
-    pub = "pk_demo_" + Math.random().toString(36).substring(2, 10);
-    sec = "sk_demo_" + Math.random().toString(36).substring(2, 10);
+    pub =
+      "kpx_" +
+      Array.from(crypto.getRandomValues(new Uint8Array(8)))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    sec =
+      "kpxs_" +
+      Array.from(crypto.getRandomValues(new Uint8Array(12)))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
     localStorage.setItem("api_pub", pub);
     localStorage.setItem("api_sec", sec);
   }
@@ -95,8 +103,16 @@ function openApiKeys() {
   openModal("api-keys-modal");
 }
 function regenerateApiKeys() {
-  const pub = "pk_demo_" + Math.random().toString(36).substring(2, 10);
-  const sec = "sk_demo_" + Math.random().toString(36).substring(2, 10);
+  const pub =
+    "kpx_" +
+    Array.from(crypto.getRandomValues(new Uint8Array(8)))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  const sec =
+    "kpxs_" +
+    Array.from(crypto.getRandomValues(new Uint8Array(12)))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   localStorage.setItem("api_pub", pub);
   localStorage.setItem("api_sec", sec);
   document.getElementById("api-public").textContent = pub;

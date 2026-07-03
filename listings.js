@@ -100,7 +100,7 @@ function generateListings(currencyCode, crypto, type) {
     const verified = seededRandom(seed + 3) > 0.4;
 
     // Online status
-    // Offline merchants
+      // Offline merchants
     const id = `${currencyCode}-${crypto}-${type}-${i}`;
     const FORCED_OFFLINE_IDS = ["ETB-USDT-sell-0", "ETB-USDT-sell-1"];
     const online = FORCED_OFFLINE_IDS.includes(id)
@@ -153,7 +153,7 @@ function generateListings(currencyCode, crypto, type) {
   return listings;
 }
 
-// ---- ADMIN OVERRIDES (lets admin edit fake demo listings, visible to all users) ----
+// ---- ADMIN OVERRIDES  -----
 function applyListingOverrides(listings) {
   return db
     .collection("listingOverrides")

@@ -2,56 +2,190 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Referral – Kripex</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Referral — Kripex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
-    <div class="page">
+    <div class="page" style="padding-bottom: 40px">
       <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
+        <span style="font-size:20px;cursor:pointer" onclick="goBack()">←</span>
         <div class="top-bar-logo">Referral</div>
-        <span style="width: 20px"></span>
+        <span style="width:20px"></span>
       </div>
-      <div style="padding: 16px; text-align: center">
-        <div style="font-size: 40px">🤝</div>
-        <div style="font-weight: 800; font-size: 20px">
-          Invite Friends, Earn 10%
+
+      <div style="padding: 16px">
+
+        <!-- HERO -->
+        <div style="text-align:center;padding:24px 16px 20px;">
+          <div style="font-size:48px;margin-bottom:12px;">🎁</div>
+          <div style="font-size:22px;font-weight:900;color:var(--text);margin-bottom:8px;">Invite Friends, Earn Together</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;">Share your referral link. When a friend joins and trades, you both benefit.</div>
         </div>
-        <p style="color: var(--text2)">
-          Share your referral link and earn 10% of their trading fees for life.
-        </p>
-        <div class="card" style="display: flex; gap: 8px">
-          <input
-            type="text"
-            value="kripex.it.com/ref/YOUR_CODE"
-            readonly
-            style="
-              flex: 1;
-              background: var(--bg);
-              border: none;
-              padding: 10px;
-              border-radius: 8px;
-              color: var(--text);
-            "
-          /><button
-            onclick="navigator.clipboard.writeText('kripex.it.com/ref/YOUR_CODE')"
-          >
-            📋 Copy
+
+        <!-- STATS ROW -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
+          <div class="card" style="text-align:center;padding:14px 8px;">
+            <div id="stat-referrals" style="font-size:22px;font-weight:900;color:var(--yellow);">0</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px;">Friends Joined</div>
+          </div>
+          <div class="card" style="text-align:center;padding:14px 8px;">
+            <div id="stat-active" style="font-size:22px;font-weight:900;color:var(--green);">0</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px;">Active Traders</div>
+          </div>
+          <div class="card" style="text-align:center;padding:14px 8px;">
+            <div id="stat-earned" style="font-size:22px;font-weight:900;color:var(--blue);">$0</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px;">Total Earned</div>
+          </div>
+        </div>
+
+        <!-- REFERRAL LINK -->
+        <p class="section-title">Your Referral Link</p>
+        <div class="card" style="margin-bottom:20px;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">Share this link with friends:</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="text" id="referral-link" readonly
+              style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:12px;font-family:monospace;"
+              value="Loading..." />
+            <button onclick="copyReferralLink()"
+              style="background:var(--yellow);color:#0b0e11;border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;">
+              📋 Copy
+            </button>
+          </div>
+          <div id="referral-code-display" style="margin-top:8px;font-size:11px;color:var(--text3);">Code: <span id="ref-code" style="color:var(--yellow);font-weight:700;font-family:monospace;">--</span></div>
+        </div>
+
+        <!-- SHARE BUTTONS -->
+        <p class="section-title">Share Via</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+          <button onclick="shareVia('whatsapp')" class="btn-secondary" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;">
+            <span style="font-size:18px;">💬</span> WhatsApp
+          </button>
+          <button onclick="shareVia('telegram')" class="btn-secondary" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;">
+            <span style="font-size:18px;">✈️</span> Telegram
+          </button>
+          <button onclick="shareVia('twitter')" class="btn-secondary" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;">
+            <span style="font-size:18px;">🐦</span> Twitter
+          </button>
+          <button onclick="shareVia('native')" class="btn-secondary" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;">
+            <span style="font-size:18px;">📤</span> More
           </button>
         </div>
+
+        <!-- HOW IT WORKS -->
+        <p class="section-title">How It Works</p>
+        <div class="card" style="margin-bottom:20px;">
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">1</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--text);">Share your link</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Send your unique referral link to friends</div></div>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">2</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--text);">Friend signs up</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">They register using your link or code</div></div>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">3</div>
+            <div><div style="font-size:13px;font-weight:700;color:var(--text);">Both earn rewards</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">You earn from their activity, they get a welcome bonus</div></div>
+          </div>
+        </div>
+
+        <!-- REFERRED USERS -->
+        <p class="section-title">Friends You've Referred</p>
+        <div id="referral-list"><div class="empty-state">No referrals yet. Start sharing your link!</div></div>
+
       </div>
     </div>
+
+    <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
+    <script>
+      let myReferralCode = "";
+      let myReferralLink = "";
+
+      auth.onAuthStateChanged((user) => {
+        if (!user || !user.emailVerified) return;
+        loadReferralData(user);
+      });
+
+      function generateCode(uid) {
+        // Deterministic 8-char code from uid — same every time, no extra Firestore write needed
+        return "KPX" + uid.slice(0, 5).toUpperCase();
+      }
+
+      function loadReferralData(user) {
+        myReferralCode = generateCode(user.uid);
+        myReferralLink = "https://kripex.it.com/login.html?ref=" + myReferralCode;
+
+        document.getElementById("referral-link").value = myReferralLink;
+        document.getElementById("ref-code").textContent = myReferralCode;
+
+        // Load stats from Firestore
+        db.collection("referrals").where("referrerId", "==", user.uid).get().then((snap) => {
+          const total = snap.size;
+          const active = snap.docs.filter(d => d.data().hasTraded).length;
+          const earned = snap.docs.reduce((sum, d) => sum + (d.data().rewardUSD || 0), 0);
+
+          document.getElementById("stat-referrals").textContent = total;
+          document.getElementById("stat-active").textContent = active;
+          document.getElementById("stat-earned").textContent = "$" + earned.toFixed(2);
+
+          // Referral list
+          const list = document.getElementById("referral-list");
+          if (!snap.size) {
+            list.innerHTML = '<div class="empty-state">No referrals yet. Start sharing your link!</div>';
+            return;
+          }
+          list.innerHTML = snap.docs.map(doc => {
+            const d = doc.data();
+            return `<div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:700;">${d.friendName || "Friend"}</div>
+                <div style="font-size:11px;color:var(--text3);">Joined ${d.joinedAt?.toDate?.()?.toLocaleDateString() || "--"}</div>
+              </div>
+              <span class="badge ${d.hasTraded ? 'badge-green' : 'badge-grey'}">${d.hasTraded ? "Active" : "Pending"}</span>
+            </div>`;
+          }).join("");
+        }).catch(() => {});
+
+        // Save referral code to user doc so it can be checked on registration
+        db.collection("users").doc(user.uid).update({ referralCode: myReferralCode }).catch(() => {});
+      }
+
+      function copyReferralLink() {
+        navigator.clipboard.writeText(myReferralLink)
+          .then(() => showToast("Referral link copied!", "success"))
+          .catch(() => {
+            const el = document.createElement("textarea");
+            el.value = myReferralLink;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand("copy");
+            document.body.removeChild(el);
+            showToast("Referral link copied!", "success");
+          });
+      }
+
+      function shareVia(platform) {
+        const text = "Join me on Kripex — buy and sell crypto P2P instantly! Use my referral link:";
+        const url = encodeURIComponent(myReferralLink);
+        const msg = encodeURIComponent(text + " " + myReferralLink);
+
+        if (platform === "whatsapp") window.open("https://wa.me/?text=" + msg, "_blank");
+        else if (platform === "telegram") window.open("https://t.me/share/url?url=" + url + "&text=" + encodeURIComponent(text), "_blank");
+        else if (platform === "twitter") window.open("https://twitter.com/intent/tweet?text=" + msg, "_blank");
+        else if (platform === "native") {
+          if (navigator.share) navigator.share({ title: "Join Kripex", text, url: myReferralLink }).catch(() => {});
+          else copyReferralLink();
+        }
+      }
+    </script>
   </body>
 </html>

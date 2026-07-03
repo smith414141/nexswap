@@ -3,219 +3,109 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trade – Kripex</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <title>Trade — Kripex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="trade.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <!-- TradingView Widget Library -->
-    <script
-      type="text/javascript"
-      src="https://s3.tradingview.com/tv.js"
-    ></script>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
-    <div class="page" style="padding-bottom: 0">
+    <div class="page" style="padding-bottom:0">
+
       <!-- TOP BAR -->
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
-        <div class="top-bar-logo">📊 Trade</div>
-        <div style="display: flex; gap: 8px; align-items: center">
-          <span id="trade-pair" style="font-weight: 800; font-size: 16px"
-            >BTC/USDT</span
-          >
-          <span
-            id="trade-price"
-            style="font-size: 14px; font-weight: 700; color: var(--green)"
-            >$67,500</span
-          >
+      <div class="top-bar" style="border-bottom:1px solid var(--border);">
+        <span style="font-size:20px;cursor:pointer" onclick="goBack()">←</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="trade-pair" style="font-weight:900;font-size:16px;">BTC/USDT</span>
+          <span id="trade-price" style="font-size:14px;font-weight:700;color:var(--green);">--</span>
+          <span id="trade-change" style="font-size:11px;color:var(--text3);">--</span>
         </div>
+        <span style="width:20px"></span>
       </div>
 
-      <!-- LAYOUT: Chart + Orderbook -->
+      <!-- PAIR PILLS -->
+      <div style="display:flex;gap:6px;padding:10px 12px;overflow-x:auto;border-bottom:1px solid var(--border);">
+        <button id="pill-BTCUSDT" class="pair-pill active" onclick="setPair('BTCUSDT')">BTC</button>
+        <button id="pill-ETHUSDT" class="pair-pill" onclick="setPair('ETHUSDT')">ETH</button>
+        <button id="pill-SOLUSDT" class="pair-pill" onclick="setPair('SOLUSDT')">SOL</button>
+        <button id="pill-BNBUSDT" class="pair-pill" onclick="setPair('BNBUSDT')">BNB</button>
+        <button id="pill-XRPUSDT" class="pair-pill" onclick="setPair('XRPUSDT')">XRP</button>
+        <button id="pill-DOGEUSDT" class="pair-pill" onclick="setPair('DOGEUSDT')">DOGE</button>
+      </div>
+
       <div class="trade-grid">
-        <!-- LEFT: Chart -->
+        <!-- CHART -->
         <div class="trade-chart-wrap">
-          <div
-            id="tradingview-widget"
-            style="
-              height: 400px;
-              background: var(--bg2);
-              border-radius: 12px;
-              border: 1px solid var(--border);
-            "
-          ></div>
-          <!-- Quick Buy/Sell buttons -->
-          <div style="display: flex; gap: 8px; margin-top: 10px">
-            <button
-              class="btn-primary"
-              style="margin: 0; flex: 1; background: var(--green)"
-              onclick="quickTrade('buy')"
-            >
-              Buy Market
-            </button>
-            <button
-              class="btn-primary"
-              style="margin: 0; flex: 1; background: var(--red)"
-              onclick="quickTrade('sell')"
-            >
-              Sell Market
-            </button>
-          </div>
+          <div id="tradingview-widget" style="height:360px;background:var(--bg2);border-radius:12px;border:1px solid var(--border);"></div>
         </div>
 
-        <!-- RIGHT: Order Book & Form -->
+        <!-- SIDEBAR -->
         <div class="trade-sidebar">
-          <!-- Order Book -->
+
+          <!-- ORDER BOOK -->
           <div class="order-book">
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                font-size: 11px;
-                color: var(--text3);
-                padding: 4px 0;
-                border-bottom: 1px solid var(--border);
-              "
-            >
-              <span>Price (USDT)</span><span>Amount (BTC)</span
-              ><span>Total</span>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);padding:4px 0;border-bottom:1px solid var(--border);margin-bottom:4px;">
+              <span>Price (USDT)</span><span>Amount</span><span>Total</span>
             </div>
-            <div id="order-book-asks" style="color: var(--red)"></div>
-            <div
-              style="border-top: 2px solid var(--yellow); margin: 4px 0"
-            ></div>
-            <div id="order-book-bids" style="color: var(--green)"></div>
+            <div id="order-book-asks" style="color:var(--red);"></div>
+            <div style="border-top:2px solid var(--yellow);margin:6px 0;text-align:center;font-size:12px;font-weight:800;padding:2px 0;" id="spread-price">--</div>
+            <div id="order-book-bids" style="color:var(--green);"></div>
           </div>
 
-          <!-- Trade Form -->
-          <div class="trade-form card" style="margin-top: 12px; padding: 12px">
-            <div class="tabs" style="margin-bottom: 8px">
-              <button
-                class="tab active"
-                onclick="switchOrderType('limit', this)"
-              >
-                Limit
-              </button>
-              <button class="tab" onclick="switchOrderType('market', this)">
-                Market
-              </button>
-              <button class="tab" onclick="switchOrderType('stop', this)">
-                Stop
-              </button>
+          <!-- TRADE FORM -->
+          <div class="trade-form card" style="margin-top:10px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:8px;">
+              <span>Balance: <span id="balance-quote" style="color:var(--text);">-- USDT</span></span>
+              <span><span id="balance-base" style="color:var(--text);">-- BTC</span></span>
             </div>
-            <div class="form-group">
-              <label>Price (USDT)</label>
-              <input type="number" id="trade-price-input" placeholder="67000" />
+
+            <div class="tabs" style="margin-bottom:10px;">
+              <button class="tab active" onclick="switchOrderType('limit',this)">Limit</button>
+              <button class="tab" onclick="switchOrderType('market',this)">Market</button>
+              <button class="tab" onclick="switchOrderType('stop',this)">Stop</button>
             </div>
-            <div class="form-group">
-              <label>Amount (BTC)</label>
-              <input
-                type="number"
-                id="trade-amount-input"
-                placeholder="0.001"
-              />
+
+            <div class="form-group" style="margin-bottom:8px;">
+              <label style="font-size:11px;color:var(--text3);">Price (USDT)</label>
+              <input type="number" id="trade-price-input" placeholder="Enter price" style="padding:8px 10px;font-size:13px;" />
             </div>
-            <div style="display: flex; gap: 8px">
-              <button
-                class="btn-primary"
-                style="margin: 0; flex: 1; background: var(--green)"
-                onclick="placeOrder('buy')"
-              >
-                Buy
-              </button>
-              <button
-                class="btn-primary"
-                style="margin: 0; flex: 1; background: var(--red)"
-                onclick="placeOrder('sell')"
-              >
-                Sell
-              </button>
+            <div class="form-group" style="margin-bottom:8px;">
+              <label style="font-size:11px;color:var(--text3);">Amount</label>
+              <input type="number" id="trade-amount-input" placeholder="0.00" style="padding:8px 10px;font-size:13px;" />
             </div>
-            <div
-              style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap"
-            >
-              <button
-                class="btn-secondary"
-                style="
-                  margin: 0;
-                  padding: 4px 8px;
-                  font-size: 11px;
-                  width: auto;
-                "
-                onclick="setPercent(25)"
-              >
-                25%
-              </button>
-              <button
-                class="btn-secondary"
-                style="
-                  margin: 0;
-                  padding: 4px 8px;
-                  font-size: 11px;
-                  width: auto;
-                "
-                onclick="setPercent(50)"
-              >
-                50%
-              </button>
-              <button
-                class="btn-secondary"
-                style="
-                  margin: 0;
-                  padding: 4px 8px;
-                  font-size: 11px;
-                  width: auto;
-                "
-                onclick="setPercent(75)"
-              >
-                75%
-              </button>
-              <button
-                class="btn-secondary"
-                style="
-                  margin: 0;
-                  padding: 4px 8px;
-                  font-size: 11px;
-                  width: auto;
-                "
-                onclick="setPercent(100)"
-              >
-                100%
-              </button>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:8px;" id="trade-total-preview">Total: 0.00 USDT</div>
+
+            <!-- PERCENT BUTTONS -->
+            <div style="display:flex;gap:4px;margin-bottom:10px;">
+              <button class="btn-secondary" style="margin:0;padding:4px 0;font-size:10px;flex:1;" onclick="setPercent(25,'buy')">25%</button>
+              <button class="btn-secondary" style="margin:0;padding:4px 0;font-size:10px;flex:1;" onclick="setPercent(50,'buy')">50%</button>
+              <button class="btn-secondary" style="margin:0;padding:4px 0;font-size:10px;flex:1;" onclick="setPercent(75,'buy')">75%</button>
+              <button class="btn-secondary" style="margin:0;padding:4px 0;font-size:10px;flex:1;" onclick="setPercent(100,'buy')">100%</button>
+            </div>
+
+            <div style="display:flex;gap:8px;">
+              <button id="buy-btn" class="btn-primary" style="margin:0;flex:1;background:var(--green);font-size:13px;padding:12px;" onclick="placeOrder('buy')">Buy BTC</button>
+              <button id="sell-btn" class="btn-primary" style="margin:0;flex:1;background:var(--red);font-size:13px;padding:12px;" onclick="placeOrder('sell')">Sell BTC</button>
             </div>
           </div>
 
-          <!-- Region Lock (Futures/Margin) -->
-          <div
-            id="region-lock-message"
-            style="
-              display: none;
-              background: rgba(246, 70, 93, 0.1);
-              border: 1px solid var(--red);
-              border-radius: 8px;
-              padding: 10px;
-              margin-top: 8px;
-              text-align: center;
-              font-size: 12px;
-              color: var(--red);
-            "
-          >
-            ⚠️ Futures & Margin are region-locked. Change your region in
-            Settings.
+          <!-- REGION LOCK -->
+          <div id="region-lock-message" style="display:none;background:rgba(246,70,93,0.1);border:1px solid var(--red);border-radius:8px;padding:10px;margin-top:8px;text-align:center;font-size:12px;color:var(--red);">
+            ⚠️ Futures & Margin are restricted in your region. Change region in Settings.
+          </div>
+
+          <!-- TRADE HISTORY -->
+          <div style="margin-top:10px;">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">Recent Trades</div>
+            <div id="trade-history-list"><div style="font-size:11px;color:var(--text3);">No trades yet.</div></div>
           </div>
         </div>
       </div>
     </div>
 
     <div id="toast-container"></div>
-
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>

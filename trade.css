@@ -45,3 +45,21 @@
 #region-lock-message {
   display: none;
 }
+
+.pair-pill {
+  flex-shrink: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pair-pill.active {
+  background: var(--yellow);
+  color: #0b0e11;
+  border-color: var(--yellow);
+}

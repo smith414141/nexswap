@@ -2,61 +2,111 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Leaderboard – Kripex</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Leaderboard — Kripex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
-    <div class="page">
+    <div class="page" style="padding-bottom:40px">
       <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
+        <span style="font-size:20px;cursor:pointer" onclick="goBack()">←</span>
         <div class="top-bar-logo">🏆 Leaderboard</div>
-        <span style="width: 20px"></span>
+        <span style="width:20px"></span>
       </div>
-      <div style="padding: 16px">
-        <div class="card">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              padding: 10px 0;
-              border-bottom: 1px solid var(--border);
-            "
-          >
-            <span>🥇 1. CryptoKing</span><span>$2,500,000</span>
+      <div style="padding:16px">
+        <div class="tabs" style="margin-bottom:16px">
+          <button class="tab active" onclick="switchTab('volume',this)">Volume</button>
+          <button class="tab" onclick="switchTab('trades',this)">Trades</button>
+          <button class="tab" onclick="switchTab('referrals',this)">Referrals</button>
+        </div>
+        <!-- MY RANK -->
+        <div id="my-rank-card" class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;border:1px solid var(--yellow);">
+          <div style="font-size:22px;font-weight:900;color:var(--yellow);width:36px;text-align:center;" id="my-rank-num">--</div>
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;">Me</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;" id="my-rank-name">You</div>
+            <div style="font-size:11px;color:var(--text3);">Your current rank</div>
           </div>
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              padding: 10px 0;
-              border-bottom: 1px solid var(--border);
-            "
-          >
-            <span>🥈 2. WhaleMaster</span><span>$1,800,000</span>
-          </div>
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              padding: 10px 0;
-            "
-          >
-            <span>🥉 3. MoonTrader</span><span>$1,200,000</span>
+          <div style="text-align:right">
+            <div style="font-size:14px;font-weight:800;color:var(--yellow)" id="my-rank-value">--</div>
           </div>
         </div>
+        <div id="leaderboard-list"><div class="empty-state">Loading...</div></div>
       </div>
     </div>
+    <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
+    <script>
+      let currentTab = "volume";
+      let currentUser = null;
+
+      auth.onAuthStateChanged((user) => {
+        if (!user || !user.emailVerified) return;
+        currentUser = user;
+        loadLeaderboard("volume");
+      });
+
+      function switchTab(tab, btn) {
+        currentTab = tab;
+        document.querySelectorAll(".tabs .tab").forEach(t => t.classList.remove("active"));
+        btn.classList.add("active");
+        loadLeaderboard(tab);
+      }
+
+      function loadLeaderboard(tab) {
+        const list = document.getElementById("leaderboard-list");
+        list.innerHTML = '<div class="empty-state">Loading...</div>';
+
+        // Field to sort by per tab
+        const fieldMap = { volume: "totalVolume", trades: "totalTrades", referrals: "totalReferrals" };
+        const labelMap = { volume: (v) => "$" + (v || 0).toLocaleString(undefined, {maximumFractionDigits:0}), trades: (v) => (v || 0) + " trades", referrals: (v) => (v || 0) + " referrals" };
+        const field = fieldMap[tab];
+
+        db.collection("leaderboard").orderBy(field, "desc").limit(50).get().then((snap) => {
+          if (snap.empty) {
+            list.innerHTML = '<div class="empty-state">No data yet. Start trading to appear here!</div>';
+            return;
+          }
+
+          const entries = [];
+          snap.forEach(doc => entries.push({ id: doc.id, ...doc.data() }));
+
+          // Find current user rank
+          const myIndex = entries.findIndex(e => e.userId === currentUser?.uid);
+          if (myIndex !== -1) {
+            const me = entries[myIndex];
+            document.getElementById("my-rank-num").textContent = "#" + (myIndex + 1);
+            document.getElementById("my-rank-name").textContent = me.displayName || "You";
+            document.getElementById("my-rank-value").textContent = labelMap[tab](me[field]);
+          } else {
+            document.getElementById("my-rank-num").textContent = "--";
+            document.getElementById("my-rank-value").textContent = "Not ranked";
+          }
+
+          const medals = ["🥇", "🥈", "🥉"];
+          list.innerHTML = entries.map((e, i) => {
+            const isMe = e.userId === currentUser?.uid;
+            return `<div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:8px;${isMe ? "border:1px solid var(--yellow);" : ""}">
+              <div style="font-size:${i < 3 ? "22" : "14"}px;font-weight:900;color:${i < 3 ? "var(--yellow)" : "var(--text3)"};width:36px;text-align:center;">${i < 3 ? medals[i] : "#" + (i + 1)}</div>
+              <div style="width:36px;height:36px;border-radius:50%;background:${isMe ? "var(--yellow)" : "var(--bg3)"};color:${isMe ? "#0b0e11" : "var(--text)"};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">${(e.displayName || "?")[0].toUpperCase()}</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:700;color:${isMe ? "var(--yellow)" : "var(--text)"};">${e.displayName || "Trader"}${isMe ? " (You)" : ""}</div>
+                <div style="font-size:11px;color:var(--text3);">${e.country || ""}</div>
+              </div>
+              <div style="font-size:14px;font-weight:800;color:${i === 0 ? "var(--yellow)" : "var(--text)"};">${labelMap[tab](e[field])}</div>
+            </div>`;
+          }).join("");
+        }).catch(() => {
+          list.innerHTML = '<div class="empty-state">Unable to load leaderboard.</div>';
+        });
+      }
+    </script>
   </body>
 </html>

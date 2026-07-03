@@ -27,6 +27,7 @@ function generateTraderName(seed) {
     return `${prefix}${suffix}`;
   }
 }
+
 // Generate consistent avatar color from name
 function getAvatarColor(name) {
   const colors = [
@@ -100,7 +101,7 @@ function generateListings(currencyCode, crypto, type) {
     const verified = seededRandom(seed + 3) > 0.4;
 
     // Online status
-      // Offline merchants
+    // Hardcoded offline demo merchants (for school project demo)
     const id = `${currencyCode}-${crypto}-${type}-${i}`;
     const FORCED_OFFLINE_IDS = ["ETB-USDT-sell-0", "ETB-USDT-sell-1"];
     const online = FORCED_OFFLINE_IDS.includes(id)

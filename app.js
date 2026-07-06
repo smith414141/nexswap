@@ -337,12 +337,6 @@ function forgotPassword() {
 // ---- INIT ----
 document.addEventListener("DOMContentLoaded", () => {
   initCanvas();
-  // Read ?tab= from URL and switch to register if needed
-  const urlParams = new URLSearchParams(window.location.search);
-  const tab = urlParams.get("tab");
-  if (tab === "register" && typeof switchTab === "function") {
-    switchTab("register");
-  }
 });
 
 // ---- LOGOUT ----

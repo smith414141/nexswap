@@ -20,20 +20,24 @@
   --red: #d9354a;
 }
 :root {
-  --bg: #0b0e11;
-  --bg2: #1e2329;
-  --bg3: #2b3139;
-  --border: #2b3139;
-  --border2: #363c45;
-  --text: #eaecef;
-  --text2: #848e9c;
-  --text3: #474d57;
-  --yellow: #f0b90b;
-  --yellow2: #d4a309;
-  --green: #0ecb81;
-  --red: #f6465d;
-  --blue: #3b82f6;
-  --purple: #8b5cf6;
+  /* Kripex identity: obsidian + brass, not the standard exchange yellow-on-black.
+     Brass reads as vault/private-banking rather than meme-coin. */
+  --bg: #0c0d10;
+  --bg2: #16181d;
+  --bg3: #1f2229;
+  --border: #262a33;
+  --border2: #343945;
+  --text: #f0eee9;
+  --text2: #9a9ba3;
+  --text3: #5b5d68;
+  --yellow: #c99a4c;
+  --yellow2: #b8863a;
+  --green: #29d19a;
+  --red: #ef5b6f;
+  --blue: #5b8dee;
+  --purple: #9b7cf0;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
 }
 
 body {

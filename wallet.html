@@ -18,34 +18,34 @@
     <canvas id="bg-canvas"></canvas>
     <div class="page">
       <div class="pc-main">
-        <div class="section-padding">
+        <div class="section-padding" style="padding-top: 40px;">
           <p class="section-title">My Wallet</p>
           <div
             id="wallet-total-card"
             class="card"
-            style="text-align: center; margin-bottom: 20px"
+            style="text-align: center; margin-bottom: 32px; border-radius: 20px; background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); border: 1px solid var(--border);"
           >
-            <div class="text-muted" style="font-size: 11px; margin-bottom: 4px">
-              Total Balance
+            <div class="text-muted" style="font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em;">
+              Total Portfolio Value
             </div>
-            <div id="wallet-total-usd" style="font-size: 32px; font-weight: 900" class="text-mono">
+            <div id="wallet-total-usd" style="font-size: 48px; font-weight: 900; color: var(--yellow);" class="text-mono">
               $0.00
             </div>
           </div>
           
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-            <a href="deposit.html" class="card" style="text-decoration:none;text-align:center;padding:16px;">
-              <div style="font-size:20px;margin-bottom:4px;">⬇️</div>
-              <div style="font-size:12px;font-weight:700;">Deposit</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;">
+            <a href="deposit.html" class="card" style="text-decoration:none;text-align:center;padding:20px; border-radius: 16px;">
+              <div style="font-size:24px;margin-bottom:8px;">⬇️</div>
+              <div style="font-size:14px;font-weight:700;">Deposit</div>
             </a>
-            <a href="withdraw.html" class="card" style="text-decoration:none;text-align:center;padding:16px;">
-              <div style="font-size:20px;margin-bottom:4px;">⬆️</div>
-              <div style="font-size:12px;font-weight:700;">Withdraw</div>
+            <a href="withdraw.html" class="card" style="text-decoration:none;text-align:center;padding:20px; border-radius: 16px;">
+              <div style="font-size:24px;margin-bottom:8px;">⬆️</div>
+              <div style="font-size:14px;font-weight:700;">Withdraw</div>
             </a>
           </div>
 
-          <p class="section-title">Balances</p>
-          <div id="wallet-balances-list" class="card" style="padding:0;">
+          <p class="section-title">Asset Balances</p>
+          <div id="wallet-balances-list" class="card" style="padding:0; border-radius: 16px; overflow: hidden;">
             <div class="empty-state">Loading...</div>
           </div>
         </div>

@@ -130,55 +130,48 @@
 
     <div class="page">
       <div class="pc-main">
-        <div class="section-padding">
+        <div class="section-padding" style="padding-top: 40px;">
           <p class="section-title">Profile</p>
-          <div class="card" style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
-            <div id="profile-avatar" style="width: 56px; height: 56px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: #000;">
+          <div class="card" style="display: flex; align-items: center; gap: 20px; margin-bottom: 32px; border-radius: 20px; border: 1px solid var(--border);">
+            <div id="profile-avatar" style="width: 72px; height: 72px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: #000;">
               U
             </div>
             <div style="flex: 1; overflow: hidden">
-              <div style="font-weight: 800; font-size: 16px" id="profile-name">Loading...</div>
-              <div class="text-muted" style="font-size: 12px;" id="profile-email">--</div>
+              <div style="font-weight: 800; font-size: 20px; margin-bottom: 4px;" id="profile-name">Loading...</div>
+              <div class="text-muted" style="font-size: 14px;" id="profile-email">--</div>
             </div>
-            <span style="font-size: 18px; color: var(--text2); cursor: pointer;" onclick="openPersonalInfo()">›</span>
+            <span style="font-size: 24px; color: var(--text2); cursor: pointer;" onclick="openPersonalInfo()">›</span>
           </div>
 
-          <div class="card" style="padding: 0; overflow: hidden">
-            <div class="profile-menu-item" onclick="openPersonalInfo()">
-              <span class="profile-menu-icon">👤</span>
+          <div class="card" style="padding: 0; overflow: hidden; border-radius: 20px; border: 1px solid var(--border);">
+            <div class="profile-menu-item" onclick="openPersonalInfo()" style="padding: 20px 24px;">
+              <span class="profile-menu-icon" style="font-size: 24px;">👤</span>
               <div class="profile-menu-text">
-                <div class="profile-menu-title">Personal Info</div>
+                <div class="profile-menu-title" style="font-size: 16px;">Personal Info</div>
               </div>
               <span class="profile-menu-arrow">›</span>
             </div>
-            <div class="profile-menu-item" onclick="openKycPage()">
-              <span class="profile-menu-icon">🆔</span>
+            <div class="profile-menu-item" onclick="openKycPage()" style="padding: 20px 24px;">
+              <span class="profile-menu-icon" style="font-size: 24px;">🆔</span>
               <div class="profile-menu-text">
-                <div class="profile-menu-title">KYC Verification</div>
-                <div class="profile-menu-sub" id="kyc-menu-sub">Not submitted</div>
+                <div class="profile-menu-title" style="font-size: 16px;">KYC Verification</div>
+                <div class="profile-menu-sub" id="kyc-menu-sub" style="font-size: 12px;">Not submitted</div>
               </div>
-              <span id="kyc-menu-status">❌</span>
+              <span id="kyc-menu-status" style="font-size: 16px;">❌</span>
             </div>
-            <div class="profile-menu-item" onclick="open2faSetup()">
-              <span class="profile-menu-icon">🔐</span>
+            <div class="profile-menu-item" onclick="open2faSetup()" style="padding: 20px 24px;">
+              <span class="profile-menu-icon" style="font-size: 24px;">🔐</span>
               <div class="profile-menu-text">
-                <div class="profile-menu-title">2FA</div>
-                <div class="profile-menu-sub" id="twofa-menu-sub">Not enabled</div>
+                <div class="profile-menu-title" style="font-size: 16px;">2FA</div>
+                <div class="profile-menu-sub" id="twofa-menu-sub" style="font-size: 12px;">Not enabled</div>
               </div>
-              <span id="twofa-menu-status">❌</span>
-            </div>
-            <div class="profile-menu-item" onclick="window.location.href='settings.html'">
-              <span class="profile-menu-icon">⚙️</span>
-              <div class="profile-menu-text">
-                <div class="profile-menu-title">Settings</div>
-              </div>
-              <span class="profile-menu-arrow">›</span>
+              <span id="twofa-menu-status" style="font-size: 16px;">❌</span>
             </div>
           </div>
 
-          <div style="margin-top: 20px;">
-            <button class="btn btn-secondary" style="width:100%; border-color:var(--red); color:var(--red);" onclick="logoutUser()">
-              🚪 Logout
+          <div style="margin-top: 32px;">
+            <button class="btn btn-secondary" style="width:100%; border: 1px solid var(--red); color:var(--red); padding: 16px; border-radius: 16px; font-size: 16px; font-weight: 700;" onclick="logoutUser()">
+              Logout
             </button>
           </div>
         </div>

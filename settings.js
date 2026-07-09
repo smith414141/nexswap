@@ -25,14 +25,8 @@ function loadUserData(uid) {
       }
       // Update Region display
       const regionDisplay = document.getElementById("region-display");
-      const regionMap = {
-        global: "🌍 Global",
-        us: "🇺🇸 US",
-        eu: "🇪🇺 Europe",
-        africa: "🌍 Africa",
-      };
-      regionDisplay.textContent =
-        regionMap[currentUserData.region] || "🌍 Global";
+      const countryRule = COUNTRY_RULES[currentUserData.country] || COUNTRY_RULES[DEFAULT_COUNTRY];
+      regionDisplay.textContent = `${countryRule.flag} ${countryRule.name}`;
     });
 }
 

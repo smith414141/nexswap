@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Status — Kripex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="page">
+      <div class="pc-main" style="padding: 40px;">
+        <h1 style="margin-bottom: 24px;">System Status</h1>
+        <div class="card" style="padding: 24px;">
+            <div class="flex-between" style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <span>Trading Engine</span>
+                <span style="color: var(--green);">● Operational</span>
+            </div>
+            <div class="flex-between" style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <span>Wallet Service</span>
+                <span style="color: var(--green);">● Operational</span>
+            </div>
+            <div class="flex-between" style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+                <span>P2P Matching</span>
+                <span style="color: var(--green);">● Operational</span>
+            </div>
+            <div class="flex-between" style="padding: 12px 0;">
+                <span>API Gateway</span>
+                <span style="color: var(--green);">● Operational</span>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

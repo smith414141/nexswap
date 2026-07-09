@@ -420,9 +420,9 @@
   font-family: var(--font-serif);
   font-size: 56px;
   font-weight: 600;
-  color: #2a1d05;
-  background: radial-gradient(circle at 35% 30%, #f3d089 0%, var(--yellow) 55%, #8a6420 100%);
-  box-shadow: 0 0 60px rgba(201, 154, 76, 0.35), inset 0 -6px 14px rgba(0, 0, 0, 0.3);
+  color: #3a2a08;
+  background: radial-gradient(circle at 35% 30%, #f8dfa0 0%, #d4a94a 45%, #8a6420 100%);
+  box-shadow: 0 0 60px rgba(212, 169, 74, 0.4), inset 0 -6px 14px rgba(0, 0, 0, 0.35);
 }
 .hero-coin-chart {
   position: absolute;

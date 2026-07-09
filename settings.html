@@ -8,7 +8,7 @@
     />
     <title>kriptex — Settings</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -26,26 +26,26 @@
 
       <div style="padding: 16px">
         <!-- APPEARANCE -->
-        <p class="section-title" style="margin-top: 24px;">Appearance</p>
+        <p class="section-title">Appearance</p>
         <div
           class="card"
-          style="padding: 0; overflow: hidden; margin-bottom: 24px; border-radius: 20px;"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
         >
-          <div class="profile-menu-item" onclick="toggleTheme()" style="padding: 20px 24px;">
-            <span class="profile-menu-icon" id="theme-icon" style="font-size: 24px;">🌙</span>
+          <div class="profile-menu-item" onclick="toggleTheme()">
+            <span class="profile-menu-icon" id="theme-icon">🌙</span>
             <div class="profile-menu-text">
-              <div class="profile-menu-title" style="font-size: 16px;">Theme</div>
-              <div class="profile-menu-sub" id="theme-label" style="font-size: 12px;">Dark Mode</div>
+              <div class="profile-menu-title">Theme</div>
+              <div class="profile-menu-sub" id="theme-label">Dark Mode</div>
             </div>
             <div class="toggle-switch" id="theme-toggle">
               <div class="toggle-knob"></div>
             </div>
           </div>
-          <div class="profile-menu-item" onclick="toggleLanguage()" style="padding: 20px 24px;">
-            <span class="profile-menu-icon" style="font-size: 24px;">🌍</span>
+          <div class="profile-menu-item" onclick="toggleLanguage()">
+            <span class="profile-menu-icon">🌍</span>
             <div class="profile-menu-text">
-              <div class="profile-menu-title" style="font-size: 16px;">Language</div>
-              <div class="profile-menu-sub" id="lang-label" style="font-size: 12px;">English</div>
+              <div class="profile-menu-title">Language</div>
+              <div class="profile-menu-sub" id="lang-label">English</div>
             </div>
             <div class="toggle-switch" id="lang-toggle">
               <div class="toggle-knob"></div>
@@ -57,31 +57,39 @@
         <p class="section-title">Security</p>
         <div
           class="card"
-          style="padding: 0; overflow: hidden; margin-bottom: 24px; border-radius: 20px;"
+          style="padding: 0; overflow: hidden; margin-bottom: 20px"
         >
-          <div class="profile-menu-item" onclick="openChangePassword()" style="padding: 20px 24px;">
-            <span class="profile-menu-icon" style="font-size: 24px;">🔑</span>
+          <div class="profile-menu-item" onclick="openChangePassword()">
+            <span class="profile-menu-icon">🔑</span>
             <div class="profile-menu-text">
-              <div class="profile-menu-title" style="font-size: 16px;">Change Password</div>
-              <div class="profile-menu-sub" style="font-size: 12px;">Update your account password</div>
+              <div class="profile-menu-title">Change Password</div>
+              <div class="profile-menu-sub">Update your account password</div>
             </div>
             <span class="profile-menu-arrow">›</span>
           </div>
-          <div class="profile-menu-item" onclick="send2FAEmail()" style="padding: 20px 24px;">
-            <span class="profile-menu-icon" style="font-size: 24px;">📧</span>
+          <div class="profile-menu-item" onclick="send2FAEmail()">
+            <span class="profile-menu-icon">📧</span>
             <div class="profile-menu-text">
-              <div class="profile-menu-title" style="font-size: 16px;">Email Verification</div>
-              <div class="profile-menu-sub" id="email-verify-status" style="font-size: 12px;">
+              <div class="profile-menu-title">Email Verification</div>
+              <div class="profile-menu-sub" id="email-verify-status">
                 Checking...
               </div>
             </div>
             <span class="profile-menu-arrow">›</span>
           </div>
-          <div class="profile-menu-item" onclick="openAntiPhishing()" style="padding: 20px 24px;">
-            <span class="profile-menu-icon" style="font-size: 24px;">🛡️</span>
+          <div class="profile-menu-item" onclick="openAntiPhishing()">
+            <span class="profile-menu-icon">🛡️</span>
             <div class="profile-menu-text">
-              <div class="profile-menu-title" style="font-size: 16px;">Anti-Phishing Code</div>
-              <div class="profile-menu-sub" id="anti-phishing-sub" style="font-size: 12px;">Not set</div>
+              <div class="profile-menu-title">Anti-Phishing Code</div>
+              <div class="profile-menu-sub" id="anti-phishing-sub">Not set</div>
+            </div>
+            <span class="profile-menu-arrow">›</span>
+          </div>
+          <div class="profile-menu-item" onclick="openApiKeys()">
+            <span class="profile-menu-icon">🔐</span>
+            <div class="profile-menu-text">
+              <div class="profile-menu-title">API Keys</div>
+              <div class="profile-menu-sub">Manage demo API access</div>
             </div>
             <span class="profile-menu-arrow">›</span>
           </div>

@@ -8,7 +8,7 @@
     />
     <title>Kripex — Home</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -166,56 +166,59 @@
         </div>
 
         <!-- BALANCE SECTION -->
-        <div class="section-padding" style="padding-top: 40px;">
-          <div class="card" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 100%); border: 1px solid var(--yellow); border-radius: 20px;">
-            <p class="section-title" style="color: var(--yellow);">Total Balance</p>
-            <div class="balance-total text-mono" id="total-balance" style="font-size: 42px; margin-bottom: 20px;">$0.00</div>
-            
-            <div class="flex-col gap-md">
-              <!-- Balances inside the card -->
-              <div class="flex-between">
-                <div class="flex-between" style="gap: 15px">
-                  <div class="coin-icon btc" style="background: rgba(212, 175, 55, 0.1);">₿</div>
-                  <div class="flex-col">
-                    <div style="font-weight: 700; font-size: 16px">Bitcoin</div>
-                    <div class="text-muted" style="font-size: 12px">BTC</div>
-                  </div>
-                </div>
-                <div class="flex-col" style="align-items: flex-end">
-                  <div style="font-weight: 700; font-size: 16px" class="text-mono" id="btc-balance">0.00000000</div>
+        <div class="section-padding">
+          <p class="section-title">Total Balance</p>
+          <div class="balance-total text-mono" id="total-balance">$0.00</div>
+          <div class="divider"></div>
+          <div class="flex-col gap-md">
+            <div class="card flex-between">
+              <div class="flex-between" style="gap: 10px">
+                <div class="coin-icon btc">₿</div>
+                <div class="flex-col">
+                  <div style="font-weight: 700; font-size: 14px">BTC</div>
+                  <div class="text-muted" style="font-size: 11px">Bitcoin</div>
                 </div>
               </div>
-              <div class="divider" style="margin: 10px 0; opacity: 0.3;"></div>
-              <div class="flex-between">
-                <div class="flex-between" style="gap: 15px">
-                  <div class="coin-icon usdt" style="background: rgba(16, 185, 129, 0.1);">₮</div>
-                  <div class="flex-col">
-                    <div style="font-weight: 700; font-size: 16px">Tether</div>
-                    <div class="text-muted" style="font-size: 12px">USDT</div>
-                  </div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div style="font-weight: 700; font-size: 14px" class="text-mono" id="btc-balance">
+                  0.00000000
                 </div>
-                <div class="flex-col" style="align-items: flex-end">
-                  <div style="font-weight: 700; font-size: 16px" class="text-mono" id="usdt-balance">0.00</div>
+                <div
+                  class="text-muted text-mono"
+                  style="font-size: 11px"
+                  id="btc-balance-usd"
+                >
+                  $0.00
+                </div>
+              </div>
+            </div>
+            <div class="card flex-between">
+              <div class="flex-between" style="gap: 10px">
+                <div class="coin-icon usdt">₮</div>
+                <div class="flex-col">
+                  <div style="font-weight: 700; font-size: 14px">USDT</div>
+                  <div class="text-muted" style="font-size: 11px">Tether</div>
+                </div>
+              </div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div
+                  style="font-weight: 700; font-size: 14px"
+                  class="text-mono"
+                  id="usdt-balance"
+                >
+                  0.00
+                </div>
+                <div
+                  class="text-muted text-mono"
+                  style="font-size: 11px"
+                  id="usdt-balance-usd"
+                >
+                  $0.00
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <section class="dashboard-grid">
-          <a href="fees.html" class="card asset-tile" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:20px;">
-            <div class="coin-icon" style="background:var(--bg3);">📊</div>
-            <div class="asset-info">
-               <div class="asset-name">Fees</div>
-            </div>
-          </a>
-          <a href="status.html" class="card asset-tile" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:20px;">
-            <div class="coin-icon" style="background:var(--bg3);">🟢</div>
-            <div class="asset-info">
-               <div class="asset-name">System Status</div>
-            </div>
-          </a>
-        </section>
 
         <!-- QUICK ACTIONS -->
         <div class="section-padding" style="padding-top: 0">

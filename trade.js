@@ -34,14 +34,10 @@ auth.onAuthStateChanged((user) => {
 
 function checkRegionLock(uid) {
   db.collection("users").doc(uid).get().then((doc) => {
-    const country = doc.data()?.country || "ET";
-    const allowed = isFeatureAllowed(country, "futures");
+    const region = (doc.data()?.region || "global").toLowerCase();
+    const locked = ["us", "eu"].includes(region);
     const msg = document.getElementById("region-lock-message");
-    if (msg) {
-        msg.style.display = allowed ? "none" : "block";
-        document.getElementById("buy-btn").disabled = !allowed;
-        document.getElementById("sell-btn").disabled = !allowed;
-    }
+    if (msg) msg.style.display = locked ? "block" : "none";
   });
 }
 

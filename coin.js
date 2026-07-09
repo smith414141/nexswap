@@ -17,7 +17,7 @@ function loadCoinData() {
   )
     .then((res) => res.json())
     .then((data) => {
-      document.getElementById("coin-icon").src = data.image.large;
+      document.getElementById("coin-icon").innerHTML = `<div style="width:48px;height:48px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:24px;">${data.symbol[0].toUpperCase()}</div>`;
       document.getElementById("coin-name").textContent = data.name;
       document.getElementById("coin-symbol").textContent =
         data.symbol.toUpperCase();
@@ -32,9 +32,10 @@ function loadCoinData() {
       ).textContent = `$${price.toLocaleString(undefined, {
         maximumFractionDigits: price < 1 ? 6 : 2,
       })}`;
-      const changeEl = document.getElementById("coin-change");
-      changeEl.textContent = `${changeSign}${change.toFixed(2)}% (24h)`;
-      changeEl.className = `coin-detail-change ${changeClass}`;
+       const changeEl = document.getElementById("coin-change");
+       changeEl.textContent = `${changeSign}${change.toFixed(2)}% (24h)`;
+       changeEl.style.color = change >= 0 ? "var(--green)" : "var(--red)";
+
 
       document.getElementById("stat-market-cap").textContent = `$${formatBig(
         data.market_data.market_cap.usd
@@ -114,10 +115,12 @@ function checkFavorite() {
       .then((doc) => {
         const favs = doc.exists ? doc.data().coins || [] : [];
         const btn = document.getElementById("fav-toggle");
-        if (favs.includes(coinId)) {
-          btn.textContent = "★ Saved";
-          btn.classList.add("active");
-        }
+         if (favs.includes(coinId)) {
+           btn.textContent = "★ Saved";
+           btn.classList.add("active");
+           btn.classList.replace("btn-secondary", "btn-primary");
+         }
+
       });
   });
 }
@@ -134,15 +137,18 @@ function toggleCoinFavorite() {
     let favs = doc.exists ? doc.data().coins || [] : [];
     const btn = document.getElementById("fav-toggle");
 
-    if (favs.includes(coinId)) {
-      favs = favs.filter((id) => id !== coinId);
-      btn.textContent = "☆ Save";
-      btn.classList.remove("active");
-    } else {
-      favs.push(coinId);
-      btn.textContent = "★ Saved";
-      btn.classList.add("active");
-    }
+     if (favs.includes(coinId)) {
+       favs = favs.filter((id) => id !== coinId);
+       btn.textContent = "☆ Save";
+       btn.classList.remove("active");
+       btn.classList.replace("btn-primary", "btn-secondary");
+     } else {
+       favs.push(coinId);
+       btn.textContent = "★ Saved";
+       btn.classList.add("active");
+       btn.classList.replace("btn-secondary", "btn-primary");
+     }
+
 
     ref.set({ coins: favs }, { merge: true });
   });

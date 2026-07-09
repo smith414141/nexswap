@@ -128,166 +128,62 @@
           </div>
         </div>
 
-        <!-- PROFILE HEADER -->
-        <div style="padding: 20px 16px">
-          <div
-            class="card"
-            style="display: flex; align-items: center; gap: 14px"
-          >
-            <div
-              style="
-                width: 56px;
-                height: 56px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, var(--yellow), #d99c00);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 24px;
-                flex-shrink: 0;
-                font-weight: 900;
-                color: #000;
-              "
-              id="profile-avatar"
-            >
+    <div class="page">
+      <div class="pc-main">
+        <div class="section-padding">
+          <p class="section-title">Profile</p>
+          <div class="card" style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+            <div id="profile-avatar" style="width: 56px; height: 56px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: #000;">
               U
             </div>
             <div style="flex: 1; overflow: hidden">
-              <div style="font-weight: 800; font-size: 16px" id="profile-name">
-                Loading...
-              </div>
-              <div
-                style="
-                  font-size: 12px;
-                  color: var(--text2);
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
-                id="profile-email"
-              >
-                --
-              </div>
+              <div style="font-weight: 800; font-size: 16px" id="profile-name">Loading...</div>
+              <div class="text-muted" style="font-size: 12px;" id="profile-email">--</div>
             </div>
-            <span
-              style="font-size: 18px; color: var(--text2)"
-              onclick="openPersonalInfo()"
-              >›</span
-            >
+            <span style="font-size: 18px; color: var(--text2); cursor: pointer;" onclick="openPersonalInfo()">›</span>
+          </div>
+
+          <div class="card" style="padding: 0; overflow: hidden">
+            <div class="profile-menu-item" onclick="openPersonalInfo()">
+              <span class="profile-menu-icon">👤</span>
+              <div class="profile-menu-text">
+                <div class="profile-menu-title">Personal Info</div>
+              </div>
+              <span class="profile-menu-arrow">›</span>
+            </div>
+            <div class="profile-menu-item" onclick="openKycPage()">
+              <span class="profile-menu-icon">🆔</span>
+              <div class="profile-menu-text">
+                <div class="profile-menu-title">KYC Verification</div>
+                <div class="profile-menu-sub" id="kyc-menu-sub">Not submitted</div>
+              </div>
+              <span id="kyc-menu-status">❌</span>
+            </div>
+            <div class="profile-menu-item" onclick="open2faSetup()">
+              <span class="profile-menu-icon">🔐</span>
+              <div class="profile-menu-text">
+                <div class="profile-menu-title">2FA</div>
+                <div class="profile-menu-sub" id="twofa-menu-sub">Not enabled</div>
+              </div>
+              <span id="twofa-menu-status">❌</span>
+            </div>
+            <div class="profile-menu-item" onclick="window.location.href='settings.html'">
+              <span class="profile-menu-icon">⚙️</span>
+              <div class="profile-menu-text">
+                <div class="profile-menu-title">Settings</div>
+              </div>
+              <span class="profile-menu-arrow">›</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px;">
+            <button class="btn btn-secondary" style="width:100%; border-color:var(--red); color:var(--red);" onclick="logoutUser()">
+              🚪 Logout
+            </button>
           </div>
         </div>
-
-        <!-- MENU LIST -->
-        <div class="card" style="padding: 0; overflow: hidden">
-          <div class="profile-menu-item" onclick="openPersonalInfo()">
-            <span class="profile-menu-icon">👤</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">Personal Information</div>
-              <div class="profile-menu-sub">Name, phone, country</div>
-            </div>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-
-          <div class="profile-menu-item" onclick="openKycPage()">
-            <span class="profile-menu-icon">🆔</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">Identity Verification</div>
-              <div class="profile-menu-sub" id="kyc-menu-sub">
-                Not submitted
-              </div>
-            </div>
-            <span class="profile-menu-status" id="kyc-menu-status">❌</span>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-
-          <div class="profile-menu-item" onclick="open2faSetup()">
-            <span class="profile-menu-icon">🔐</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">Two-Factor Authentication</div>
-              <div class="profile-menu-sub" id="twofa-menu-sub">
-                Not enabled
-              </div>
-            </div>
-            <span class="profile-menu-status" id="twofa-menu-status">❌</span>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-
-          <div
-            class="profile-menu-item"
-            onclick="openMerchantPage()"
-            id="merchant-menu-item"
-          >
-            <span class="profile-menu-icon">🏆</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">P2P Merchant</div>
-              <div class="profile-menu-sub" id="merchant-menu-sub">
-                Locked — complete KYC first
-              </div>
-            </div>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-
-          <div
-            class="profile-menu-item"
-            onclick="openModal('orders-modal'); loadOrderHistory(auth.currentUser.uid)"
-          >
-            <span class="profile-menu-icon">📋</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">Order History</div>
-              <div class="profile-menu-sub">View past trades</div>
-            </div>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-
-          <div
-            class="profile-menu-item"
-            onclick="openModal('transactions-modal'); loadTransactions()"
-          >
-            <span class="profile-menu-icon">📊</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">Transaction History</div>
-              <div class="profile-menu-sub">Deposits, withdrawals, trades</div>
-            </div>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-          <div
-            class="profile-menu-item"
-            onclick="window.location.href='settings.html'"
-          >
-            <span class="profile-menu-icon">⚙️</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">Settings</div>
-              <div class="profile-menu-sub">Theme, security, notifications</div>
-            </div>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-          <div class="profile-menu-item" onclick="openModal('about-modal')">
-            <span class="profile-menu-icon">ℹ️</span>
-            <div class="profile-menu-text">
-              <div class="profile-menu-title">About</div>
-              <div class="profile-menu-sub">App info & support</div>
-            </div>
-            <span class="profile-menu-arrow">›</span>
-          </div>
-        </div>
-        <!-- MERCHANT GLOW CTA (only if eligible) -->
-        <div style="padding: 0 16px 20px; display: none" id="merchant-cta">
-          <div class="merchant-glow-card" onclick="openMerchantPage()">
-            <div style="font-size: 28px; margin-bottom: 6px">🏆</div>
-            <div style="font-weight: 800; font-size: 15px; margin-bottom: 4px">
-              Become a P2P Merchant
-            </div>
-            <div style="font-size: 12px; color: rgba(255, 255, 255, 0.7)">
-              Post your own listings and set your own rates
-            </div>
-          </div>
-        </div>
-
-        <!-- LOGOUT -->
-        <div style="padding: 0 16px 20px">
-          <button class="btn-secondary" onclick="logoutUser()">
-            🚪 Logout
-          </button>
-        </div>
+      </div>
+    </div>
       </div>
     </div>
 

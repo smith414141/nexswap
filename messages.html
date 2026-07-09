@@ -16,82 +16,35 @@
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
-    <div class="page" style="padding-bottom: 80px">
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
-        <div class="top-bar-logo">💬 Messages</div>
-        <span style="width: 20px"></span>
-      </div>
+    <div class="page">
+      <div class="pc-main">
+        <div class="section-padding">
+          <p class="section-title">Messages</p>
+          <div class="tabs" style="margin-bottom: 16px">
+            <button class="tab active" onclick="switchMsgTab('support', this)">Support</button>
+            <button class="tab" onclick="switchMsgTab('announcements', this)">Announcements</button>
+          </div>
 
-      <div style="padding: 16px">
-        <div class="tabs" style="margin-bottom: 16px">
-          <button class="tab active" onclick="switchMsgTab('support', this)">
-            Support
-          </button>
-          <button class="tab" onclick="switchMsgTab('announcements', this)">
-            Announcements
-          </button>
-        </div>
-
-        <!-- SUPPORT CHAT -->
-        <div id="msg-support">
-          <div
-            style="
-              display: flex;
-              flex-direction: column;
-              height: calc(100vh - 240px);
-            "
-          >
-            <div class="chat-box" style="flex: 1; margin-bottom: 8px">
-              <div class="chat-messages" id="msg-support-messages"></div>
-            </div>
-            <div style="padding: 8px">
-              <div class="chat-input-row" style="margin-bottom: 6px">
-                <input
-                  type="text"
-                  id="msg-support-input"
-                  placeholder="Type a message..."
-                  onkeypress="if(event.key==='Enter') sendMsgSupport()"
-                />
-                <button class="chat-send-btn" onclick="sendMsgSupport()">
-                  ➤
-                </button>
+          <!-- SUPPORT CHAT -->
+          <div id="msg-support" class="card" style="height: 60vh; display: flex; flex-direction: column;">
+            <div class="chat-messages" id="msg-support-messages" style="flex: 1; overflow-y: auto;"></div>
+            <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px;">
+              <div class="chat-input-row" style="margin-bottom: 8px;">
+                <input type="text" id="msg-support-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMsgSupport()" />
+                <button class="chat-send-btn" onclick="sendMsgSupport()">➤</button>
               </div>
-              <div style="display: flex; align-items: center; gap: 8px">
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    font-size: 12px;
-                    color: var(--text2);
-                    cursor: pointer;
-                    background: var(--bg2);
-                    border: 1px solid var(--border);
-                    border-radius: 8px;
-                    padding: 6px 10px;
-                  "
-                >
-                  📎 Attach Image
-                  <input
-                    type="file"
-                    id="msg-image-input"
-                    accept="image/*"
-                    style="display: none"
-                    onchange="sendMsgImage()"
-                  />
-                </label>
-              </div>
+              <label style="font-size:12px; cursor:pointer; color:var(--yellow);">
+                📎 Attach Image
+                <input type="file" id="msg-image-input" accept="image/*" style="display: none" onchange="sendMsgImage()" />
+              </label>
             </div>
           </div>
-        </div>
 
-        <!-- ANNOUNCEMENTS -->
-        <div id="msg-announcements" style="display: none">
-          <div id="announcements-list">
-            <div class="empty-state">Loading...</div>
+          <!-- ANNOUNCEMENTS -->
+          <div id="msg-announcements" style="display: none">
+            <div id="announcements-list">
+              <div class="empty-state">Loading...</div>
+            </div>
           </div>
         </div>
       </div>

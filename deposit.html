@@ -371,22 +371,10 @@
 
     <div class="page">
       <div class="pc-main">
-        <!-- Mobile top bar -->
-        <div class="top-bar">
-          <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-            >←</span
-          >
-          <div class="top-bar-logo">Deposit Crypto</div>
-          <span class="kyc-badge" id="kyc-badge" style="display: none"></span>
-        </div>
-
         <div style="padding: 16px; max-width: 780px">
           <!-- ── STEP 1: SELECT COIN ── -->
           <div id="step-coin">
-            <div class="step-indicator">
-              <div class="step-num">1</div>
-              <span class="step-label">Select Coin</span>
-            </div>
+            <p class="section-title">Select Coin</p>
             <div class="input-row" style="margin-bottom: 14px">
               <input
                 type="text"
@@ -404,31 +392,19 @@
           <div id="step-network" style="display: none">
             <div class="back-row" onclick="backToCoin()">
               <span style="font-size: 20px">←</span>
-              <span style="font-size: 14px; color: var(--text2)"
-                >Back to coin list</span
-              >
+              <span style="font-size: 14px; color: var(--text2)">Back to coin list</span>
             </div>
 
-            <div class="selected-coin-chip">
-              <div id="selected-coin-icon" class="dep-coin-avatar"></div>
+            <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+              <div id="selected-coin-icon" class="coin-icon"></div>
               <div>
-                <div
-                  id="selected-coin-symbol"
-                  style="font-weight: 800; font-size: 15px"
-                ></div>
-                <div
-                  id="selected-coin-fullname"
-                  style="font-size: 11px; color: var(--text2)"
-                ></div>
+                <div id="selected-coin-symbol" style="font-weight: 800; font-size: 15px"></div>
+                <div id="selected-coin-fullname" class="text-muted" style="font-size: 11px"></div>
               </div>
               <span class="chip-change" onclick="backToCoin()">Change</span>
             </div>
 
-            <div class="step-indicator">
-              <div class="step-num">2</div>
-              <span class="step-label">Select Network</span>
-            </div>
-
+            <p class="section-title">Select Network</p>
             <div class="warn-box warn-red" style="margin-bottom: 16px">
               ⚠️ Make sure to select the correct network. Depositing via the
               wrong network may result in permanent loss of funds.
@@ -441,91 +417,42 @@
           <div id="step-address" style="display: none">
             <div class="back-row" onclick="backToNetwork()">
               <span style="font-size: 20px">←</span>
-              <span style="font-size: 14px; color: var(--text2)"
-                >Back to network</span
-              >
+              <span style="font-size: 14px; color: var(--text2)">Back to network</span>
             </div>
 
-            <div class="selected-coin-chip">
-              <div id="addr-coin-icon" class="dep-coin-avatar"></div>
+            <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px;">
+              <div id="addr-coin-icon" class="coin-icon"></div>
               <div>
-                <div
-                  id="addr-coin-name"
-                  style="font-weight: 800; font-size: 15px"
-                ></div>
-                <div
-                  id="addr-network-name"
-                  style="font-size: 11px; color: var(--yellow)"
-                ></div>
+                <div id="addr-coin-name" style="font-weight: 800; font-size: 15px"></div>
+                <div id="addr-network-name" class="text-brass" style="font-size: 11px"></div>
               </div>
             </div>
 
             <div class="addr-layout">
-              <!-- QR column -->
               <div class="addr-qr-col">
-                <div
-                  class="card"
-                  style="text-align: center; padding: 24px 16px"
-                >
-                  <p
-                    style="
-                      font-size: 11px;
-                      color: var(--text2);
-                      margin-bottom: 16px;
-                    "
-                  >
+                <div class="card" style="text-align: center; padding: 24px 16px">
+                  <p class="text-muted" style="font-size: 11px; margin-bottom: 16px;">
                     Scan QR code to get deposit address
                   </p>
-                  <div class="qr-wrap">
+                  <div class="qr-wrap" style="background:#fff; padding:10px; border-radius:12px;">
                     <div id="qr-container"></div>
                   </div>
                   <p style="font-size: 11px; color: var(--text3)">
-                    Only send
-                    <strong
-                      id="addr-crypto-warn"
-                      style="color: var(--text)"
-                    ></strong
-                    ><br />
-                    via
-                    <strong
-                      id="addr-network-warn"
-                      style="color: var(--text)"
-                    ></strong>
+                    Only send <strong id="addr-crypto-warn"></strong><br />
+                    via <strong id="addr-network-warn"></strong>
                   </p>
                 </div>
               </div>
 
-              <!-- Details column -->
               <div>
                 <div class="card" style="margin-bottom: 16px">
-                  <p
-                    style="
-                      font-size: 11px;
-                      color: var(--text2);
-                      margin-bottom: 10px;
-                      font-weight: 600;
-                      text-transform: uppercase;
-                      letter-spacing: 0.5px;
-                    "
-                  >
-                    Deposit Address
-                  </p>
-                  <div class="addr-box" id="deposit-address-display">
-                    Loading...
-                  </div>
+                  <p class="section-title">Deposit Address</p>
+                  <div class="addr-box" id="deposit-address-display">Loading...</div>
                   <div style="display: flex; gap: 10px; margin-top: 12px">
-                    <button
-                      class="copy-btn"
-                      onclick="copyDepositAddress()"
-                      style="margin-bottom: 0; flex: 1"
-                    >
+                    <button class="btn btn-primary" onclick="copyDepositAddress()" style="flex: 1">
                       📋 Copy Address
                     </button>
-                    <button
-                      class="share-btn"
-                      onclick="shareAddress()"
-                      style="margin-bottom: 0; flex: 1"
-                    >
+                    <button class="btn btn-secondary" onclick="shareAddress()" style="flex: 1">
                       ↗ Share
                     </button>
                   </div>
@@ -534,31 +461,20 @@
                 <div class="info-grid">
                   <div class="info-cell">
                     <div class="info-cell-label">Network</div>
-                    <div class="info-cell-val" id="info-network">--</div>
+                    <div id="info-network" style="font-size:13px; font-weight:700;">--</div>
                   </div>
                   <div class="info-cell">
                     <div class="info-cell-label">Confirmations</div>
-                    <div class="info-cell-val" id="info-confirms">--</div>
+                    <div id="info-confirms" style="font-size:13px; font-weight:700;">--</div>
                   </div>
                   <div class="info-cell">
                     <div class="info-cell-label">Est. Arrival</div>
-                    <div class="info-cell-val" id="info-time">--</div>
+                    <div id="info-time" style="font-size:13px; font-weight:700;">--</div>
                   </div>
                   <div class="info-cell">
                     <div class="info-cell-label">Network Fee</div>
-                    <div class="info-cell-val" id="info-fee">--</div>
+                    <div id="info-fee" style="font-size:13px; font-weight:700;">--</div>
                   </div>
-                </div>
-
-                <div class="warn-box warn-yellow" style="margin-bottom: 12px">
-                  ⚠️ Send only <strong id="addr-crypto-warn2"></strong> to this
-                  address. Sending any other coin or token may result in
-                  permanent loss.
-                </div>
-
-                <div class="warn-box warn-red">
-                  ⚠️ Do NOT send from exchanges that don't support this network.
-                  Always double-check the network before sending.
                 </div>
               </div>
             </div>

@@ -194,69 +194,54 @@ function renderListingsDisplay() {
   container.innerHTML = listings
     .map(
       (l) => `
-    <div class="listing-card" style="${
-      l.online ? "" : "opacity:0.5;"
-    }" onclick="openOrder('${l.id}')">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <div style="width:38px; height:38px; border-radius:50%; background:${
-            l.color
-          }22; color:${
-        l.color
-      }; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">
-            ${l.initials}
+      <div class="listing-card" style="${
+        l.online ? "" : "opacity:0.5;"
+      } padding:16px; border-bottom:1px solid var(--border);" onclick="openOrder('${l.id}')">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:38px; height:38px; border-radius:50%; background:${
+              l.color
+            }22; color:${
+          l.color
+        }; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">
+              ${l.initials}
+            </div>
+            <div>
+              <div style="font-weight:700; font-size:14px;">${l.name} ${l.verified ? '<span class="verified-icon">✓</span>' : ""}</div>
+              <div class="text-muted" style="font-size:11px; margin-top:2px;">
+                ${l.trades} trades • ${l.completion}%
+              </div>
+            </div>
           </div>
-          <div>
-            <div style="display:flex; align-items:center; gap:5px;">
-              <span style="font-weight:700; font-size:14px;">${l.name}</span>
-              ${l.verified ? '<span class="verified-icon">✓</span>' : ""}
+          <div style="text-align:right;">
+            <div class="text-mono" style="font-size:16px; font-weight:800; color:${
+              currentType === "sell" ? "var(--green)" : "var(--text)"
+            };">
+              ${formatPrice(l.price)}
             </div>
-            <div style="font-size:11px; color:var(--text2); display:flex; align-items:center; gap:6px; margin-top:2px;">
-              <span class="online-dot ${
-                l.online ? "online" : "offline"
-              }"></span>
-              ${l.online ? "Online" : "Offline"}
-              <span>•</span>
-              ${
-                typeof l.trades === "number"
-                  ? `${l.trades} trades<span>•</span>${l.completion}%`
-                  : l.trades
-              }
-            </div>
+            <div class="text-muted" style="font-size:10px;">${l.crypto}</div>
           </div>
         </div>
-        <div style="text-align:right;">
-          <div style="font-size:16px; font-weight:800; color:${
-            currentType === "sell" ? "var(--green)" : "var(--text)"
-          };">
-            ${formatPrice(l.price)}
+
+        <div class="flex-between" style="font-size:12px; margin-bottom:12px;">
+          <span class="text-muted">Limit: ${formatNumber(l.minLimit)} - ${formatNumber(l.maxLimit)} ${l.currency}</span>
+          <span class="text-muted">Avail: ${l.available} ${l.crypto}</span>
+        </div>
+
+        <div class="flex-between">
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            ${l.methods
+              .map((m) => `<span class="badge badge-grey">${m}</span>`)
+              .join("")}
           </div>
-          <div style="font-size:10px; color:var(--text2);">per ${l.crypto}</div>
+          <button class="btn btn-primary" style="padding:8px 20px; ${
+            currentType === "sell" ? "background:var(--red); color:#fff;" : ""
+          }" onclick="event.stopPropagation(); openOrder('${l.id}')">
+            ${currentType === "buy" ? "Buy" : "Sell"}
+          </button>
         </div>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--text2); margin-bottom:4px;">
-  <span>Limit: ${formatNumber(l.minLimit)} - ${formatNumber(l.maxLimit)} ${
-        l.currency
-      }</span>
-</div>
-<div style="font-size:11px; color:var(--text3); margin-bottom:10px;">
-  Available: ${l.available} ${l.crypto}
-</div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          ${l.methods
-            .map((m) => `<span class="badge badge-grey">${m}</span>`)
-            .join("")}
-        </div>
-        <button class="btn-primary" style="margin:0; padding:8px 20px; width:auto; font-size:12px; ${
-          currentType === "sell" ? "background:var(--red); color:#fff;" : ""
-        }" onclick="event.stopPropagation(); openOrder('${l.id}')">
-          ${currentType === "buy" ? "Buy" : "Sell"} ${l.crypto}
-        </button>
-      </div>
-    </div>
   `
     )
     .join("");

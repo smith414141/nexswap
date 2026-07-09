@@ -42,153 +42,51 @@
       </div>
     </div>
 
-    <!-- ADMIN DASHBOARD -->
-    <div
-      id="admin-dashboard"
-      style="display: none; max-width: 600px; margin: 0 auto"
-    >
-      <div class="top-bar">
-        <div class="top-bar-logo">🛡️ Admin</div>
-        <div style="display: flex; align-items: center; gap: 10px">
-          <div
-            style="position: relative; cursor: pointer"
-            onclick="switchAdminTab('dashboard', document.querySelector('.filter-tab'))"
-          >
-            <span style="font-size: 20px">🔔</span>
-            <span
-              id="admin-notif-badge"
-              style="
-                display: none;
-                position: absolute;
-                top: -4px;
-                right: -4px;
-                background: var(--red);
-                color: #fff;
-                font-size: 9px;
-                font-weight: 900;
-                border-radius: 50%;
-                width: 16px;
-                height: 16px;
-                align-items: center;
-                justify-content: center;
-                font-family: 'Inter', sans-serif;
-              "
-            ></span>
+    <div class="page" style="padding:0;">
+      <div class="pc-main" style="margin-left:0; padding:16px;">
+        <!-- ADMIN DASHBOARD -->
+        <div id="admin-dashboard">
+          <div class="flex-between" style="margin-bottom:20px;">
+            <div class="top-bar-logo">🛡️ Admin</div>
+            <button class="btn btn-secondary" onclick="adminLogout()">Logout</button>
           </div>
-          <button
-            class="btn-secondary"
-            style="width: auto; margin: 0; padding: 8px 16px; font-size: 12px"
-            onclick="adminLogout()"
-          >
-            Logout
-          </button>
+
+          <div class="admin-tabs" style="margin-bottom:20px;">
+            <button class="filter-tab active" onclick="switchAdminTab('dashboard', this)">Dashboard</button>
+            <button class="filter-tab" onclick="switchAdminTab('kyc', this)">KYC</button>
+            <button class="filter-tab" onclick="switchAdminTab('merchants', this)">Merchants</button>
+            <button class="filter-tab" onclick="switchAdminTab('withdrawals', this)">Withdrawals</button>
+            <button class="filter-tab" onclick="switchAdminTab('wallets', this)">Wallets</button>
+            <button class="filter-tab" onclick="switchAdminTab('p2p', this)">P2P Orders</button>
+            <button class="filter-tab" onclick="switchAdminTab('users', this)">Users</button>
+            <button class="filter-tab" onclick="switchAdminTab('listings', this)">Listings</button>
+            <button class="filter-tab" onclick="switchAdminTab('support', this)">Support</button>
+          </div>
+
+          <!-- TAB CONTENT WRAPPER -->
+          <div id="tab-dashboard" class="admin-tab-content">
+            <div class="admin-card-grid">
+              <div class="admin-stat-card"><div class="num" id="stat-kyc">--</div><div class="label">Pending KYC</div></div>
+              <div class="admin-stat-card"><div class="num" id="stat-merchants">--</div><div class="label">Pending Merchants</div></div>
+              <div class="admin-stat-card"><div class="num" id="stat-withdrawals">--</div><div class="label">Pending Withdrawals</div></div>
+              <div class="admin-stat-card"><div class="num" id="stat-p2p">--</div><div class="label">Active P2P</div></div>
+              <div class="admin-stat-card"><div class="num" id="stat-disputed">--</div><div class="label">Disputed</div></div>
+              <div class="admin-stat-card"><div class="num" id="stat-users">--</div><div class="label">Total Users</div></div>
+            </div>
+            <button class="btn btn-secondary" style="width:100%; margin-top:16px;" onclick="loadDashboardStats()">Refresh Stats</button>
+          </div>
+          
+          <div id="tab-kyc" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-merchants" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-withdrawals" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-wallets" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-p2p" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-users" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-listings" class="admin-tab-content" style="display:none;"></div>
+          <div id="tab-support" class="admin-tab-content" style="display:none;"></div>
         </div>
       </div>
-
-      <div class="admin-tabs">
-        <button
-          class="filter-tab active"
-          onclick="switchAdminTab('dashboard', this)"
-        >
-          Dashboard
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('kyc', this)">
-          KYC
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('merchants', this)">
-          Merchants
-        </button>
-        <button
-          class="filter-tab"
-          onclick="switchAdminTab('withdrawals', this)"
-        >
-          Withdrawals
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('wallets', this)">
-          Wallets
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('p2p', this)">
-          P2P Orders
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('users', this)">
-          Users
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('admins', this)">
-          Admins
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('listings', this)">
-          Listings
-        </button>
-        <button class="filter-tab" onclick="switchAdminTab('support', this)">
-          Support Chats
-        </button>
-        <button
-          class="filter-tab"
-          onclick="switchAdminTab('announcements', this)"
-        >
-          Announcements
-        </button>
-      </div>
-
-      <!-- DASHBOARD -->
-      <div id="tab-dashboard" class="admin-tab-content">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
-          <div class="card">
-            <div style="font-size: 11px; color: var(--text2)">Pending KYC</div>
-            <div style="font-size: 24px; font-weight: 900" id="stat-kyc">
-              --
-            </div>
-          </div>
-          <div class="card">
-            <div style="font-size: 11px; color: var(--text2)">
-              Pending Merchants
-            </div>
-            <div style="font-size: 24px; font-weight: 900" id="stat-merchants">
-              --
-            </div>
-          </div>
-          <div class="card">
-            <div style="font-size: 11px; color: var(--text2)">
-              Pending Withdrawals
-            </div>
-            <div
-              style="font-size: 24px; font-weight: 900"
-              id="stat-withdrawals"
-            >
-              --
-            </div>
-          </div>
-          <div class="card">
-            <div style="font-size: 11px; color: var(--text2)">
-              Active P2P Orders
-            </div>
-            <div style="font-size: 24px; font-weight: 900" id="stat-p2p">
-              --
-            </div>
-          </div>
-          <div class="card">
-            <div style="font-size: 11px; color: var(--text2)">
-              Disputed Orders
-            </div>
-            <div style="font-size: 24px; font-weight: 900" id="stat-disputed">
-              --
-            </div>
-          </div>
-          <div class="card">
-            <div style="font-size: 11px; color: var(--text2)">Total Users</div>
-            <div style="font-size: 24px; font-weight: 900" id="stat-users">
-              --
-            </div>
-          </div>
-        </div>
-        <button
-          class="btn-secondary"
-          style="margin-top: 16px"
-          onclick="loadDashboardStats()"
-        >
-          🔄 Refresh Stats
-        </button>
-      </div>
+    </div>
 
       <!-- KYC -->
       <div id="tab-kyc" class="admin-tab-content" style="display: none">

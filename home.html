@@ -166,64 +166,51 @@
         </div>
 
         <!-- BALANCE SECTION -->
-        <div style="padding: 20px 16px">
+        <div class="section-padding">
           <p class="section-title">Total Balance</p>
-          <div class="balance-total" id="total-balance">$0.00</div>
+          <div class="balance-total text-mono" id="total-balance">$0.00</div>
           <div class="divider"></div>
-          <div style="display: flex; flex-direction: column; gap: 12px">
-            <div
-              class="card"
-              style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              "
-            >
-              <div style="display: flex; align-items: center; gap: 10px">
+          <div class="flex-col gap-md">
+            <div class="card flex-between">
+              <div class="flex-between" style="gap: 10px">
                 <div class="coin-icon btc">₿</div>
-                <div>
+                <div class="flex-col">
                   <div style="font-weight: 700; font-size: 14px">BTC</div>
-                  <div style="font-size: 11px; color: var(--text2)">
-                    Bitcoin
-                  </div>
+                  <div class="text-muted" style="font-size: 11px">Bitcoin</div>
                 </div>
               </div>
-              <div style="text-align: right">
-                <div style="font-weight: 700; font-size: 14px" id="btc-balance">
+              <div class="flex-col" style="align-items: flex-end">
+                <div style="font-weight: 700; font-size: 14px" class="text-mono" id="btc-balance">
                   0.00000000
                 </div>
                 <div
-                  style="font-size: 11px; color: var(--text2)"
+                  class="text-muted text-mono"
+                  style="font-size: 11px"
                   id="btc-balance-usd"
                 >
                   $0.00
                 </div>
               </div>
             </div>
-            <div
-              class="card"
-              style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              "
-            >
-              <div style="display: flex; align-items: center; gap: 10px">
+            <div class="card flex-between">
+              <div class="flex-between" style="gap: 10px">
                 <div class="coin-icon usdt">₮</div>
-                <div>
+                <div class="flex-col">
                   <div style="font-weight: 700; font-size: 14px">USDT</div>
-                  <div style="font-size: 11px; color: var(--text2)">Tether</div>
+                  <div class="text-muted" style="font-size: 11px">Tether</div>
                 </div>
               </div>
-              <div style="text-align: right">
+              <div class="flex-col" style="align-items: flex-end">
                 <div
                   style="font-weight: 700; font-size: 14px"
+                  class="text-mono"
                   id="usdt-balance"
                 >
                   0.00
                 </div>
                 <div
-                  style="font-size: 11px; color: var(--text2)"
+                  class="text-muted text-mono"
+                  style="font-size: 11px"
                   id="usdt-balance-usd"
                 >
                   $0.00
@@ -234,39 +221,34 @@
         </div>
 
         <!-- QUICK ACTIONS -->
-        <div style="padding: 0 16px 20px">
+        <div class="section-padding" style="padding-top: 0">
           <div style="display: flex; gap: 10px">
             <button
-              class="btn-primary"
-              style="margin: 0; flex: 1"
+              class="btn btn-primary"
+              style="flex: 1"
               onclick="window.location.href='deposit.html'"
             >
-              ⬇️ Deposit
+              Deposit
             </button>
             <button
-              class="btn-secondary"
-              style="margin: 0; flex: 1"
+              class="btn btn-secondary"
+              style="flex: 1"
               onclick="window.location.href='withdraw.html'"
             >
-              ⬆️ Withdraw
+              Withdraw
             </button>
             <button
-              class="btn-secondary"
-              style="
-                margin: 0;
-                flex: 1;
-                border-color: var(--yellow);
-                color: var(--yellow);
-              "
+              class="btn btn-secondary text-brass"
+              style="flex: 1; border-color: var(--yellow)"
               onclick="window.location.href='p2p.html'"
             >
-              🔄 P2P
+              P2P
             </button>
           </div>
         </div>
 
         <!-- LIVE MARKET PRICES -->
-        <div style="padding: 0 16px 20px">
+        <div class="section-padding" style="padding-top: 0">
           <p class="section-title">Live Market Prices</p>
           <div class="card" id="market-prices">
             <div
@@ -276,14 +258,14 @@
             >
               <div class="ticker-coin">
                 <div class="coin-icon btc">₿</div>
-                <div>
+                <div class="flex-col">
                   <div class="coin-name">BTC</div>
                   <div class="coin-fullname">Bitcoin</div>
                 </div>
               </div>
-              <div>
-                <div class="ticker-price" id="price-btc">$--</div>
-                <div class="ticker-change" id="change-btc">--%</div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div class="ticker-price text-mono" id="price-btc">$--</div>
+                <div class="ticker-change text-mono" id="change-btc">--%</div>
               </div>
             </div>
             <div
@@ -293,14 +275,14 @@
             >
               <div class="ticker-coin">
                 <div class="coin-icon eth">Ξ</div>
-                <div>
+                <div class="flex-col">
                   <div class="coin-name">ETH</div>
                   <div class="coin-fullname">Ethereum</div>
                 </div>
               </div>
-              <div>
-                <div class="ticker-price" id="price-eth">$--</div>
-                <div class="ticker-change" id="change-eth">--%</div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div class="ticker-price text-mono" id="price-eth">$--</div>
+                <div class="ticker-change text-mono" id="change-eth">--%</div>
               </div>
             </div>
             <div
@@ -310,14 +292,14 @@
             >
               <div class="ticker-coin">
                 <div class="coin-icon usdt">₮</div>
-                <div>
+                <div class="flex-col">
                   <div class="coin-name">USDT</div>
                   <div class="coin-fullname">Tether</div>
                 </div>
               </div>
-              <div>
-                <div class="ticker-price" id="price-usdt">$--</div>
-                <div class="ticker-change" id="change-usdt">--%</div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div class="ticker-price text-mono" id="price-usdt">$--</div>
+                <div class="ticker-change text-mono" id="change-usdt">--%</div>
               </div>
             </div>
             <div
@@ -327,14 +309,14 @@
             >
               <div class="ticker-coin">
                 <div class="coin-icon bnb">B</div>
-                <div>
+                <div class="flex-col">
                   <div class="coin-name">BNB</div>
                   <div class="coin-fullname">BNB</div>
                 </div>
               </div>
-              <div>
-                <div class="ticker-price" id="price-bnb">$--</div>
-                <div class="ticker-change" id="change-bnb">--%</div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div class="ticker-price text-mono" id="price-bnb">$--</div>
+                <div class="ticker-change text-mono" id="change-bnb">--%</div>
               </div>
             </div>
             <div
@@ -344,14 +326,14 @@
             >
               <div class="ticker-coin">
                 <div class="coin-icon sol">S</div>
-                <div>
+                <div class="flex-col">
                   <div class="coin-name">SOL</div>
                   <div class="coin-fullname">Solana</div>
                 </div>
               </div>
-              <div>
-                <div class="ticker-price" id="price-sol">$--</div>
-                <div class="ticker-change" id="change-sol">--%</div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div class="ticker-price text-mono" id="price-sol">$--</div>
+                <div class="ticker-change text-mono" id="change-sol">--%</div>
               </div>
             </div>
             <div
@@ -361,31 +343,24 @@
             >
               <div class="ticker-coin">
                 <div class="coin-icon xrp">X</div>
-                <div>
+                <div class="flex-col">
                   <div class="coin-name">XRP</div>
                   <div class="coin-fullname">Ripple</div>
                 </div>
               </div>
-              <div>
-                <div class="ticker-price" id="price-xrp">$--</div>
-                <div class="ticker-change" id="change-xrp">--%</div>
+              <div class="flex-col" style="align-items: flex-end">
+                <div class="ticker-price text-mono" id="price-xrp">$--</div>
+                <div class="ticker-change text-mono" id="change-xrp">--%</div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- RECENT ACTIVITY -->
-        <div style="padding: 0 16px 20px">
+        <div class="section-padding" style="padding-top: 0">
           <p class="section-title">Recent Activity</p>
           <div class="card" id="recent-activity">
-            <p
-              style="
-                text-align: center;
-                color: var(--text3);
-                font-size: 13px;
-                padding: 20px 0;
-              "
-            >
+            <p class="text-muted" style="text-align: center; font-size: 13px; padding: 20px 0;">
               No recent activity
             </p>
           </div>

@@ -356,7 +356,7 @@ function confirmDeleteAccount() {
     .delete()
     .then(() => db.collection("wallets").doc(user.uid).delete())
     .then(() => user.delete())
-    .then(() => (window.location.href = "login.html"))
+    .then(() => (window.location.href = "index.html?tab=login"))
     .catch((err) => showToast(err.message, "error"));
 }
 function openModal(id) {

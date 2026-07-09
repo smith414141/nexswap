@@ -211,7 +211,7 @@ function proceedWithRegistration(name, email, password, phone, btn) {
         "Account created! Check your email (and SPAM folder) to verify.",
         "success"
       );
-      setTimeout(() => (window.location.href = "/verify.html"), 2000);
+      setTimeout(() => (window.location.href = "verify.html"), 2000);
     })
     .catch((err) => {
       showToast(err.message, "error");
@@ -264,11 +264,11 @@ function login() {
       clearTimeout(timeout);
       if (!cred.user.emailVerified) {
         showToast("Please verify your email first", "warning");
-        setTimeout(() => (window.location.href = "/verify.html"), 1500);
+        setTimeout(() => (window.location.href = "verify.html"), 1500);
         return;
       }
       btn.textContent = "Success!";
-      window.location.href = "/home.html";
+      window.location.href = "home.html";
     })
     .catch((err) => {
       clearTimeout(timeout);
@@ -289,7 +289,7 @@ function loginWithGoogle() {
 
       if (!isNewUser) {
         // Returning user — just log them in, don't touch their data
-        window.location.href = "/home.html";
+        window.location.href = "home.html";
         return;
       }
 
@@ -313,7 +313,7 @@ function loginWithGoogle() {
           updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         }),
       ]).then(() => {
-        window.location.href = "/home.html";
+        window.location.href = "home.html";
       });
     })
     .catch((err) => {
@@ -348,6 +348,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ---- LOGOUT ----
 function logoutUser() {
   auth.signOut().then(() => {
-    window.location.href = "/login.html"; // ← correct
+    window.location.href = "index.html?tab=login";
   });
 }

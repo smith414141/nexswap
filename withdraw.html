@@ -117,166 +117,55 @@
 
     <div class="page">
       <div class="pc-main">
-        <div class="top-bar">
-          <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-            >←</span
-          >
-          <div class="top-bar-logo">⚡ kripex</div>
-          <div class="top-bar-right">
-            <span class="kyc-badge" id="kyc-badge" style="display: none"></span>
-          </div>
-        </div>
-
-        <div style="padding: 20px 16px">
+        <div class="section-padding">
+          <p class="section-title">Withdraw</p>
           <div class="card" style="margin-bottom: 20px; text-align: center">
-            <p style="font-size: 11px; color: var(--text2); margin-bottom: 6px">
+            <p class="text-muted" style="font-size: 11px; margin-bottom: 4px">
               Available Balance
             </p>
-            <div style="font-size: 24px; font-weight: 900" id="wd-balance">
+            <div id="wd-balance" style="font-size: 32px; font-weight: 900" class="text-mono">
               0.00 USDT
             </div>
           </div>
 
           <p class="section-title">Select Crypto</p>
           <div class="tabs" style="margin-bottom: 16px">
-            <button
-              class="tab active"
-              id="wd-usdt"
-              onclick="selectWithdrawCrypto('USDT')"
-            >
-              USDT
-            </button>
-            <button
-              class="tab"
-              id="wd-btc"
-              onclick="selectWithdrawCrypto('BTC')"
-            >
-              BTC
-            </button>
+            <button class="tab active" id="wd-usdt" onclick="selectWithdrawCrypto('USDT')">USDT</button>
+            <button class="tab" id="wd-btc" onclick="selectWithdrawCrypto('BTC')">BTC</button>
           </div>
 
           <p class="section-title">Select Network</p>
-          <div
-            id="wd-network-options"
-            style="
-              display: flex;
-              gap: 8px;
-              margin-bottom: 16px;
-              flex-wrap: wrap;
-            "
-          ></div>
+          <div id="wd-network-options" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;"></div>
 
           <p class="section-title">Withdrawal Address</p>
-          <div class="input-row">
-            <input
-              type="text"
-              id="wd-address"
-              placeholder="Paste wallet address"
-            />
-            <button
-              onclick="openAddressBook()"
-              style="
-                background: var(--bg2);
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                padding: 8px 10px;
-                color: var(--text2);
-                font-size: 12px;
-                cursor: pointer;
-                white-space: nowrap;
-              "
-            >
-              📋 Book
-            </button>
-            <button
-              onclick="saveCurrentAddress()"
-              style="
-                background: var(--bg2);
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                padding: 8px 10px;
-                color: var(--text2);
-                font-size: 12px;
-                cursor: pointer;
-                white-space: nowrap;
-              "
-            >
-              💾 Save
-            </button>
+          <div class="input-row" style="margin-bottom: 16px;">
+            <input type="text" id="wd-address" placeholder="Paste wallet address" />
+            <button onclick="openAddressBook()" class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px;">Book</button>
+            <button onclick="saveCurrentAddress()" class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px;">Save</button>
           </div>
 
           <p class="section-title">Amount</p>
           <div class="input-row">
-            <input
-              type="number"
-              id="wd-amount"
-              placeholder="0.00"
-              min="0"
-              oninput="updateWdSummary()"
-            />
-            <span class="input-suffix" id="wd-amount-suffix">USDT</span>
+            <input type="number" id="wd-amount" placeholder="0.00" min="0" oninput="updateWdSummary()" />
+            <span class="input-suffix text-brass" id="wd-amount-suffix">USDT</span>
           </div>
-          <p
-            style="
-              font-size: 11px;
-              color: var(--text3);
-              margin-top: -8px;
-              margin-bottom: 16px;
-            "
-          >
-            <span
-              onclick="setMaxWithdraw()"
-              style="color: var(--yellow); cursor: pointer; font-weight: 600"
-              >MAX</span
-            >
+          <p class="text-muted" style="font-size: 11px; margin-top: -8px; margin-bottom: 16px;">
+            <span onclick="setMaxWithdraw()" style="color: var(--yellow); cursor: pointer; font-weight: 600">MAX</span> 
             available: <span id="wd-max-display">0.00</span>
           </p>
 
           <div class="card" style="margin-bottom: 16px">
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                font-size: 13px;
-                margin-bottom: 8px;
-              "
-            >
-              <span style="color: var(--text2)">Network Fee</span>
+            <div class="flex-between" style="font-size: 13px; margin-bottom: 8px;">
+              <span class="text-muted">Network Fee</span>
               <span id="wd-fee">--</span>
             </div>
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                font-size: 13px;
-                font-weight: 700;
-                padding-top: 8px;
-                border-top: 1px solid var(--border);
-              "
-            >
+            <div class="flex-between" style="font-size: 13px; font-weight: 700; padding-top: 8px; border-top: 1px solid var(--border);">
               <span>You'll Receive</span>
               <span id="wd-receive">--</span>
             </div>
           </div>
 
-          <button class="btn-primary" onclick="submitWithdrawal()">
-            Submit Withdrawal Request
-          </button>
-
-          <div
-            style="
-              background: rgba(240, 185, 11, 0.06);
-              border: 1px solid rgba(240, 185, 11, 0.15);
-              border-radius: 10px;
-              padding: 12px;
-              margin-top: 12px;
-            "
-          >
-            <p style="font-size: 11px; color: var(--text2); line-height: 1.5">
-              ⚠️ Double-check your address and network. Sending to the wrong
-              address or network may result in permanent loss of funds.
-            </p>
-          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="submitWithdrawal()">Submit Withdrawal</button>
         </div>
       </div>
     </div>

@@ -170,10 +170,31 @@ body {
   pointer-events: none;
 }
 
-/* ---- SCROLLBAR ---- */
-::-webkit-scrollbar {
-  width: 0;
+/* ---- UTILITY CLASSES ---- */
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-sm { gap: 8px; }
+.gap-md { gap: 16px; }
+.text-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.text-brass { color: var(--yellow); }
+.text-muted { color: var(--text2); }
+.section-padding { padding: 20px 16px; }
+.mt-sm { margin-top: 8px; }
+.mt-md { margin-top: 16px; }
+
+/* ---- SHARED COMPONENTS ---- */
+.btn {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: "Inter", sans-serif;
+  transition: all 0.2s;
 }
+.btn-primary { background: var(--yellow); color: #000; }
+.btn-secondary { background: var(--bg2); color: var(--text); border: 1px solid var(--border); }
+.btn:active { transform: scale(0.98); }
 
 /* ---- AUTH ---- */
 .auth-wrapper {

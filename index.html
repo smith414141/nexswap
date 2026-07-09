@@ -67,6 +67,7 @@
         <button class="btn btn-secondary" onclick="closeAuth()">Close</button>
       </div>
     </div>
+    <nav class="landing-nav">
       <div class="landing-nav-inner">
         <div class="auth-logo">
           <div class="logo-icon">⚡</div>
@@ -84,33 +85,76 @@
       </div>
     </nav>
 
+    <!-- LIVE TICKER STRIP -->
+    <div class="ticker-strip">
+      <div class="ticker-track" id="ticker-track">
+        <span class="ticker-item"><b>BTC</b> $--,--- <em class="up">▲</em></span>
+        <span class="ticker-item"><b>ETH</b> $-,--- <em class="up">▲</em></span>
+        <span class="ticker-item"><b>USDT</b> $1.00 <em>—</em></span>
+        <span class="ticker-item"><b>BNB</b> $--- <em class="down">▼</em></span>
+        <span class="ticker-item"><b>SOL</b> $--- <em class="up">▲</em></span>
+        <span class="ticker-item"><b>XRP</b> $-.-- <em class="up">▲</em></span>
+        <!-- duplicated for seamless loop -->
+        <span class="ticker-item"><b>BTC</b> $--,--- <em class="up">▲</em></span>
+        <span class="ticker-item"><b>ETH</b> $-,--- <em class="up">▲</em></span>
+        <span class="ticker-item"><b>USDT</b> $1.00 <em>—</em></span>
+        <span class="ticker-item"><b>BNB</b> $--- <em class="down">▼</em></span>
+        <span class="ticker-item"><b>SOL</b> $--- <em class="up">▲</em></span>
+        <span class="ticker-item"><b>XRP</b> $-.-- <em class="up">▲</em></span>
+      </div>
+    </div>
+
     <!-- HERO -->
     <section class="landing-hero">
-      <div class="landing-hero-badge">⚡ Trusted P2P Crypto Exchange</div>
-      <h1 class="landing-hero-title">
-        Buy & Sell Crypto<br /><span class="text-yellow">Peer-to-Peer.</span>
-      </h1>
-      <p class="landing-hero-sub">
-        Trade Bitcoin, USDT, and more directly with people you trust. Zero
-        hidden fees. Built for speed, built for Africa and beyond.
-      </p>
-      <div class="landing-hero-actions">
-    <button class="btn-primary" onclick="openAuth('register')">Create Free Account</button>
+      <div class="landing-hero-grid">
+        <div class="landing-hero-copy">
+          <div class="landing-hero-badge">⚡ Exchange · P2P · Wallet — one platform</div>
+          <h1 class="landing-hero-title">
+            Trade crypto like<br /><span class="accent">it's your money.</span>
+          </h1>
+          <p class="landing-hero-sub">
+            Buy, sell, and trade Bitcoin, USDT, and more — on the order book or
+            directly with people you trust through P2P. Built for speed, built
+            for Africa and beyond.
+          </p>
+          <div class="landing-hero-actions">
+            <button class="btn-primary" onclick="openAuth('register')">Create Free Account</button>
+            <a href="#features" class="btn-secondary">See How It Works</a>
+          </div>
+          <div class="landing-hero-stats">
+            <div class="hero-stat">
+              <div class="hero-stat-num">30+</div>
+              <div class="hero-stat-label">Countries Supported</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">2FA</div>
+              <div class="hero-stat-label">Secured Accounts</div>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">24/7</div>
+              <div class="hero-stat-label">Market Access</div>
+            </div>
+          </div>
+        </div>
 
-        <a href="#features" class="btn-secondary">See How It Works</a>
-      </div>
-      <div class="landing-hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">30+</div>
-          <div class="hero-stat-label">Countries Supported</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">P2P</div>
-          <div class="hero-stat-label">Direct Trading</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">24/7</div>
-          <div class="hero-stat-label">Market Access</div>
+        <!-- Visual mockup panel, CSS-only, no external images -->
+        <div class="landing-hero-visual">
+          <div class="mockup-card hero-card">
+            <div class="mockup-card-head">
+              <span>Portfolio Value</span>
+              <span class="mockup-dot"></span>
+            </div>
+            <div class="mockup-balance">$24,918.42</div>
+            <div class="mockup-change up">+3.42% today</div>
+            <div class="mockup-bars">
+              <span style="height:30%"></span><span style="height:55%"></span>
+              <span style="height:40%"></span><span style="height:70%"></span>
+              <span style="height:50%"></span><span style="height:85%"></span>
+              <span style="height:65%"></span><span style="height:95%"></span>
+            </div>
+            <div class="mockup-row"><span>BTC</span><span class="text-mono">0.421</span></div>
+            <div class="mockup-row"><span>USDT</span><span class="text-mono">3,200.00</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -204,11 +248,30 @@
     <section class="landing-cta">
       <h2>Ready to start trading?</h2>
       <p>Join Kripex and make your first trade in minutes.</p>
-    <button class="btn-primary" onclick="openAuth('register')">Create Free Account</button>
+      <button class="btn-primary" onclick="openAuth('register')">Create Free Account</button>
     </section>
 
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- FOOTER -->
+    <footer class="landing-footer">
+      <div class="landing-footer-inner">
+        <div class="auth-logo">
+          <div class="logo-icon">⚡</div>
+          <span>Kripex</span>
+        </div>
+        <div class="landing-footer-links">
+          <a href="fees.html">Fees</a>
+          <a href="legal.html">Terms</a>
+          <a href="legal.html#privacy">Privacy</a>
+          <a href="reserves.html">Proof of Reserves</a>
+        </div>
+        <p class="landing-footer-disclaimer">
+          Kripex is an academic project built for a university course. It is
+          not a licensed financial service and does not hold or transmit real
+          funds. See <a href="legal.html">Terms</a> for details.
+        </p>
+      </div>
+    </footer>
+
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>

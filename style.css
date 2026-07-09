@@ -20,25 +20,26 @@
   --red: #d9354a;
 }
 :root {
-  /* LUXURIOUS PALETTE */
-  --bg: #050505;
-  --bg2: #0e0e0e;
-  --bg3: #1a1a1a;
-  --border: #2a2a2a;
-  --border2: #3d3d3d;
-  --text: #f4f4f4;
-  --text2: #a0a0a0;
-  --text3: #666666;
-  --yellow: #d4af37; /* Champagne Gold */
-  --yellow2: #b8860b;
-  --green: #10b981; /* Refined Emerald */
-  --red: #ef4444;
-  --blue: #3b82f6;
+  /* DEEP SPACE EXCHAGE PALETTE */
+  --bg: #030407;             /* Pitch deep-void space black */
+  --bg2: #090d14;            /* Dark titanium surface card color */
+  --bg3: #111827;            /* Lighter gray/blue for hover selections */
+  --border: #1e293b;         /* Sharp structural borders */
+  --border2: #334155;        /* Active element/input borders */
+  --text: #f8fafc;           /* Crisp neon-white typography */
+  --text2: #94a3b8;          /* Slate gray subtext */
+  --text3: #64748b;          /* Muted/disabled labels */
+  --yellow: #f5b300;         /* Vivid Crypto Exchange Yellow/Gold tint */
+  --yellow2: #c28e00;        
+  --green: #02c076;          /* High-intensity spot-trading Green */
+  --red: #f6465d;            /* High-intensity spot-trading Red */
+  --blue: #2f80ed;
   --purple: #8b5cf6;
-  --font-display: "Playfair Display", "Inter", serif; /* Serif for luxury titles */
+  --font-display: "Inter", sans-serif; 
   --font-mono: "IBM Plex Mono", monospace;
-  --glass: rgba(255, 255, 255, 0.03);
+  --glass: rgba(255, 255, 255, 0.02);
   --glass-border: rgba(255, 255, 255, 0.05);
+}
 }
 
 body {

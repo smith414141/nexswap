@@ -289,6 +289,19 @@ function login() {
 }
 // ---- GOOGLE SIGN-IN ----
 function loginWithGoogle() {
+  const registerForm = document.getElementById("register-form");
+  const isRegisterTab = registerForm && registerForm.style.display !== "none";
+  const countrySelect = document.getElementById("reg-country");
+  const countryCode = countrySelect ? countrySelect.value : "ET";
+
+  if (isRegisterTab && countrySelect && countryCode !== "ET") {
+    showToast(
+      "Kripex is only accepting new accounts from Ethiopia right now. Please select Ethiopia as your region to continue.",
+      "error"
+    );
+    return;
+  }
+
   const provider = new firebase.auth.GoogleAuthProvider();
 
   auth
@@ -314,7 +327,7 @@ function loginWithGoogle() {
             phone: "",
             kycStatus: "none",
             merchantStatus: "none",
-            country: "ET",
+            country: countryCode || "ET",
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           }),
         db.collection("wallets").doc(user.uid).set({

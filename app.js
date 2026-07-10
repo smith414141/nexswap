@@ -103,11 +103,21 @@ function register() {
   const name = document.getElementById("reg-name").value.trim();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value;
+  const countrySelect = document.getElementById("reg-country");
+  const countryCode = countrySelect ? countrySelect.value : "ET";
   const phoneCode = document.getElementById("reg-phone-code").value;
   const phoneNumber = document.getElementById("reg-phone").value.trim();
   const phone = phoneNumber
     ? `${phoneCode}${phoneNumber.replace(/\s/g, "")}`
     : "";
+
+  if (countrySelect && countryCode !== "ET") {
+    showToast(
+      "Kripex is only accepting new accounts from Ethiopia right now. Please select Ethiopia as your region to continue.",
+      "error"
+    );
+    return;
+  }
 
   if (!name || !email || !password || !phoneNumber) {
     showToast("Please fill in all fields", "error");
@@ -163,7 +173,7 @@ function register() {
         grecaptcha.reset();
         return;
       }
-      proceedWithRegistration(name, email, password, phone, btn);
+      proceedWithRegistration(name, email, password, phone, countryCode, btn);
     })
     .catch(() => {
       if (settled) return;
@@ -176,7 +186,7 @@ function register() {
     });
 }
 
-function proceedWithRegistration(name, email, password, phone, btn) {
+function proceedWithRegistration(name, email, password, phone, countryCode, btn) {
   btn.textContent = "Creating account...";
 
   auth
@@ -190,7 +200,7 @@ function proceedWithRegistration(name, email, password, phone, btn) {
           phone,
           kycStatus: "none",
           merchantStatus: "none",
-          country: "ET",
+          country: countryCode || "ET",
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         }),
         db.collection("wallets").doc(user.uid).set({

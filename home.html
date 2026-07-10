@@ -258,13 +258,32 @@
         </div>
 
         <div class="dash-right">
-        <!-- PROMO BANNER -->
+        <!-- PROMO BANNER CAROUSEL -->
         <div class="section-padding">
-          <div class="dash-promo-card" onclick="window.location.href='markets.html'">
-            <span class="chip">🚀 Featured</span>
-            <h3>New Listings Available</h3>
-            <p>Trade the latest assets on Kripex.</p>
-            <span class="dash-promo-link">View Markets →</span>
+          <div class="promo-carousel" id="promo-carousel">
+            <div class="promo-slide active" onclick="window.location.href='markets.html'">
+              <span class="chip">🚀 Featured</span>
+              <h3>New Listings Available</h3>
+              <p>Trade the latest tokens including PEPE, FET, SUI and more trending assets.</p>
+              <span class="btn-primary-sm" style="display:inline-flex;width:fit-content">View Markets →</span>
+            </div>
+            <div class="promo-slide" onclick="window.location.href='trade.html'">
+              <span class="chip">⚡ Featured</span>
+              <h3>Trade Smarter with Kripex</h3>
+              <p>Deep liquidity, real-time order books, and instant execution.</p>
+              <span class="btn-primary-sm" style="display:inline-flex;width:fit-content">Start Trading →</span>
+            </div>
+            <div class="promo-slide" onclick="window.location.href='earn.html'">
+              <span class="chip chip-new">💰 Featured</span>
+              <h3>Earn While You Hold</h3>
+              <p>Lock your assets and earn flexible or fixed-term yield.</p>
+              <span class="btn-primary-sm" style="display:inline-flex;width:fit-content">Explore Earn →</span>
+            </div>
+            <div class="promo-dots">
+              <span class="promo-dot active" onclick="event.stopPropagation();setPromoSlide(0)"></span>
+              <span class="promo-dot" onclick="event.stopPropagation();setPromoSlide(1)"></span>
+              <span class="promo-dot" onclick="event.stopPropagation();setPromoSlide(2)"></span>
+            </div>
           </div>
         </div>
 

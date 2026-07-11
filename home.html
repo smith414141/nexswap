@@ -8,7 +8,7 @@
     />
     <title>Kripex — Home</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -20,95 +20,105 @@
     <!-- PC NAV (sibling of .page, NOT inside it) -->
     <div class="pc-nav">
       <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        ><span class="logo-icon-mini">K</span>Kripex</a
+        >⚡ Kripex</a
       >
       <div class="pc-nav-right">
         <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
-        <a href="messages.html" class="nav-icon-btn" title="Messages" style="position:relative">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-          </svg>
-          <span class="msg-badge" id="msg-badge-pc" style="display:none"></span>
-        </a>
-        <a href="profile.html" class="nav-icon-btn" title="Profile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <circle cx="12" cy="8" r="4" />
-            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-          </svg>
-        </a>
         <button class="btn-logout" onclick="logoutUser()">Logout</button>
       </div>
     </div>
 
     <!-- PC SIDEBAR (sibling of .page, NOT inside it) -->
     <div class="pc-sidebar">
-      <div class="pc-sidebar-group-label">Main</div>
       <a class="pc-sidebar-link active" href="home.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" />
-          <rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" />
-          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
+          />
         </svg>
-        Dashboard
+        Home
       </a>
-      <a class="pc-sidebar-link" href="markets.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 20V10M12 20V4M20 20v-7" />
-        </svg>
-        Markets
-      </a>
-      <a class="pc-sidebar-link" href="trade.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 3L3 7l4 4" />
-          <path d="M3 7h13a4 4 0 014 4v1" />
-          <path d="M17 21l4-4-4-4" />
-          <path d="M21 17H8a4 4 0 01-4-4v-1" />
-        </svg>
-        Trade
-      </a>
-      <a class="pc-sidebar-link" href="wallet.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="6" width="20" height="14" rx="2" />
-          <path d="M2 10h20" />
-          <circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
-        </svg>
-        Wallet
-      </a>
-      <a class="pc-sidebar-link" href="portfolio.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2a10 10 0 1010 10H12V2z" />
-          <path d="M21 8A8.99 8.99 0 0014 2v6h7z" />
-        </svg>
-        Portfolio
-      </a>
-
-      <div class="pc-sidebar-group-label">Discover</div>
       <a class="pc-sidebar-link" href="p2p.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M7 3L3 7l4 4" />
           <path d="M3 7h13a4 4 0 014 4v1" />
           <path d="M17 21l4-4-4-4" />
           <path d="M21 17H8a4 4 0 01-4-4v-1" />
         </svg>
-        P2P Trading
+        P2P
       </a>
-      <a class="pc-sidebar-link" href="earn.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 17l6-6 4 4 8-8" />
-          <path d="M17 7h4v4" />
+      <a class="pc-sidebar-link" href="deposit.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 3v12" />
+          <path d="M7 10l5 5 5-5" />
+          <path d="M5 19h14" />
         </svg>
-        Earn
+        Deposit
       </a>
-
-      <div class="pc-sidebar-spacer"></div>
-      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-          <path d="M16 17l5-5-5-5" />
-          <path d="M21 12H9" />
+      <a class="pc-sidebar-link" href="withdraw.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 19V7" />
+          <path d="M7 12l5-5 5 5" />
+          <path d="M5 19h14" />
         </svg>
-        Logout
+        Withdraw
+      </a>
+      <a class="pc-sidebar-link" href="messages.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+        </svg>
+        Messages
+      </a>
+      <a class="pc-sidebar-link" href="profile.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+        </svg>
+        Profile
+      </a>
+      <a class="pc-sidebar-link" href="settings.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
+          />
+        </svg>
+        Settings
       </a>
     </div>
 
@@ -117,7 +127,7 @@
       <div class="pc-main">
         <!-- TOP BAR (mobile only, hidden on PC by CSS) -->
         <div class="top-bar">
-          <div class="top-bar-logo"><span class="logo-icon-mini">K</span>Kripex</div>
+          <div class="top-bar-logo">⚡ Kripex</div>
           <div class="top-bar-right">
             <span
               style="font-size: 20px; cursor: pointer; position: relative"
@@ -155,59 +165,37 @@
           </div>
         </div>
 
-        <div class="dashboard-grid">
-        <div class="dash-left">
         <!-- BALANCE SECTION -->
-        <div class="section-padding">
-          <div class="hero-card">
-            <p class="section-title" style="margin-top:0">Total Balance</p>
-            <div class="balance-total text-mono" id="total-balance">$0.00</div>
-            <div class="divider"></div>
+        <div class="section-padding" style="padding-top: 40px;">
+          <div class="card" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 100%); border: 1px solid var(--yellow); border-radius: 20px;">
+            <p class="section-title" style="color: var(--yellow);">Total Balance</p>
+            <div class="balance-total text-mono" id="total-balance" style="font-size: 42px; margin-bottom: 20px;">$0.00</div>
+            
             <div class="flex-col gap-md">
-              <div class="card flex-between">
-                <div class="flex-between" style="gap: 10px">
-                  <div class="coin-icon btc">₿</div>
+              <!-- Balances inside the card -->
+              <div class="flex-between">
+                <div class="flex-between" style="gap: 15px">
+                  <div class="coin-icon btc" style="background: rgba(212, 175, 55, 0.1);">₿</div>
                   <div class="flex-col">
-                    <div style="font-weight: 700; font-size: 14px">BTC</div>
-                    <div class="text-muted" style="font-size: 11px">Bitcoin</div>
+                    <div style="font-weight: 700; font-size: 16px">Bitcoin</div>
+                    <div class="text-muted" style="font-size: 12px">BTC</div>
                   </div>
                 </div>
                 <div class="flex-col" style="align-items: flex-end">
-                  <div style="font-weight: 700; font-size: 14px" class="text-mono" id="btc-balance">
-                    0.00000000
-                  </div>
-                  <div
-                    class="text-muted text-mono"
-                    style="font-size: 11px"
-                    id="btc-balance-usd"
-                  >
-                    $0.00
-                  </div>
+                  <div style="font-weight: 700; font-size: 16px" class="text-mono" id="btc-balance">0.00000000</div>
                 </div>
               </div>
-              <div class="card flex-between">
-                <div class="flex-between" style="gap: 10px">
-                  <div class="coin-icon usdt">₮</div>
+              <div class="divider" style="margin: 10px 0; opacity: 0.3;"></div>
+              <div class="flex-between">
+                <div class="flex-between" style="gap: 15px">
+                  <div class="coin-icon usdt" style="background: rgba(16, 185, 129, 0.1);">₮</div>
                   <div class="flex-col">
-                    <div style="font-weight: 700; font-size: 14px">USDT</div>
-                    <div class="text-muted" style="font-size: 11px">Tether</div>
+                    <div style="font-weight: 700; font-size: 16px">Tether</div>
+                    <div class="text-muted" style="font-size: 12px">USDT</div>
                   </div>
                 </div>
                 <div class="flex-col" style="align-items: flex-end">
-                  <div
-                    style="font-weight: 700; font-size: 14px"
-                    class="text-mono"
-                    id="usdt-balance"
-                  >
-                    0.00
-                  </div>
-                  <div
-                    class="text-muted text-mono"
-                    style="font-size: 11px"
-                    id="usdt-balance-usd"
-                  >
-                    $0.00
-                  </div>
+                  <div style="font-weight: 700; font-size: 16px" class="text-mono" id="usdt-balance">0.00</div>
                 </div>
               </div>
             </div>
@@ -216,75 +204,28 @@
 
         <!-- QUICK ACTIONS -->
         <div class="section-padding" style="padding-top: 0">
-          <div class="quick-actions-row">
-            <button class="quick-action-tile" onclick="window.location.href='deposit.html'">
-              <span class="qa-icon qa-icon-green">↓</span>
-              <span>Deposit</span>
+          <div style="display: flex; gap: 10px">
+            <button
+              class="btn btn-primary"
+              style="flex: 1"
+              onclick="window.location.href='deposit.html'"
+            >
+              Deposit
             </button>
-            <button class="quick-action-tile" onclick="window.location.href='withdraw.html'">
-              <span class="qa-icon qa-icon-blue">↑</span>
-              <span>Withdraw</span>
+            <button
+              class="btn btn-secondary"
+              style="flex: 1"
+              onclick="window.location.href='withdraw.html'"
+            >
+              Withdraw
             </button>
-            <button class="quick-action-tile" onclick="window.location.href='p2p.html'">
-              <span class="qa-icon qa-icon-gold">⇄</span>
-              <span>P2P</span>
+            <button
+              class="btn btn-secondary text-brass"
+              style="flex: 1; border-color: var(--yellow)"
+              onclick="window.location.href='p2p.html'"
+            >
+              P2P
             </button>
-            <button class="quick-action-tile" onclick="window.location.href='trade.html'">
-              <span class="qa-icon qa-icon-purple">📈</span>
-              <span>Trade</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- RECENT ACTIVITY -->
-        <div class="section-padding" style="padding-top: 0">
-          <p class="section-title">Recent Activity</p>
-          <div class="card" id="recent-activity">
-            <p class="text-muted" style="text-align: center; font-size: 13px; padding: 20px 0;">
-              No recent activity
-            </p>
-          </div>
-        </div>
-        </div>
-
-        <div class="dash-right">
-        <!-- PROMO BANNER CAROUSEL -->
-        <div class="section-padding">
-          <div class="promo-carousel" id="promo-carousel">
-            <div class="promo-slide active" onclick="window.location.href='markets.html'">
-              <span class="chip">🚀 Featured</span>
-              <h3>New Listings Available</h3>
-              <p>Trade the latest tokens including PEPE, FET, SUI and more trending assets.</p>
-              <span class="btn-primary-sm" style="display:inline-flex;width:fit-content">View Markets →</span>
-            </div>
-            <div class="promo-slide" onclick="window.location.href='trade.html'">
-              <span class="chip">⚡ Featured</span>
-              <h3>Trade Smarter with Kripex</h3>
-              <p>Deep liquidity, real-time order books, and instant execution.</p>
-              <span class="btn-primary-sm" style="display:inline-flex;width:fit-content">Start Trading →</span>
-            </div>
-            <div class="promo-slide" onclick="window.location.href='earn.html'">
-              <span class="chip chip-new">💰 Featured</span>
-              <h3>Earn While You Hold</h3>
-              <p>Lock your assets and earn flexible or fixed-term yield.</p>
-              <span class="btn-primary-sm" style="display:inline-flex;width:fit-content">Explore Earn →</span>
-            </div>
-            <div class="promo-dots">
-              <span class="promo-dot active" onclick="event.stopPropagation();setPromoSlide(0)"></span>
-              <span class="promo-dot" onclick="event.stopPropagation();setPromoSlide(1)"></span>
-              <span class="promo-dot" onclick="event.stopPropagation();setPromoSlide(2)"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- QUICK CONVERT -->
-        <div class="section-padding" style="padding-top: 0">
-          <p class="section-title">Quick Convert</p>
-          <div class="card">
-            <p class="text-muted" style="font-size: 12px; margin-bottom: 14px">
-              Swap between assets instantly at market rate.
-            </p>
-            <a href="convert.html" class="btn btn-primary" style="width:100%;display:block;text-align:center">Open Convert →</a>
           </div>
         </div>
 
@@ -396,11 +337,18 @@
             </div>
           </div>
         </div>
-        </div>
+
+        <!-- RECENT ACTIVITY -->
+        <div class="section-padding" style="padding-top: 0">
+          <p class="section-title">Recent Activity</p>
+          <div class="card" id="recent-activity">
+            <p class="text-muted" style="text-align: center; font-size: 13px; padding: 20px 0;">
+              No recent activity
+            </p>
+          </div>
         </div>
       </div>
     </div>
-
 
     <!-- BOTTOM NAV (mobile only) -->
     <div class="bottom-nav">
@@ -528,31 +476,5 @@
     <script src="app.js"></script>
     <script src="currencies.js"></script>
     <script src="home.js"></script>
-    <script>
-      (function () {
-        const slides = document.querySelectorAll('#promo-carousel .promo-slide');
-        const dots = document.querySelectorAll('#promo-carousel .promo-dot');
-        let current = 0;
-        let timer = null;
-
-        window.setPromoSlide = function (idx) {
-          slides.forEach((s, i) => s.classList.toggle('active', i === idx));
-          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-          current = idx;
-        };
-
-        function startAutoRotate() {
-          if (timer) clearInterval(timer);
-          timer = setInterval(() => {
-            setPromoSlide((current + 1) % slides.length);
-          }, 5000);
-        }
-
-        if (slides.length) {
-          setPromoSlide(0);
-          startAutoRotate();
-        }
-      })();
-    </script>
   </body>
 </html>

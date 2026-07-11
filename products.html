@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Kripex — Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body class="has-pc-nav">
+    <div class="pc-nav">
+      <a class="pc-nav-logo" href="home.html" style="text-decoration: none">⚡ Kripex</a>
+      <div class="pc-nav-right">
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <div class="page">
+      <div class="pc-main">
+        <div class="top-bar">
+          <div class="top-bar-logo">⚡ Kripex</div>
+        </div>
+
+        <div style="padding: 20px 16px 4px">
+          <p class="section-title">Products</p>
+          <p style="font-size: 12px; color: var(--text2); margin-bottom: 4px">
+            Explore the full Kripex ecosystem. Some products are limited by region.
+          </p>
+        </div>
+
+        <div class="fh-tabs" id="fh-tabs">
+          <button class="fh-tab active" data-cat="all" onclick="filterProducts('all', this)">All</button>
+          <button class="fh-tab" data-cat="trade" onclick="filterProducts('trade', this)">Trade</button>
+          <button class="fh-tab" data-cat="earn" onclick="filterProducts('earn', this)">Earn</button>
+          <button class="fh-tab" data-cat="explore" onclick="filterProducts('explore', this)">Explore</button>
+          <button class="fh-tab" data-cat="account" onclick="filterProducts('account', this)">Account</button>
+        </div>
+
+        <div class="feature-hub-grid" id="feature-hub-grid">
+          <div class="feature-hub-card" data-cat="trade" onclick="location.href='futures.html'">
+            <span class="fh-badge fh-badge-popular">Popular</span>
+            <div class="fh-icon">📈</div>
+            <div class="fh-title">Futures</div>
+            <div class="fh-sub">Leverage perpetuals</div>
+          </div>
+          <div class="feature-hub-card" data-cat="trade" onclick="location.href='trade.html'">
+            <div class="fh-icon">🔄</div>
+            <div class="fh-title">Spot Trading</div>
+            <div class="fh-sub">Buy & sell instantly</div>
+          </div>
+          <div class="feature-hub-card" data-cat="earn" onclick="location.href='earn.html'">
+            <div class="fh-icon">🌱</div>
+            <div class="fh-title">Earn / Staking</div>
+            <div class="fh-sub">Grow your holdings</div>
+          </div>
+          <div class="feature-hub-card" data-cat="explore" onclick="location.href='p2p.html'">
+            <div class="fh-icon">🤝</div>
+            <div class="fh-title">P2P</div>
+            <div class="fh-sub">Trade with merchants</div>
+          </div>
+          <div class="feature-hub-card" data-cat="explore" onclick="location.href='nft.html'">
+            <span class="fh-badge fh-badge-new">New</span>
+            <div class="fh-icon">🖼️</div>
+            <div class="fh-title">NFT Marketplace</div>
+            <div class="fh-sub">Collectibles</div>
+          </div>
+          <div class="feature-hub-card" data-cat="explore" onclick="location.href='launchpad.html'">
+            <span class="fh-badge fh-badge-hot">Hot</span>
+            <div class="fh-icon">🚀</div>
+            <div class="fh-title">Launchpad</div>
+            <div class="fh-sub">New token listings</div>
+          </div>
+          <div class="feature-hub-card" data-cat="account" onclick="location.href='governance.html'">
+            <div class="fh-icon">🏛️</div>
+            <div class="fh-title">Governance</div>
+            <div class="fh-sub">Vote on proposals</div>
+          </div>
+          <div class="feature-hub-card" data-cat="account" onclick="location.href='referral.html'">
+            <div class="fh-icon">🎁</div>
+            <div class="fh-title">Referrals</div>
+            <div class="fh-sub">Invite & earn</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'">
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item active" onclick="window.location.href='products.html'">
+        <span class="nav-label">Products</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='wallet.html'">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-item" onclick="window.location.href='profile.html'">
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script>
+      function filterProducts(cat, btn) {
+        document.querySelectorAll(".fh-tab").forEach((t) => t.classList.remove("active"));
+        btn.classList.add("active");
+        document.querySelectorAll(".feature-hub-card").forEach((card) => {
+          card.style.display = cat === "all" || card.dataset.cat === cat ? "block" : "none";
+        });
+      }
+    </script>
+  </body>
+</html>

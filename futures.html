@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Kripex — Futures</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="trade.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body class="has-pc-nav">
+    <div class="pc-nav">
+      <a class="pc-nav-logo" href="home.html" style="text-decoration: none">⚡ Kripex</a>
+      <div class="pc-nav-right">
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <div class="page">
+      <div class="pc-main">
+        <div class="top-bar">
+          <div class="top-bar-logo">⚡ Kripex</div>
+          <div class="top-bar-right">
+            <span style="font-size: 13px; color: var(--text2)" onclick="location.href='products.html'" style="cursor:pointer">← Products</span>
+          </div>
+        </div>
+
+        <!-- REGION GATE -->
+        <div id="region-gate" class="region-gate-card">
+          <div class="region-gate-icon">🔒</div>
+          <div class="region-gate-title">Not available in your region</div>
+          <p class="region-gate-text">
+            <span class="region-gate-feature-name">Futures Trading</span> isn't currently offered for accounts registered in
+            <span class="region-gate-current-region">your region</span>, in line with local regulatory availability.
+          </p>
+          <button class="btn-primary" onclick="window.location.href='settings.html'">Change Region</button>
+        </div>
+
+        <!-- FEATURE CONTENT -->
+        <div id="feature-content" style="display:none">
+          <div style="padding: 16px">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+              <div>
+                <div style="font-size:18px; font-weight:800" id="fut-pair">BTC/USDT Perpetual</div>
+                <div style="font-size:12px; color:var(--text2)">Up to 20x leverage</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:20px; font-weight:800; color:var(--green)" id="fut-price">$67,500.00</div>
+                <div style="font-size:12px; color:var(--green)" id="fut-change">+1.24%</div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom:12px; padding:14px">
+              <div style="display:flex; gap:8px; margin-bottom:14px">
+                <button class="tab active" style="flex:1" onclick="setFutSide('long', this)" id="fut-tab-long">Long</button>
+                <button class="tab" style="flex:1" onclick="setFutSide('short', this)" id="fut-tab-short">Short</button>
+              </div>
+
+              <label style="font-size:12px; color:var(--text2)">Leverage: <span id="fut-leverage-val">10x</span></label>
+              <input type="range" min="1" max="20" value="10" id="fut-leverage" style="width:100%; margin:8px 0 14px" oninput="document.getElementById('fut-leverage-val').textContent = this.value + 'x'" />
+
+              <label style="font-size:12px; color:var(--text2)">Margin (USDT)</label>
+              <input type="number" id="fut-margin" placeholder="0.00" class="input-field" style="width:100%; margin:6px 0 14px" oninput="updateFutEstimate()" />
+
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:14px">
+                <span>Position Size</span>
+                <span id="fut-position-size">$0.00</span>
+              </div>
+
+              <button class="btn-primary" id="fut-submit-btn" style="width:100%; background:var(--green)" onclick="openFutPosition()">Open Long Position</button>
+            </div>
+
+            <p class="section-title">Open Positions</p>
+            <div class="card" id="fut-positions-list">
+              <p style="text-align:center; color:var(--text3); font-size:13px; padding:20px 0">No open positions</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="window.location.href='home.html'"><span class="nav-label">Home</span></button>
+      <button class="nav-item active" onclick="window.location.href='products.html'"><span class="nav-label">Products</span></button>
+      <button class="nav-item" onclick="window.location.href='wallet.html'"><span class="nav-label">Wallet</span></button>
+      <button class="nav-item" onclick="window.location.href='profile.html'"><span class="nav-label">Profile</span></button>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="region-gate.js"></script>
+    <script src="futures.js"></script>
+  </body>
+</html>

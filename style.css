@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap");
 
 * {
   margin: 0;
@@ -20,34 +20,36 @@
   --red: #d9354a;
 }
 :root {
-  /* Kripex identity: obsidian + electric blue — matches the reference dashboard
-     look: near-black surfaces, one confident accent color, not gold/yellow. */
-  --bg: #0a0b0f;
-  --bg2: #14161c;
-  --bg3: #1c1f27;
-  --border: #24272f;
-  --border2: #32363f;
-  --text: #f2f2f4;
-  --text2: #97989f;
-  --text3: #5a5b63;
-  --yellow: #3d7cff;
-  --yellow2: #2f65db;
-  --green: #22c58b;
-  --red: #ef4a5f;
-  --blue: #3d7cff;
-  --purple: #9b7cf0;
+  /* VERIFIED PALETTE — extracted directly from base44 export's index.css */
+  --bg: hsl(220 20% 4%);
+  --bg2: hsl(220 18% 7%);
+  --bg3: hsl(220 16% 12%);
+  --bg-elevated: hsl(220 18% 9%);
+  --border: hsl(220 16% 14%);
+  --border2: hsl(220 16% 20%);
+  --text: hsl(210 20% 95%);
+  --text2: hsl(215 14% 60%);
+  --text3: hsl(215 14% 42%);
+  --blue: hsl(217 91% 60%); /* primary accent */
+  --yellow: hsl(45 93% 58%); /* gold secondary accent */
+  --yellow2: hsl(45 80% 45%);
+  --green: hsl(142 71% 45%);
+  --red: hsl(0 72% 51%);
+  --purple: hsl(280 65% 60%);
   --font-display: "Space Grotesk", "Inter", sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
-  --font-serif: "Fraunces", Georgia, serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.05);
 }
+
 
 body {
   font-family: "Inter", sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
+  margin: 0;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -193,9 +195,10 @@ body {
   font-family: "Inter", sans-serif;
   transition: all 0.2s;
 }
-.btn-primary { background: var(--yellow); color: #000; }
-.btn-secondary { background: var(--bg2); color: var(--text); border: 1px solid var(--border); }
-.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--yellow); color: #000; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
+.btn-primary:hover { background: #e6c24d; transform: translateY(-2px); }
+.btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
 
 /* ---- AUTH ---- */
 .auth-wrapper {
@@ -230,32 +233,12 @@ body {
 .logo-icon {
   width: 38px;
   height: 38px;
-  background: linear-gradient(155deg, #5b8dff 0%, #3d7cff 45%, #9b7cf0 100%);
+  background: var(--yellow);
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 19px;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(61, 124, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-}
-
-.logo-icon-mini {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  background: linear-gradient(155deg, #5b8dff 0%, #3d7cff 45%, #9b7cf0 100%);
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 12px;
-  color: #fff;
-  margin-right: 2px;
-  vertical-align: -4px;
+  font-size: 20px;
 }
 
 .auth-logo span {
@@ -512,62 +495,14 @@ body {
 
 /* ---- CARDS ---- */
 .card {
-  background: var(--bg2);
+  background: linear-gradient(135deg, hsl(220 18% 8% / 0.8), hsl(220 18% 6% / 0.6));
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
-.card[onclick],
-a.card,
-.card.clickable {
-  cursor: pointer;
-}
-.card[onclick]:hover,
-a.card:hover,
-.card.clickable:hover {
-  border-color: var(--border2);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-}
-
-/* Signature hero panel — the balance/portfolio summary block on any page.
-   One element per page gets this gradient+glow treatment; everything else
-   stays flat so this actually reads as "the important number." */
-.hero-card {
-  position: relative;
-  background: linear-gradient(160deg, var(--bg3) 0%, var(--bg2) 65%);
-  border: 1px solid var(--border2);
-  border-radius: 18px;
-  padding: 22px 18px;
-  overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-}
-.hero-card::before {
-  content: "";
-  position: absolute;
-  top: -60%;
-  right: -20%;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(61, 124, 255, 0.18) 0%, rgba(61, 124, 255, 0) 70%);
-  pointer-events: none;
-}
-
-/* Badge chips — "Popular" / "New" / "Hot" style tags used on feature/promo cards */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 100px;
-  background: rgba(61, 124, 255, 0.14);
-  color: var(--yellow);
-}
-.chip.chip-new { background: rgba(34, 197, 139, 0.16); color: var(--green); }
-.chip.chip-hot { background: rgba(239, 74, 95, 0.16); color: var(--red); }
 
 /* ---- VERIFY PAGE ---- */
 .verify-wrapper {
@@ -1016,140 +951,49 @@ a.card:hover,
   flex-shrink: 0;
 }
 
-/* PROMO CAROUSEL (dashboard) */
-.promo-carousel {
-  position: relative;
-  background: linear-gradient(135deg, #14161c 0%, #1a1e2e 70%);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 18px;
-  min-height: 150px;
-  overflow: hidden;
+/* TERMINAL DASHBOARD LAYOUT */
+.hero-balance {
+  padding: 60px 32px;
+  background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.08), transparent 60%);
+  border-bottom: 1px solid var(--glass-border);
 }
-.promo-slide {
-  display: none;
-  cursor: pointer;
+.hero-balance-content {
+  max-width: 800px;
 }
-.promo-slide.active {
-  display: block;
-  animation: promo-fade 0.4s ease;
-}
-@keyframes promo-fade {
-  from { opacity: 0; transform: translateX(8px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-.promo-slide h3 {
-  font-family: var(--font-display);
-  font-size: 17px;
-  margin: 10px 0 4px;
-}
-.promo-slide p {
-  font-size: 12px;
-  color: var(--text2);
-  margin-bottom: 4px;
-}
-.promo-dots {
-  display: flex;
-  gap: 5px;
-  margin-top: 12px;
-}
-.promo-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--border2);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.promo-dot.active {
-  width: 18px;
-  border-radius: 4px;
-  background: var(--yellow);
-}
-
-
-.quick-actions-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-.quick-action-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 6px;
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.15s ease, transform 0.15s ease;
-}
-.quick-action-tile:hover {
-  border-color: var(--border2);
-  transform: translateY(-2px);
-}
-.qa-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-.qa-icon-green { background: rgba(34, 197, 139, 0.15); color: var(--green); }
-.qa-icon-blue { background: rgba(61, 124, 255, 0.15); color: var(--blue); }
-.qa-icon-gold { background: rgba(212, 169, 74, 0.18); color: #d4a94a; }
-.qa-icon-purple { background: rgba(155, 124, 240, 0.15); color: var(--purple); }
-
-/* DASHBOARD PROMO CARD */
-.dash-promo-card {
-  background: linear-gradient(135deg, #14161c 0%, #1a1e2e 70%);
-  border: 1px solid var(--border2);
-  border-radius: 16px;
-  padding: 18px;
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-.dash-promo-card:hover { border-color: var(--border2); }
-.dash-promo-card h3 {
-  font-family: var(--font-display);
-  font-size: 16px;
-  margin: 10px 0 4px;
-}
-.dash-promo-card p {
-  font-size: 12px;
-  color: var(--text2);
-  margin-bottom: 10px;
-}
-.dash-promo-link {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--yellow);
-}
-
-
 .balance-total {
-  font-size: 32px;
-  font-weight: 900;
+  font-size: 56px;
+  font-weight: 800;
   color: var(--text);
-  letter-spacing: -0.02em;
+  margin-bottom: 24px;
 }
-
-.balance-change {
-  font-size: 13px;
-  font-weight: 600;
+.hero-actions {
+  display: flex;
+  gap: 16px;
 }
-
-.balance-change.up {
-  color: var(--green);
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 32px;
 }
-.balance-change.down {
-  color: var(--red);
+.asset-tile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.2s, background 0.2s;
+}
+.asset-tile:hover {
+  transform: translateY(-4px);
+  background: var(--bg3);
+}
+.asset-name {
+  font-size: 14px;
+  color: var(--text2);
+}
+.asset-balance {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: var(--font-mono);
 }
 
 /* ---- MARKET TICKER ---- */
@@ -1749,47 +1593,9 @@ a.card:hover,
     background: var(--bg3);
     color: var(--text);
   }
-  .pc-sidebar-group-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text3);
-    padding: 16px 12px 6px;
-  }
-  .pc-sidebar-group-label:first-child {
-    padding-top: 4px;
-  }
-  .pc-sidebar-spacer {
-    flex: 1;
-  }
-  .pc-sidebar-logout {
-    color: var(--red);
-    opacity: 0.85;
-  }
-  .nav-icon-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text2);
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    transition: border-color 0.15s ease, color 0.15s ease;
-  }
-  .nav-icon-btn:hover {
-    color: var(--text);
-    border-color: var(--border2);
-  }
-
-
-  /* DASHBOARD GRID — real 2-column layout on wide desktop screens,
-     falls back to normal single-column stacking below 1024px (tablet/mobile
-     use the default block flow already defined above). */
-  .dashboard-grid {
-    display: block;
+  .pc-sidebar-link.active {
+    background: rgba(240, 185, 11, 0.12);
+    color: var(--yellow);
   }
 
   /* Page wrapper — full width, no centering */
@@ -1820,20 +1626,6 @@ a.card:hover,
   .pc-main .card {
     max-width: 100%;
     box-sizing: border-box;
-  }
-
-  @media (min-width: 1024px) {
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 24px;
-      align-items: start;
-      padding: 0 32px;
-    }
-    .dashboard-grid .section-padding {
-      padding-left: 0;
-      padding-right: 0;
-    }
   }
 
   /* Smaller laptops */
@@ -2083,3 +1875,78 @@ a.card:hover,
   padding: 8px 4px;
   border-bottom: 1px solid var(--border);
 }
+
+/* ---- VERIFIED UTILITY CLASSES (from base44 reference) ---- */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(217 91% 60%), hsl(45 93% 58%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.glow-blue { box-shadow: 0 0 20px -5px hsl(217 91% 60% / 0.3); }
+.glow-green { box-shadow: 0 0 15px -5px hsl(142 71% 45% / 0.3); }
+.glow-gold { box-shadow: 0 0 15px -5px hsl(45 93% 58% / 0.3); }
+
+.section-title,
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+.balance-amount,
+.price,
+.amount,
+[class*="balance"],
+[class*="-price"] {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Color-tinted stat cards, matching reference screenshot */
+.stat-card-blue { background: linear-gradient(135deg, hsl(217 91% 60% / 0.12), hsl(220 18% 7% / 0.6)); border-color: hsl(217 91% 60% / 0.25); }
+.stat-card-green { background: linear-gradient(135deg, hsl(142 71% 45% / 0.12), hsl(220 18% 7% / 0.6)); border-color: hsl(142 71% 45% / 0.25); }
+.stat-card-gold { background: linear-gradient(135deg, hsl(45 93% 58% / 0.12), hsl(220 18% 7% / 0.6)); border-color: hsl(45 93% 58% / 0.25); }
+.stat-card-purple { background: linear-gradient(135deg, hsl(280 65% 60% / 0.12), hsl(220 18% 7% / 0.6)); border-color: hsl(280 65% 60% / 0.25); }
+
+/* ---- PRODUCT HUB TABS + BADGES ---- */
+.fh-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 16px 16px;
+  scrollbar-width: none;
+}
+.fh-tabs::-webkit-scrollbar { display: none; }
+.fh-tab {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.fh-tab.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.feature-hub-card {
+  position: relative;
+}
+.fh-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.fh-badge-popular { background: hsl(45 93% 58% / 0.18); color: var(--yellow); }
+.fh-badge-new { background: hsl(217 91% 60% / 0.18); color: var(--blue); }
+.fh-badge-hot { background: hsl(0 72% 51% / 0.18); color: var(--red); }
+

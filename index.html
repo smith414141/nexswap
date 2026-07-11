@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kripex — The Digital Vault | Crypto Exchange</title>
+    <title>Kripex — The Blockchain Vault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,wght@0,400;0,600;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -18,7 +18,7 @@
     <div id="auth-overlay" style="display: none; position: fixed; inset: 0; background: var(--bg); z-index: 1000; overflow-y: auto;">
       <div class="auth-wrapper">
         <div class="auth-logo">
-          <div class="logo-icon">K</div>
+          <div class="logo-icon">⚡</div>
           <span>Kripex</span>
         </div>
         <div class="auth-tabs">
@@ -37,15 +37,6 @@
             <input type="password" id="login-password" placeholder="••••••••" />
           </div>
           <button class="btn btn-primary" onclick="login()">Login</button>
-          <div style="display:flex;align-items:center;gap:10px;margin:14px 0">
-            <div style="flex:1;height:1px;background:var(--border)"></div>
-            <span style="font-size:11px;color:var(--text3)">OR</span>
-            <div style="flex:1;height:1px;background:var(--border)"></div>
-          </div>
-          <button class="btn btn-secondary" onclick="loginWithGoogle()" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%">
-            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-            Continue with Google
-          </button>
           <div class="auth-link" onclick="forgotPassword()">Forgot password?</div>
         </div>
 
@@ -60,29 +51,9 @@
             <input type="email" id="reg-email" placeholder="john@example.com" />
           </div>
           <div class="form-group">
-            <label>Region / Country</label>
-            <select id="reg-country" onchange="onCountryChange()">
-              <option value="ET" data-code="+251" selected>🇪🇹 Ethiopia</option>
-              <option value="US" data-code="+1">🇺🇸 United States</option>
-              <option value="GB" data-code="+44">🇬🇧 United Kingdom</option>
-              <option value="KE" data-code="+254">🇰🇪 Kenya</option>
-              <option value="NG" data-code="+234">🇳🇬 Nigeria</option>
-              <option value="EG" data-code="+20">🇪🇬 Egypt</option>
-              <option value="AE" data-code="+971">🇦🇪 United Arab Emirates</option>
-              <option value="ZA" data-code="+27">🇿🇦 South Africa</option>
-              <option value="IN" data-code="+91">🇮🇳 India</option>
-              <option value="CA" data-code="+1">🇨🇦 Canada</option>
-              <option value="DE" data-code="+49">🇩🇪 Germany</option>
-              <option value="SA" data-code="+966">🇸🇦 Saudi Arabia</option>
-            </select>
-            <p id="region-warning" style="display:none; font-size:12px; color:var(--red); margin-top:6px">
-              Kripex is only accepting new accounts from Ethiopia right now. Please select Ethiopia as your region to continue.
-            </p>
-          </div>
-          <div class="form-group">
             <label>Phone</label>
             <div style="display:flex; gap:8px;">
-               <input type="text" id="reg-phone-code" value="+251" style="width:80px;" readonly />
+               <input type="text" id="reg-phone-code" value="+251" style="width:80px;" />
                <input type="tel" id="reg-phone" placeholder="912345678" />
             </div>
           </div>
@@ -92,30 +63,21 @@
           </div>
           <div id="recaptcha-container" style="margin-bottom:15px;"></div>
           <button class="btn btn-primary" onclick="register()">Create Account</button>
-          <div style="display:flex;align-items:center;gap:10px;margin:14px 0">
-            <div style="flex:1;height:1px;background:var(--border)"></div>
-            <span style="font-size:11px;color:var(--text3)">OR</span>
-            <div style="flex:1;height:1px;background:var(--border)"></div>
-          </div>
-          <button class="btn btn-secondary" onclick="loginWithGoogle()" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%">
-            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-            Continue with Google
-          </button>
         </div>
         <button class="btn btn-secondary" onclick="closeAuth()">Close</button>
       </div>
     </div>
     <nav class="landing-nav">
       <div class="landing-nav-inner">
-        <div class="auth-logo">
-          <div class="logo-icon">K</div>
-          <span>Kripex</span>
+        <div class="auth-logo landing-logo">
+          <span>KRIPEX</span>
+          <small>THE BLOCKCHAIN VAULT</small>
         </div>
         <div class="landing-nav-links">
-          <a href="#pulse">Markets</a>
-          <a href="portfolio.html">Portfolio</a>
-          <a href="#trust">Security</a>
-          <a href="legal.html">About</a>
+          <a href="#markets">Markets</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#security">Security</a>
+          <a href="#about">About</a>
         </div>
         <div class="landing-nav-actions">
           <button class="btn-text" onclick="openAuth('login')">Sign In</button>
@@ -133,7 +95,6 @@
         <span class="ticker-item"><b>BNB</b> $--- <em class="down">▼</em></span>
         <span class="ticker-item"><b>SOL</b> $--- <em class="up">▲</em></span>
         <span class="ticker-item"><b>XRP</b> $-.-- <em class="up">▲</em></span>
-        <!-- duplicated for seamless loop -->
         <span class="ticker-item"><b>BTC</b> $--,--- <em class="up">▲</em></span>
         <span class="ticker-item"><b>ETH</b> $-,--- <em class="up">▲</em></span>
         <span class="ticker-item"><b>USDT</b> $1.00 <em>—</em></span>
@@ -144,281 +105,238 @@
     </div>
 
     <!-- HERO -->
-    <section class="landing-hero">
-      <div class="landing-hero-grid">
-        <div class="landing-hero-copy">
-          <div class="hero-eyebrow">THE DIGITAL VAULT</div>
-          <h1 class="landing-hero-title">
-            Unstoppable<br /><span class="serif-italic">Velocity</span><span class="accent-dot">.</span>
-          </h1>
-          <p class="landing-hero-sub">
-            Buy, sell, and trade Bitcoin, USDT, and more — on the order book or
-            directly with people you trust through P2P. Built for speed, built
-            for clarity.
-          </p>
-          <div class="landing-hero-actions">
-            <button class="btn-primary" onclick="openAuth('register')">Enter the Exchange →</button>
-            <a href="#pulse" class="btn-secondary">View Markets</a>
-          </div>
-          <div class="hero-pill-row">
-            <span class="hero-pill">🔗 Multi-Chain</span>
-            <span class="hero-pill">💠 300+ Assets</span>
-            <span class="hero-pill">📉 Low Fees</span>
-            <span class="hero-pill">🔒 Secured</span>
-            <span class="hero-pill">⚡ Instant</span>
-          </div>
+    <section class="landing-hero-v2">
+      <div class="hero-v2-content">
+        <h1 class="hero-v2-title">
+          UNSTOPPABLE<br /><span class="accent-blue">VELOCITY</span>
+        </h1>
+        <div class="hero-v2-actions">
+          <button class="btn-primary" onclick="openAuth('register')">Enter the Vault →</button>
+          <a href="#portfolio" class="btn-secondary">View Portfolio</a>
         </div>
-
-        <!-- Coin + chart visual, CSS/SVG only -->
-        <div class="landing-hero-visual">
-          <div class="hero-coin-wrap">
-            <svg class="hero-coin-chart" viewBox="0 0 300 160" preserveAspectRatio="none">
-              <polyline points="0,130 25,120 50,124 75,100 100,105 125,72 150,80 175,50 200,55 225,28 250,20 275,10 300,4"
-                fill="none" stroke="var(--blue)" stroke-width="2" opacity="0.7" />
-              <!-- candlesticks -->
-              <g stroke-width="2">
-                <line x1="15" y1="128" x2="15" y2="112" stroke="#22c58b" />
-                <rect x="11" y="116" width="8" height="10" fill="#22c58b" />
-                <line x1="45" y1="122" x2="45" y2="108" stroke="#ef4a5f" />
-                <rect x="41" y="110" width="8" height="9" fill="#ef4a5f" />
-                <line x1="75" y1="104" x2="75" y2="88" stroke="#22c58b" />
-                <rect x="71" y="92" width="8" height="10" fill="#22c58b" />
-                <line x1="105" y1="100" x2="105" y2="82" stroke="#ef4a5f" />
-                <rect x="101" y="86" width="8" height="9" fill="#ef4a5f" />
-                <line x1="135" y1="80" x2="135" y2="60" stroke="#22c58b" />
-                <rect x="131" y="64" width="8" height="12" fill="#22c58b" />
-                <line x1="165" y1="66" x2="165" y2="48" stroke="#22c58b" />
-                <rect x="161" y="52" width="8" height="10" fill="#22c58b" />
-                <line x1="195" y1="52" x2="195" y2="34" stroke="#ef4a5f" />
-                <rect x="191" y="38" width="8" height="9" fill="#ef4a5f" />
-                <line x1="225" y1="34" x2="225" y2="16" stroke="#22c58b" />
-                <rect x="221" y="20" width="8" height="10" fill="#22c58b" />
-                <line x1="255" y1="26" x2="255" y2="8" stroke="#22c58b" />
-                <rect x="251" y="12" width="8" height="10" fill="#22c58b" />
-              </g>
-            </svg>
-            <div class="hero-coin">K</div>
-          </div>
-        </div>
+      </div>
+      <div class="hero-v2-coin" aria-hidden="true">K</div>
+      <div class="hero-v2-badges">
+        <span class="hero-badge">▲ 0% Fees</span>
+        <span class="hero-badge">🛡 Secured</span>
+        <span class="hero-badge">₿ BTC</span>
+        <span class="hero-badge">⚡ Instant</span>
+        <span class="hero-badge">◈ Multi-Chain</span>
+        <span class="hero-badge">300+ Assets</span>
       </div>
     </section>
 
-    <!-- FEATURED PROMO BANNER -->
-    <section class="landing-section">
-      <div class="promo-banner">
-        <div class="promo-banner-content">
-          <span class="chip">🚀 Featured</span>
-          <h2>Built for Serious Traders</h2>
-          <p>
-            Real-time order books, secure P2P trading, and a wallet that
-            actually tracks what you own — no filler pages, no fake numbers.
-          </p>
-          <a href="#features" class="btn-primary-sm" style="display:inline-flex;width:fit-content;margin-top:6px">Explore Features →</a>
-        </div>
-        <div class="promo-banner-glyph">⚡</div>
-      </div>
-    </section>
+    <!-- THE PULSE — MARKETS -->
+    <section class="landing-section-v2" id="markets">
+      <div class="section-v2-eyebrow accent-blue">THE PULSE</div>
+      <h2 class="section-v2-title">Real-Time Market<br /><span class="dim">Terminal</span></h2>
 
-    <!-- FEATURES -->
-    <section class="landing-section" id="features">
-      <h2 class="landing-section-title">Why Kripex</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <span class="chip" style="margin-bottom:10px">Popular</span>
-          <div class="feature-icon">🔒</div>
-          <h3>Secure by Design</h3>
-          <p>
-            Google Authenticator 2FA, KYC verification, and withdrawal
-            whitelisting protect every account.
-          </p>
-        </div>
-        <div class="feature-card">
-          <span class="chip chip-new" style="margin-bottom:10px">New</span>
-          <div class="feature-icon">⚡</div>
-          <h3>Fast Settlements</h3>
-          <p>
-            Real-time order matching and instant chat with your trading partner
-            — no waiting around.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🌍</div>
-          <h3>Built for Global Users</h3>
-          <p>
-            Local payment methods, multiple currencies, and phone verification
-            across 30+ countries.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">✅</div>
-          <h3>Verified Merchants</h3>
-          <p>
-            Trade with confidence — merchant applications are reviewed before
-            they can list.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- P2P EXPLAINER -->
-    <section class="landing-section landing-section-alt" id="p2p">
-      <h2 class="landing-section-title">How P2P Trading Works</h2>
-      <div class="steps-row">
-        <div class="step-card">
-          <div class="step-num">1</div>
-          <h3>Find a Listing</h3>
-          <p>
-            Browse offers from verified merchants and traders near your price.
-          </p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">2</div>
-          <h3>Place Your Order</h3>
-          <p>Lock in the price and open a secure trade chat with the seller.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">3</div>
-          <h3>Pay & Confirm</h3>
-          <p>
-            Send payment using your local method, mark as paid, and wait for
-            release.
-          </p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">4</div>
-          <h3>Receive Crypto</h3>
-          <p>
-            Funds release straight to your wallet the moment the seller
-            confirms.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- THE PULSE — real-time market table -->
-    <section class="landing-section" id="pulse">
-      <div class="hero-eyebrow" style="text-align:center">THE PULSE</div>
-      <h2 class="landing-section-title serif-title">Real-Time Market Terminal</h2>
       <div class="market-table">
         <div class="market-table-head">
-          <span>Asset</span><span>Price</span><span>24h</span><span class="mt-hide-mobile">Market Cap</span><span></span>
+          <span>Asset</span><span>Price</span><span>24H</span><span>Market Cap</span><span>7D Chart</span><span></span>
         </div>
-        <div class="market-row">
-          <span class="mt-asset"><span class="mt-coin">B</span> Bitcoin <em>BTC</em></span>
-          <span class="text-mono">$67,842.50</span>
-          <span class="mt-up">▲ +2.41%</span>
-          <span class="mt-hide-mobile text-mono">$1.33T</span>
-          <a href="#" class="btn-secondary btn-sm" onclick="openAuth('register');return false;">Trade</a>
+        <div class="market-table-body" id="landing-market-table">
+          <!-- rows injected by landing.js / app.js from live price fetch, static fallback below -->
+          <div class="market-row">
+            <span class="market-asset"><i class="coin-dot" style="background:#f7931a">B</i> Bitcoin <small>BTC</small></span>
+            <span>$67,842.50</span><span class="up">↗ +2.41%</span><span>$1.33T</span>
+            <span><svg viewBox="0 0 100 30" class="spark up"><polyline points="0,25 15,20 30,22 45,15 60,17 75,8 100,5" /></svg></span>
+            <button class="btn-link" onclick="openAuth('register')">Trade</button>
+          </div>
+          <div class="market-row">
+            <span class="market-asset"><i class="coin-dot" style="background:#627eea">E</i> Ethereum <small>ETH</small></span>
+            <span>$3,521.18</span><span class="up">↗ +1.87%</span><span>$423B</span>
+            <span><svg viewBox="0 0 100 30" class="spark up"><polyline points="0,22 15,20 30,17 45,18 60,12 75,10 100,4" /></svg></span>
+            <button class="btn-link" onclick="openAuth('register')">Trade</button>
+          </div>
+          <div class="market-row">
+            <span class="market-asset"><i class="coin-dot" style="background:#14f195">S</i> Solana <small>SOL</small></span>
+            <span>$178.42</span><span class="up">↗ +5.23%</span><span>$82B</span>
+            <span><svg viewBox="0 0 100 30" class="spark up"><polyline points="0,26 15,24 30,15 45,17 60,10 75,12 100,3" /></svg></span>
+            <button class="btn-link" onclick="openAuth('register')">Trade</button>
+          </div>
+          <div class="market-row">
+            <span class="market-asset"><i class="coin-dot" style="background:#f3ba2f">B</i> BNB <small>BNB</small></span>
+            <span>$612.35</span><span class="down">↘ -0.42%</span><span>$94B</span>
+            <span><svg viewBox="0 0 100 30" class="spark down"><polyline points="0,8 15,12 30,10 45,16 60,15 75,20 100,24" /></svg></span>
+            <button class="btn-link" onclick="openAuth('register')">Trade</button>
+          </div>
+          <div class="market-row">
+            <span class="market-asset"><i class="coin-dot" style="background:#23292f">X</i> XRP <small>XRP</small></span>
+            <span>$2.14</span><span class="up">↗ +3.15%</span><span>$122B</span>
+            <span><svg viewBox="0 0 100 30" class="spark up"><polyline points="0,24 15,22 30,18 45,20 60,14 75,10 100,6" /></svg></span>
+            <button class="btn-link" onclick="openAuth('register')">Trade</button>
+          </div>
         </div>
-        <div class="market-row">
-          <span class="mt-asset"><span class="mt-coin">E</span> Ethereum <em>ETH</em></span>
-          <span class="text-mono">$3,521.18</span>
-          <span class="mt-up">▲ +1.87%</span>
-          <span class="mt-hide-mobile text-mono">$423B</span>
-          <a href="#" class="btn-secondary btn-sm" onclick="openAuth('register');return false;">Trade</a>
+      </div>
+
+      <!-- QUICK SWAP -->
+      <div class="quick-swap-card">
+        <div class="quick-swap-label">QUICK SWAP</div>
+        <div class="quick-swap-field">
+          <div>
+            <label>From</label>
+            <input type="number" id="qs-from" placeholder="1.00" oninput="landingQuickSwap()" />
+          </div>
+          <select id="qs-from-coin" onchange="landingQuickSwap()">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="USDT">USDT</option>
+          </select>
         </div>
-        <div class="market-row">
-          <span class="mt-asset"><span class="mt-coin">S</span> Solana <em>SOL</em></span>
-          <span class="text-mono">$178.42</span>
-          <span class="mt-up">▲ +5.23%</span>
-          <span class="mt-hide-mobile text-mono">$82B</span>
-          <a href="#" class="btn-secondary btn-sm" onclick="openAuth('register');return false;">Trade</a>
+        <button class="quick-swap-flip" onclick="landingFlipSwap()">↕</button>
+        <div class="quick-swap-field">
+          <div>
+            <label>To</label>
+            <input type="text" id="qs-to" placeholder="0.00" disabled />
+          </div>
+          <select id="qs-to-coin" onchange="landingQuickSwap()">
+            <option value="ETH">ETH</option>
+            <option value="BTC">BTC</option>
+            <option value="USDT">USDT</option>
+          </select>
         </div>
-        <div class="market-row">
-          <span class="mt-asset"><span class="mt-coin">B</span> BNB <em>BNB</em></span>
-          <span class="text-mono">$612.35</span>
-          <span class="mt-down">▼ -0.42%</span>
-          <span class="mt-hide-mobile text-mono">$94B</span>
-          <a href="#" class="btn-secondary btn-sm" onclick="openAuth('register');return false;">Trade</a>
+        <button class="btn-primary" style="width:100%; margin-top:16px" onclick="openAuth('register')">Execute Swap</button>
+      </div>
+    </section>
+
+    <!-- THE PRIVATE LEDGER — PORTFOLIO -->
+    <section class="landing-section-v2 landing-section-alt" id="portfolio">
+      <div class="section-v2-eyebrow accent-blue">THE PRIVATE LEDGER</div>
+      <h2 class="section-v2-title">Your Wealth,<br /><span class="dim">Illuminated</span></h2>
+
+      <div class="ledger-grid">
+        <div class="ledger-card">
+          <div class="ledger-label">TOTAL PORTFOLIO VALUE</div>
+          <div class="ledger-value">$<span class="text-mono">678,381.20</span></div>
+          <div class="ledger-change up">+12.4% (30d) · +$74,621.93</div>
+          <div class="ledger-asset-list">
+            <div class="ledger-asset-row"><i class="coin-dot" style="background:#f7931a"></i> Bitcoin <small>BTC</small><span>$284,920.00</span><small>42%</small></div>
+            <div class="ledger-asset-row"><i class="coin-dot" style="background:#627eea"></i> Ethereum <small>ETH</small><span>$189,947.20</span><small>28%</small></div>
+            <div class="ledger-asset-row"><i class="coin-dot" style="background:#8b5cf6"></i> Solana <small>SOL</small><span>$101,757.00</span><small>15%</small></div>
+            <div class="ledger-asset-row"><i class="coin-dot" style="background:#f3ba2f"></i> BNB <small>BNB</small><span>$67,838.00</span><small>10%</small></div>
+            <div class="ledger-asset-row"><i class="coin-dot" style="background:#f3ba2f"></i> Other <small>ALT</small><span>$33,919.00</span><small>5%</small></div>
+          </div>
         </div>
-        <div class="market-row">
-          <span class="mt-asset"><span class="mt-coin">X</span> XRP <em>XRP</em></span>
-          <span class="text-mono">$2.14</span>
-          <span class="mt-up">▲ +3.15%</span>
-          <span class="mt-hide-mobile text-mono">$122B</span>
-          <a href="#" class="btn-secondary btn-sm" onclick="openAuth('register');return false;">Trade</a>
+        <div class="ledger-side-cards">
+          <div class="ledger-side-card">
+            <div class="side-card-icon">🛡</div>
+            <h3>Military-Grade Security</h3>
+            <p>Multi-signature cold storage with biometric verification and hardware security modules.</p>
+          </div>
+          <div class="ledger-side-card">
+            <div class="side-card-icon">🔒</div>
+            <h3>Regulatory Compliance</h3>
+            <p>Licensed and regulated across 40+ jurisdictions with transparent proof-of-reserves.</p>
+          </div>
+          <div class="ledger-side-card">
+            <div class="side-card-icon">⚡</div>
+            <h3>Instant Settlement</h3>
+            <p>Sub-second order execution with institutional-grade matching, processing 100K+ TPS.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- THE FORTRESS — security section -->
-    <section class="landing-section landing-section-alt" id="trust">
-      <div class="hero-eyebrow" style="text-align:center">THE FORTRESS</div>
-      <h2 class="landing-section-title serif-title">Built to Be Trusted</h2>
+    <!-- THE FORTRESS — SECURITY -->
+    <section class="landing-section-v2" id="security">
+      <div class="section-v2-eyebrow accent-blue">THE FORTRESS</div>
+      <h2 class="section-v2-title">Impenetrable by Design,<br /><span class="dim">Transparent by Principle</span></h2>
+
       <div class="fortress-stats">
-        <div class="fortress-stat"><div class="fs-num">2FA</div><div class="fs-label">Account Protection</div></div>
-        <div class="fortress-stat"><div class="fs-num">99.9%</div><div class="fs-label">Uptime Target</div></div>
-        <div class="fortress-stat"><div class="fs-num">30+</div><div class="fs-label">Countries Supported</div></div>
-        <div class="fortress-stat"><div class="fs-num">24/7</div><div class="fs-label">Market Access</div></div>
+        <div class="fortress-stat"><div class="fortress-num accent-blue">$12B+</div><div class="fortress-label">Assets Secured</div></div>
+        <div class="fortress-stat"><div class="fortress-num accent-blue">99.99%</div><div class="fortress-label">Uptime SLA</div></div>
+        <div class="fortress-stat"><div class="fortress-num accent-blue">40+</div><div class="fortress-label">Jurisdictions</div></div>
+        <div class="fortress-stat"><div class="fortress-num accent-blue">0</div><div class="fortress-label">Security Breaches</div></div>
       </div>
+
       <div class="fortress-grid">
-        <div class="fortress-item">
-          <div class="feature-icon">🔐</div>
-          <h3>Two-Factor Authentication</h3>
-          <p>Google Authenticator support on every account, required for withdrawals.</p>
-        </div>
-        <div class="fortress-item">
-          <div class="feature-icon">🧾</div>
-          <h3>KYC-Verified Merchants</h3>
-          <p>P2P merchant applications are reviewed before anyone can list.</p>
-        </div>
-        <div class="fortress-item">
-          <div class="feature-icon">🌍</div>
-          <h3>Global Compliance-Ready</h3>
-          <p>Built with security rules and audit trails suited for real regulatory review.</p>
-        </div>
-        <div class="fortress-item">
-          <div class="feature-icon">🛟</div>
-          <h3>Dispute Resolution</h3>
-          <p>Every P2P trade has a chat log and admin oversight if something goes wrong.</p>
+        <div class="fortress-visual" aria-hidden="true"></div>
+        <div class="fortress-features">
+          <div class="fortress-feature">
+            <div class="ff-icon">👆</div>
+            <h3>Biometric Authentication</h3>
+            <p>Advanced multi-factor verification including facial recognition and hardware key support.</p>
+          </div>
+          <div class="fortress-feature">
+            <div class="ff-icon">🗄</div>
+            <h3>Cold Storage Architecture</h3>
+            <p>98% of digital assets secured in air-gapped, geographically distributed cold storage vaults.</p>
+          </div>
+          <div class="fortress-feature">
+            <div class="ff-icon">🌐</div>
+            <h3>Global Compliance</h3>
+            <p>Proactive regulatory engagement with licenses across major financial jurisdictions worldwide.</p>
+          </div>
+          <div class="fortress-feature">
+            <div class="ff-icon">✅</div>
+            <h3>Insurance Coverage</h3>
+            <p>Comprehensive insurance backing covering all custodied digital assets.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="landing-cta">
-      <h2 class="serif-title">Begin Your Ascent</h2>
-      <p>Join Kripex and make your first trade in minutes.</p>
-      <button class="btn-primary" onclick="openAuth('register')">Create Free Account</button>
+    <!-- ABOUT -->
+    <section class="landing-section-v2 landing-section-alt" id="about">
+      <div class="section-v2-eyebrow accent-blue">ABOUT</div>
+      <h2 class="section-v2-title">Built for people who<br /><span class="dim">take their money seriously.</span></h2>
+      <p class="about-copy">
+        Kripex is a full crypto exchange — spot trading, futures, staking, and a peer-to-peer
+        marketplace — built around one idea: your wealth should be easy to see, easy to move,
+        and hard to touch without your say-so.
+      </p>
+    </section>
+
+    <!-- CTA / GET STARTED -->
+    <section class="landing-cta-v2">
+      <div class="cta-v2-inner">
+        <div>
+          <h2>Begin Your Ascent</h2>
+          <p>Join the select few who trade with clarity, security, and sovereign control over their digital assets.</p>
+        </div>
+        <div class="cta-v2-form">
+          <input type="email" id="cta-email" placeholder="Enter your email" />
+          <button class="btn-primary" onclick="openAuth('register')">Get Started ↗</button>
+        </div>
+      </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="landing-footer landing-footer-rich">
-      <div class="landing-footer-inner">
-        <div class="footer-cols">
-          <div class="footer-col">
-            <div class="auth-logo"><div class="logo-icon">K</div><span>Kripex</span></div>
-            <p style="color:var(--text3);font-size:12px;margin-top:10px;max-width:220px">
-              An academic exchange project — trade, learn, and explore without real funds at risk.
-            </p>
-          </div>
-          <div class="footer-col">
-            <h4>Platform</h4>
-            <a href="trade.html">Spot Trading</a>
-            <a href="p2p.html">P2P</a>
-            <a href="earn.html">Earn</a>
-            <a href="wallet.html">Wallet</a>
-          </div>
-          <div class="footer-col">
-            <h4>Company</h4>
-            <a href="legal.html">About Kripex</a>
-            <a href="legal.html">Terms of Service</a>
-            <a href="legal.html#privacy">Privacy Policy</a>
-          </div>
-          <div class="footer-col">
-            <h4>Support</h4>
-            <a href="fees.html">Fee Schedule</a>
-            <a href="reserves.html">Proof of Reserves</a>
-            <a href="messages.html">Help Center</a>
-          </div>
+    <footer class="landing-footer-v2">
+      <div class="footer-v2-cols">
+        <div class="footer-v2-col">
+          <h4>Platform</h4>
+          <a href="trade.html">Spot Trading</a>
+          <a href="futures.html">Futures</a>
+          <a href="earn.html">Staking</a>
+          <a href="p2p.html">P2P</a>
         </div>
-        <p class="landing-footer-disclaimer">
-          Kripex is an academic project built for a university course. It is
-          not a licensed financial service and does not hold or transmit real
-          funds. See <a href="legal.html">Terms</a> for details.
-        </p>
-        <div class="footer-ghost">KRIPEX</div>
+        <div class="footer-v2-col">
+          <h4>Company</h4>
+          <a href="#about">About Kripex</a>
+          <a href="legal.html">Terms of Service</a>
+          <a href="legal.html#privacy">Privacy Policy</a>
+        </div>
+        <div class="footer-v2-col">
+          <h4>Regulatory</h4>
+          <a href="reserves.html">Proof of Reserves</a>
+          <a href="legal.html">AML Policy</a>
+          <a href="fees.html">Fee Schedule</a>
+        </div>
+        <div class="footer-v2-col">
+          <h4>Support</h4>
+          <a href="fees.html">Fee Schedule</a>
+          <a href="legal.html">Help Center</a>
+        </div>
       </div>
+      <div class="auth-logo landing-logo" style="margin-top:32px">
+        <span>KRIPEX</span>
+      </div>
+      <p class="landing-footer-disclaimer">
+        Kripex is a university capstone project. It is not a licensed financial service and
+        does not hold or transmit real funds. See <a href="legal.html">Terms</a> for details.
+      </p>
     </footer>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -428,15 +346,7 @@
     <script src="firebase.js"></script>
     <script src="app.js"></script>
     <script>
-        function onCountryChange() {
-        const sel = document.getElementById('reg-country');
-        const opt = sel.options[sel.selectedIndex];
-        document.getElementById('reg-phone-code').value = opt.dataset.code;
-        const warning = document.getElementById('region-warning');
-        warning.style.display = opt.value === 'ET' ? 'none' : 'block';
-      }
-
-      function openAuth(tab = 'login') {
+        function openAuth(tab = 'login') {
             document.getElementById('auth-overlay').style.display = 'block';
             switchTab(tab);
             if (typeof grecaptcha !== 'undefined') {
@@ -454,6 +364,26 @@
                 openAuth(params.get('tab'));
             }
         });
+
+        // Quick Swap mock rate preview on landing page
+        const LANDING_RATES = { BTC: 67842.50, ETH: 3521.18, USDT: 1 };
+        function landingQuickSwap() {
+          const amt = parseFloat(document.getElementById('qs-from').value) || 0;
+          const fromCoin = document.getElementById('qs-from-coin').value;
+          const toCoin = document.getElementById('qs-to-coin').value;
+          const usdValue = amt * LANDING_RATES[fromCoin];
+          const result = usdValue / LANDING_RATES[toCoin];
+          document.getElementById('qs-to').value = result.toFixed(toCoin === 'USDT' ? 2 : 6);
+        }
+        function landingFlipSwap() {
+          const fromSel = document.getElementById('qs-from-coin');
+          const toSel = document.getElementById('qs-to-coin');
+          const tmp = fromSel.value;
+          fromSel.value = toSel.value;
+          toSel.value = tmp;
+          landingQuickSwap();
+        }
     </script>
   </body>
 </html>
+

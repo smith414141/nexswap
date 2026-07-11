@@ -705,3 +705,16 @@
   .ledger-grid, .fortress-grid, .fortress-stats, .footer-v2-cols { grid-template-columns: 1fr; }
   .cta-v2-inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* Landing page CTAs: switch primary buttons from gold to blue (index.html only, since landing.css is not loaded elsewhere) */
+body.landing-body .btn-primary {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+body.landing-body .btn-primary:hover {
+  background: hsl(217 91% 54%);
+}
+body.landing-body .btn-primary:active {
+  background: hsl(217 91% 50%);
+}

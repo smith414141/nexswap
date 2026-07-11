@@ -90,12 +90,18 @@ function switchTab(tab) {
     .forEach((t) => t.classList.remove("active"));
   document.getElementById("login-form").style.display = "none";
   document.getElementById("register-form").style.display = "none";
+  const title = document.getElementById("auth-title");
+  const subtitle = document.getElementById("auth-subtitle");
   if (tab === "login") {
     document.getElementById("login-form").style.display = "block";
     document.querySelectorAll(".auth-tab")[0].classList.add("active");
+    if (title) title.textContent = "Welcome back";
+    if (subtitle) subtitle.textContent = "Log in to your account";
   } else {
     document.getElementById("register-form").style.display = "block";
     document.querySelectorAll(".auth-tab")[1].classList.add("active");
+    if (title) title.textContent = "Create an account";
+    if (subtitle) subtitle.textContent = "Sign up to get started";
   }
 }
 
@@ -235,7 +241,7 @@ function login() {
 
   const timeout = setTimeout(() => {
     btn.disabled = false;
-    btn.textContent = "Login";
+    btn.textContent = "Log in";
     showToast(
       "Connection timeout. Check your internet and try again.",
       "error"
@@ -274,7 +280,7 @@ function login() {
       clearTimeout(timeout);
       showToast(err.message, "error");
       btn.disabled = false;
-      btn.textContent = "Login";
+      btn.textContent = "Log in";
     });
 }
 // ---- GOOGLE SIGN-IN ----

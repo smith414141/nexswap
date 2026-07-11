@@ -36,6 +36,8 @@ let currentPrices = {
   BNB: 600,
   SOL: 150,
   XRP: 0.5,
+  ADA: 0.45,
+  DOGE: 0.12,
 };
 
 function loadWallet(uid) {
@@ -90,7 +92,7 @@ function fetchPrices() {
 
   // Fetch fresh prices in background
   fetch(
-    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true"
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,ripple,cardano,dogecoin&vs_currencies=usd&include_24hr_change=true"
   )
     .then((res) => res.json())
     .then((data) => {
@@ -104,6 +106,8 @@ function fetchPrices() {
       if (data.binancecoin) currentPrices.BNB = data.binancecoin.usd;
       if (data.solana) currentPrices.SOL = data.solana.usd;
       if (data.ripple) currentPrices.XRP = data.ripple.usd;
+      if (data.cardano) currentPrices.ADA = data.cardano.usd;
+      if (data.dogecoin) currentPrices.DOGE = data.dogecoin.usd;
 
       const btcBal =
         parseFloat(document.getElementById("btc-balance").textContent) || 0;
@@ -115,6 +119,17 @@ function fetchPrices() {
       // Silently fail — cached prices already showing
     });
 }
+
+const COIN_META = {
+  bitcoin: { symbol: "BTC", name: "Bitcoin", icon: "₿", cls: "btc" },
+  ethereum: { symbol: "ETH", name: "Ethereum", icon: "Ξ", cls: "eth" },
+  tether: { symbol: "USDT", name: "Tether", icon: "₮", cls: "usdt" },
+  binancecoin: { symbol: "BNB", name: "BNB", icon: "B", cls: "bnb" },
+  solana: { symbol: "SOL", name: "Solana", icon: "S", cls: "sol" },
+  ripple: { symbol: "XRP", name: "Ripple", icon: "X", cls: "xrp" },
+  cardano: { symbol: "ADA", name: "Cardano", icon: "A", cls: "ada" },
+  dogecoin: { symbol: "DOGE", name: "Dogecoin", icon: "D", cls: "doge" },
+};
 
 function applyPrices(data) {
   const coins = {
@@ -143,6 +158,93 @@ function applyPrices(data) {
         "ticker-change " + (change >= 0 ? "positive" : "negative");
     }
   });
+
+  renderTopMovers(data);
+  renderTickerBar(data);
+}
+
+// ---- LIVE PRICE TICKER (top of page, scrolls continuously) ----
+function renderTickerBar(data) {
+  const track = document.getElementById("pc-ticker-track");
+  if (!track) return;
+
+  const rows = Object.entries(COIN_META)
+    .filter(([id]) => data[id])
+    .map(([id, meta]) => ({
+      ...meta,
+      price: data[id].usd,
+      change: data[id].usd_24h_change || 0,
+    }));
+
+  if (rows.length === 0) return;
+
+  const itemHtml = (r) => `
+    <span class="pc-ticker-item" onclick="window.location.href='trade.html?symbol=${
+      r.symbol
+    }'">
+      <span class="sym">${r.symbol}/USDT</span>
+      <span class="text-mono">${
+        r.price >= 1
+          ? "$" + r.price.toLocaleString("en-US", { maximumFractionDigits: 2 })
+          : "$" + r.price.toFixed(4)
+      }</span>
+      <span class="chg ${r.change >= 0 ? "positive" : "negative"}">${
+    r.change >= 0 ? "↗" : "↘"
+  } ${(r.change >= 0 ? "+" : "") + r.change.toFixed(2)}%</span>
+    </span>`;
+
+  // Render the row twice back-to-back so the -50% translateX loop is seamless.
+  const rowHtml = rows.map(itemHtml).join("");
+  track.innerHTML = rowHtml + rowHtml;
+}
+
+// ---- TOP MOVERS ----
+function renderTopMovers(data) {
+  const container = document.getElementById("top-movers");
+  if (!container) return;
+
+  const rows = Object.entries(COIN_META)
+    .filter(([id]) => data[id] && typeof data[id].usd_24h_change === "number")
+    .map(([id, meta]) => ({
+      ...meta,
+      change: data[id].usd_24h_change,
+      price: data[id].usd,
+    }))
+    .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+    .slice(0, 5);
+
+  if (rows.length === 0) return;
+
+  container.innerHTML = rows
+    .map(
+      (r, i) => `
+    <div class="mover-item" onclick="window.location.href='trade.html?symbol=${
+      r.symbol
+    }'">
+      <div class="flex-between" style="gap: 10px">
+        <span class="mover-rank">${i + 1}</span>
+        <div class="coin-icon ${
+          r.cls
+        }" style="width:28px;height:28px;font-size:13px;">${r.icon}</div>
+        <div class="flex-col">
+          <div class="coin-name">${r.symbol}</div>
+          <div class="coin-fullname">${r.name}</div>
+        </div>
+      </div>
+      <div class="flex-col" style="align-items: flex-end">
+        <div class="ticker-price text-mono">${
+          r.price >= 1
+            ? "$" +
+              r.price.toLocaleString("en-US", { maximumFractionDigits: 2 })
+            : "$" + r.price.toFixed(4)
+        }</div>
+        <div class="ticker-change text-mono ${
+          r.change >= 0 ? "positive" : "negative"
+        }">${(r.change >= 0 ? "+" : "") + r.change.toFixed(2)}%</div>
+      </div>
+    </div>`
+    )
+    .join("");
 }
 
 function updatePriceDisplay(coin, data) {
@@ -216,6 +318,102 @@ function getStatusColor(status) {
 
 setTimeout(loadRecentActivity, 1000);
 
+// ---- PROFILE MENU (top-right, PC nav) ----
+function toggleProfileMenu() {
+  const el = document.getElementById("profile-menu-wrap");
+  el.classList.toggle("open");
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#profile-menu-wrap")) {
+    const wrap = document.getElementById("profile-menu-wrap");
+    if (wrap) wrap.classList.remove("open");
+  }
+});
+
+// ---- DASHBOARD BANNER CAROUSEL ----
+let bannerIndex = 0;
+let bannerTimer = null;
+
+function initDashBanner() {
+  const banner = document.getElementById("dash-banner");
+  if (!banner) return;
+  const slides = banner.querySelectorAll(".dash-banner-slide");
+  const dotsWrap = document.getElementById("dash-banner-dots");
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "dash-banner-dot" + (i === 0 ? " active" : "");
+    dot.onclick = (e) => {
+      e.stopPropagation();
+      goToBannerSlide(i);
+    };
+    dotsWrap.appendChild(dot);
+  });
+
+  bannerTimer = setInterval(() => {
+    goToBannerSlide((bannerIndex + 1) % slides.length);
+  }, 5000);
+}
+
+function goToBannerSlide(i) {
+  const banner = document.getElementById("dash-banner");
+  const slides = banner.querySelectorAll(".dash-banner-slide");
+  const dots = document.querySelectorAll(".dash-banner-dot");
+  slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+  dots.forEach((d, idx) => d.classList.toggle("active", idx === i));
+  bannerIndex = i;
+}
+
+function dashBannerClick() {
+  const banner = document.getElementById("dash-banner");
+  const active = banner.querySelector(".dash-banner-slide.active");
+  if (active && active.dataset.target) {
+    window.location.href = active.dataset.target;
+  }
+}
+
+initDashBanner();
+
+// ---- NEWS (opens original article in a new tab, never redirects away) ----
+function loadNews() {
+  const container = document.getElementById("news-list");
+  if (!container) return;
+
+  fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN")
+    .then((res) => res.json())
+    .then((data) => {
+      const items = (data.Data || []).slice(0, 6);
+      if (items.length === 0) {
+        container.innerHTML =
+          '<p class="text-muted" style="text-align:center; font-size:13px; padding:20px 0;">No news available</p>';
+        return;
+      }
+      container.innerHTML = items
+        .map(
+          (n) => `
+        <a class="news-item" href="${
+          n.url
+        }" target="_blank" rel="noopener noreferrer">
+          <div class="news-title">${n.title}</div>
+          <div class="news-meta">${
+            n.source_info?.name || n.source || "News"
+          } · ${new Date(n.published_on * 1000).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          })}</div>
+        </a>`
+        )
+        .join("");
+    })
+    .catch(() => {
+      container.innerHTML =
+        '<p class="text-muted" style="text-align:center; font-size:13px; padding:20px 0;">Unable to load news right now</p>';
+    });
+}
+
+loadNews();
+
 function refreshHomeData() {
   const icon = document.getElementById("refresh-icon");
   if (icon) {
@@ -225,5 +423,6 @@ function refreshHomeData() {
   }
   fetchPrices();
   loadRecentActivity();
+  loadNews();
   showToast("Refreshed!", "success");
 }

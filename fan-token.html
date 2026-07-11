@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Kripex — Fan Tokens</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <!-- PC NAV -->
+    <div class="pc-nav">
+      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
+        ><span class="logo-icon-mini">K</span>Kripex</a
+      >
+      <div class="pc-nav-right">
+        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
+        <a href="messages.html" class="nav-icon-btn" title="Messages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+          </svg>
+        </a>
+        <a href="profile.html" class="nav-icon-btn" title="Profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+        </a>
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <div class="pc-sidebar">
+      <div class="pc-sidebar-group-label">Main</div>
+      <a class="pc-sidebar-link " href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </svg>
+        Dashboard
+      </a>
+      <a class="pc-sidebar-link " href="markets.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
+        Markets
+      </a>
+      <a class="pc-sidebar-link " href="trade.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
+        </svg>
+        Trade
+      </a>
+      <a class="pc-sidebar-link " href="wallet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
+        </svg>
+        Wallet
+      </a>
+      <a class="pc-sidebar-link " href="portfolio.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
+        Portfolio
+      </a>
+      <div class="pc-sidebar-group-label">Discover</div>
+      <a class="pc-sidebar-link " href="p2p.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
+        </svg>
+        P2P Trading
+      </a>
+      <a class="pc-sidebar-link " href="earn.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
+        Earn
+      </a>
+      <a class="pc-sidebar-link " href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
+        More
+      </a>
+      <div class="pc-sidebar-spacer"></div>
+      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+        Logout
+      </a>
+    </div>
+
+    <div class="page">
+      <div class="top-bar">
+        <span style="font-size: 20px; cursor: pointer" onclick="goBack()">←</span>
+        <div class="top-bar-logo">Fan Tokens</div>
+        <span style="width: 20px"></span>
+      </div>
+      <div style="padding: 16px; max-width: 640px; margin: 0 auto">
+
+        <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Fan tokens give holders voting power and perks with partnered clubs and creators.</p>
+        <div id="ft-list"></div>
+
+      </div>
+    </div>
+    <div id="toast-container"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="app.js"></script>
+    <script src="fan-token.js"></script>
+  </body>
+</html>

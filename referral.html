@@ -10,6 +10,78 @@
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
+    <!-- PC NAV -->
+    <div class="pc-nav">
+      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
+        ><span class="logo-icon-mini">K</span>Kripex</a
+      >
+      <div class="pc-nav-right">
+        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
+        <a href="messages.html" class="nav-icon-btn" title="Messages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+          </svg>
+        </a>
+        <a href="profile.html" class="nav-icon-btn" title="Profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+          </svg>
+        </a>
+        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <div class="pc-sidebar">
+      <div class="pc-sidebar-group-label">Main</div>
+      <a class="pc-sidebar-link " href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </svg>
+        Dashboard
+      </a>
+      <a class="pc-sidebar-link " href="markets.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
+        Markets
+      </a>
+      <a class="pc-sidebar-link " href="trade.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
+        </svg>
+        Trade
+      </a>
+      <a class="pc-sidebar-link " href="wallet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
+        </svg>
+        Wallet
+      </a>
+      <a class="pc-sidebar-link " href="portfolio.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
+        Portfolio
+      </a>
+      <div class="pc-sidebar-group-label">Discover</div>
+      <a class="pc-sidebar-link " href="p2p.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
+        </svg>
+        P2P Trading
+      </a>
+      <a class="pc-sidebar-link " href="earn.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
+        Earn
+      </a>
+      <a class="pc-sidebar-link " href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
+        More
+      </a>
+      <div class="pc-sidebar-spacer"></div>
+      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+        Logout
+      </a>
+    </div>
+
     <div class="page" style="padding-bottom: 40px">
       <div class="top-bar">
         <span style="font-size:20px;cursor:pointer" onclick="goBack()">←</span>
@@ -29,7 +101,7 @@
         <!-- STATS ROW -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
           <div class="card" style="text-align:center;padding:14px 8px;">
-            <div id="stat-referrals" style="font-size:22px;font-weight:900;color:var(--yellow);">0</div>
+            <div id="stat-referrals" style="font-size:22px;font-weight:900;color:var(--blue);">0</div>
             <div style="font-size:10px;color:var(--text3);margin-top:2px;">Friends Joined</div>
           </div>
           <div class="card" style="text-align:center;padding:14px 8px;">
@@ -51,11 +123,11 @@
               style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:12px;font-family:monospace;"
               value="Loading..." />
             <button onclick="copyReferralLink()"
-              style="background:var(--yellow);color:#0b0e11;border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;">
+              style="background:var(--blue);color:#0b0e11;border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;">
               📋 Copy
             </button>
           </div>
-          <div id="referral-code-display" style="margin-top:8px;font-size:11px;color:var(--text3);">Code: <span id="ref-code" style="color:var(--yellow);font-weight:700;font-family:monospace;">--</span></div>
+          <div id="referral-code-display" style="margin-top:8px;font-size:11px;color:var(--text3);">Code: <span id="ref-code" style="color:var(--blue);font-weight:700;font-family:monospace;">--</span></div>
         </div>
 
         <!-- SHARE BUTTONS -->
@@ -79,15 +151,15 @@
         <p class="section-title">How It Works</p>
         <div class="card" style="margin-bottom:20px;">
           <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">1</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">1</div>
             <div><div style="font-size:13px;font-weight:700;color:var(--text);">Share your link</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Send your unique referral link to friends</div></div>
           </div>
           <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">2</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">2</div>
             <div><div style="font-size:13px;font-weight:700;color:var(--text);">Friend signs up</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">They register using your link or code</div></div>
           </div>
           <div style="display:flex;gap:12px;padding:10px 0;">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">3</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:#0b0e11;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;">3</div>
             <div><div style="font-size:13px;font-weight:700;color:var(--text);">Both earn rewards</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">You earn from their activity, they get a welcome bonus</div></div>
           </div>
         </div>

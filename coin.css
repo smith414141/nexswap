@@ -57,8 +57,8 @@
 }
 
 .fav-toggle-btn.active {
-  color: var(--yellow);
-  border-color: var(--yellow);
+  color: var(--blue);
+  border-color: var(--blue);
 }
 
 .coin-price-block-large {

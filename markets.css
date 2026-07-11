@@ -24,7 +24,7 @@
 
 .market-search-input:focus {
   outline: none;
-  border-color: var(--yellow);
+  border-color: var(--blue);
 }
 
 .sort-pills {
@@ -47,9 +47,9 @@
 }
 
 .sort-pill.active {
-  background: var(--yellow);
+  background: var(--blue);
   color: #0b0e11;
-  border-color: var(--yellow);
+  border-color: var(--blue);
 }
 
 .market-list {
@@ -76,7 +76,7 @@
 }
 
 .fav-star.active {
-  color: var(--yellow);
+  color: var(--blue);
 }
 
 .coin-icon {

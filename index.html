@@ -6,7 +6,7 @@
     <title>Kripex — The Blockchain Vault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
@@ -15,7 +15,17 @@
   </head>
   <body class="landing-body">
     <!-- Overlay for Auth -->
-    <div id="auth-overlay" style="display: none; position: fixed; inset: 0; background: var(--bg); z-index: 1000; overflow-y: auto;">
+    <div id="auth-overlay" style="display: none; position: fixed; inset: 0; background: var(--bg); z-index: 1000; overflow-y: auto; overflow-x: hidden;">
+      <div class="auth-float-layer" aria-hidden="true">
+        <span class="auth-float" style="--x:8%; --y:15%; --size:46px; --dur:9s; --delay:0s; color:#f7931a;">₿</span>
+        <span class="auth-float" style="--x:85%; --y:12%; --size:38px; --dur:11s; --delay:1s; color:#627eea;">Ξ</span>
+        <span class="auth-float" style="--x:12%; --y:78%; --size:34px; --dur:8s; --delay:2s; color:#14f195;">◎</span>
+        <span class="auth-float" style="--x:90%; --y:75%; --size:42px; --dur:12s; --delay:0.5s; color:#f3ba2f;">B</span>
+        <span class="auth-float" style="--x:50%; --y:6%; --size:28px; --dur:10s; --delay:1.5s; color:#23292f;">X</span>
+        <span class="auth-float" style="--x:6%; --y:45%; --size:30px; --dur:13s; --delay:3s; color:#d4af37;">$</span>
+        <span class="auth-float" style="--x:92%; --y:45%; --size:32px; --dur:9.5s; --delay:2.5s; color:#8b5cf6;">◈</span>
+        <span class="auth-float" style="--x:70%; --y:90%; --size:26px; --dur:11.5s; --delay:1s; color:#16c784;">Ξ</span>
+      </div>
       <div class="auth-wrapper">
         <div class="auth-logo">
           <div class="logo-icon">⚡</div>
@@ -28,6 +38,20 @@
         
         <!-- Login Form -->
         <div id="login-form">
+          <button class="btn btn-secondary" onclick="loginWithGoogle()" style="display: flex; align-items: center; justify-content: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 48 48">
+              <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+              <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+              <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+              <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+            </svg>
+            Continue with Google
+          </button>
+          <div style="display: flex; align-items: center; gap: 10px; margin: 14px 0">
+            <div style="flex: 1; height: 1px; background: var(--border)"></div>
+            <span style="font-size: 11px; color: var(--text3)">OR</span>
+            <div style="flex: 1; height: 1px; background: var(--border)"></div>
+          </div>
           <div class="form-group">
             <label>Email / Phone</label>
             <input type="text" id="login-email" placeholder="email@example.com" />
@@ -42,6 +66,20 @@
 
         <!-- Register Form -->
         <div id="register-form" style="display: none">
+          <button class="btn btn-secondary" onclick="loginWithGoogle()" style="display: flex; align-items: center; justify-content: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 48 48">
+              <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+              <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+              <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+              <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+            </svg>
+            Continue with Google
+          </button>
+          <div style="display: flex; align-items: center; gap: 10px; margin: 14px 0">
+            <div style="flex: 1; height: 1px; background: var(--border)"></div>
+            <span style="font-size: 11px; color: var(--text3)">OR</span>
+            <div style="flex: 1; height: 1px; background: var(--border)"></div>
+          </div>
           <div class="form-group">
             <label>Full Name</label>
             <input type="text" id="reg-name" placeholder="John Doe" />
@@ -115,7 +153,7 @@
           <a href="#portfolio" class="btn-secondary">View Portfolio</a>
         </div>
       </div>
-      <div class="hero-v2-coin" aria-hidden="true">K</div>
+      <img src="assets/kripex-coin.png" alt="Kripex Coin" class="hero-v2-coin" />
       <div class="hero-v2-badges">
         <span class="hero-badge">▲ 0% Fees</span>
         <span class="hero-badge">🛡 Secured</span>
@@ -251,7 +289,23 @@
       </div>
 
       <div class="fortress-grid">
-        <div class="fortress-visual" aria-hidden="true"></div>
+        <div class="fortress-visual" aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="fortress-visual-icon">
+            <defs>
+              <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3b82f6" />
+                <stop offset="100%" stop-color="#16c784" />
+              </linearGradient>
+            </defs>
+            <path d="M100 15 L165 40 L165 95 C165 140 138 172 100 185 C62 172 35 140 35 95 L35 40 Z"
+              fill="none" stroke="url(#shieldGrad)" stroke-width="4" stroke-linejoin="round" />
+            <path d="M100 15 L165 40 L165 95 C165 140 138 172 100 185 C62 172 35 140 35 95 L35 40 Z"
+              fill="url(#shieldGrad)" opacity="0.08" />
+            <circle cx="100" cy="95" r="26" fill="none" stroke="url(#shieldGrad)" stroke-width="3" />
+            <rect x="86" y="90" width="28" height="22" rx="4" fill="none" stroke="url(#shieldGrad)" stroke-width="3" />
+            <path d="M92 90 V80 a8 8 0 0 1 16 0 V90" fill="none" stroke="url(#shieldGrad)" stroke-width="3" />
+          </svg>
+        </div>
         <div class="fortress-features">
           <div class="fortress-feature">
             <div class="ff-icon">👆</div>
@@ -307,10 +361,10 @@
       <div class="footer-v2-cols">
         <div class="footer-v2-col">
           <h4>Platform</h4>
-          <a href="trade.html">Spot Trading</a>
-          <a href="futures.html">Futures</a>
-          <a href="earn.html">Staking</a>
-          <a href="p2p.html">P2P</a>
+          <a href="#" onclick="openAuth('login'); return false;">Spot Trading</a>
+          <a href="#" onclick="openAuth('login'); return false;">Futures</a>
+          <a href="#" onclick="openAuth('login'); return false;">Staking</a>
+          <a href="#" onclick="openAuth('login'); return false;">P2P</a>
         </div>
         <div class="footer-v2-col">
           <h4>Company</h4>

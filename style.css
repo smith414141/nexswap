@@ -1950,3 +1950,34 @@ h1, h2, h3 {
 .fh-badge-new { background: hsl(217 91% 60% / 0.18); color: var(--blue); }
 .fh-badge-hot { background: hsl(0 72% 51% / 0.18); color: var(--red); }
 
+
+/* ---- FLOATING CRYPTO ICONS BEHIND AUTH MODAL ---- */
+.auth-float-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.auth-float {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: var(--size);
+  font-weight: 700;
+  font-family: var(--font-display, sans-serif);
+  opacity: 0.16;
+  filter: blur(0.3px);
+  animation: auth-float-drift var(--dur) ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+@keyframes auth-float-drift {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(12px, -18px) rotate(6deg); }
+  50%  { transform: translate(-6px, -30px) rotate(-4deg); }
+  75%  { transform: translate(-14px, -10px) rotate(3deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-float { animation: none; }
+}

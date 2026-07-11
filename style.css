@@ -1016,7 +1016,58 @@ a.card:hover,
   flex-shrink: 0;
 }
 
-/* QUICK ACTION TILES */
+/* PROMO CAROUSEL (dashboard) */
+.promo-carousel {
+  position: relative;
+  background: linear-gradient(135deg, #14161c 0%, #1a1e2e 70%);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 18px;
+  min-height: 150px;
+  overflow: hidden;
+}
+.promo-slide {
+  display: none;
+  cursor: pointer;
+}
+.promo-slide.active {
+  display: block;
+  animation: promo-fade 0.4s ease;
+}
+@keyframes promo-fade {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.promo-slide h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin: 10px 0 4px;
+}
+.promo-slide p {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 4px;
+}
+.promo-dots {
+  display: flex;
+  gap: 5px;
+  margin-top: 12px;
+}
+.promo-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.promo-dot.active {
+  width: 18px;
+  border-radius: 4px;
+  background: var(--yellow);
+}
+
+
 .quick-actions-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1698,10 +1749,41 @@ a.card:hover,
     background: var(--bg3);
     color: var(--text);
   }
-  .pc-sidebar-link.active {
-    background: rgba(61, 124, 255, 0.14);
-    color: var(--yellow);
+  .pc-sidebar-group-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text3);
+    padding: 16px 12px 6px;
   }
+  .pc-sidebar-group-label:first-child {
+    padding-top: 4px;
+  }
+  .pc-sidebar-spacer {
+    flex: 1;
+  }
+  .pc-sidebar-logout {
+    color: var(--red);
+    opacity: 0.85;
+  }
+  .nav-icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text2);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .nav-icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border2);
+  }
+
 
   /* DASHBOARD GRID — real 2-column layout on wide desktop screens,
      falls back to normal single-column stacking below 1024px (tablet/mobile

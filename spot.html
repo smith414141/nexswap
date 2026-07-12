@@ -2,13 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>Kripex — Launchpad</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spot Trading — Kripex</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="trade.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   </head>
-  <body class="has-pc-nav">
+  <body>
+    <canvas id="bg-canvas"></canvas>
     <!-- PC NAV -->
     <div class="pc-nav">
       <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
@@ -43,7 +46,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
         Markets
       </a>
-      <a class="pc-sidebar-link " href="trade.html">
+      <a class="pc-sidebar-link active" href="trade.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
         </svg>
@@ -70,7 +73,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
         Earn
       </a>
-      <a class="pc-sidebar-link active" href="products.html">
+      <a class="pc-sidebar-link " href="products.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
         More
       </a>
@@ -80,39 +83,90 @@
         Logout
       </a>
     </div>
-<div class="page">
-      <div class="pc-main">
-        <div class="top-bar"><div class="top-bar-logo">⚡ Kripex</div></div>
+<div class="pc-main">
 
-        <div id="region-gate" class="region-gate-card" style="display:none">
-          <div class="region-gate-icon">🔒</div>
-          <div class="region-gate-title">Not available in your region</div>
-          <p class="region-gate-text">
-            <span class="region-gate-feature-name">Launchpad</span> isn't currently offered for accounts registered in
-            <span class="region-gate-current-region">your region</span>.
-          </p>
-          <button class="btn-primary" onclick="window.location.href='settings.html'">Change Region</button>
+
+    <div class="page" style="padding-bottom:0">
+
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <span style="font-size:20px;cursor:pointer" onclick="goBack()">←</span>
+        <div class="flex-col" style="align-items:center;">
+          <span id="trade-pair" style="font-weight:900;font-size:16px;">BTC/USDT</span>
+          <span id="trade-price" style="font-size:12px;font-weight:700;color:var(--green);">--</span>
+        </div>
+        <span style="width:20px"></span>
+      </div>
+
+      <!-- PAIR PILLS -->
+      <div style="display:flex;gap:6px;padding:12px;overflow-x:auto;border-bottom:1px solid var(--border);">
+        <button id="pill-BTCUSDT" class="crypto-pill active" onclick="setPair('BTCUSDT')">BTC</button>
+        <button id="pill-ETHUSDT" class="crypto-pill" onclick="setPair('ETHUSDT')">ETH</button>
+        <button id="pill-SOLUSDT" class="crypto-pill" onclick="setPair('SOLUSDT')">SOL</button>
+        <button id="pill-BNBUSDT" class="crypto-pill" onclick="setPair('BNBUSDT')">BNB</button>
+        <button id="pill-XRPUSDT" class="crypto-pill" onclick="setPair('XRPUSDT')">XRP</button>
+        <button id="pill-DOGEUSDT" class="crypto-pill" onclick="setPair('DOGEUSDT')">DOGE</button>
+      </div>
+
+      <div class="trade-grid" style="display: grid; grid-template-columns: 1fr 380px; gap: 24px; padding: 24px;">
+        <!-- CHART -->
+        <div class="trade-chart-wrap" style="background: var(--bg2); border-radius: 16px; padding: 20px; border: 1px solid var(--border);">
+          <div id="tradingview-widget" style="height: 500px; border-radius: 12px; overflow: hidden;"></div>
         </div>
 
-        <div id="feature-content" style="display:none; padding:16px">
-          <p class="section-title">Token Launchpad</p>
-          <div id="launchpad-list" style="display:flex; flex-direction:column; gap:12px"></div>
+        <!-- SIDEBAR -->
+        <div class="trade-sidebar">
+          <!-- TRADE FORM -->
+          <div class="card" style="border-radius: 20px;">
+            <div class="tabs" style="margin-bottom: 24px;">
+              <button class="tab active" onclick="switchOrderType('limit',this)">Limit</button>
+              <button class="tab" onclick="switchOrderType('market',this)">Market</button>
+            </div>
+            
+            <div class="form-group">
+              <label>Price (USDT)</label>
+              <input type="number" id="trade-price-input" placeholder="0.00" style="background: var(--bg);"/>
+            </div>
+            <div class="form-group">
+              <label>Amount</label>
+              <input type="number" id="trade-amount-input" placeholder="0.00" style="background: var(--bg);"/>
+            </div>
+            
+            <div style="display:flex;gap:12px; margin-top: 24px;">
+              <button id="buy-btn" class="btn btn-primary" style="flex:1;background:var(--green);color:#fff; border-radius: 12px;" onclick="placeOrder('buy')">Buy</button>
+              <button id="sell-btn" class="btn btn-primary" style="flex:1;background:var(--red);color:#fff; border-radius: 12px;" onclick="placeOrder('sell')">Sell</button>
+            </div>
+          </div>
+          
+          <!-- ORDER BOOK -->
+          <div class="card" style="margin-top: 24px; border-radius: 20px;">
+             <p class="section-title">Order Book</p>
+             <!-- Order book content would be here -->
+          </div>
         </div>
       </div>
-    </div>
-    <div class="bottom-nav">
-      <button class="nav-item" onclick="window.location.href='home.html'"><span class="nav-label">Home</span></button>
-      <button class="nav-item active" onclick="window.location.href='products.html'"><span class="nav-label">Products</span></button>
-      <button class="nav-item" onclick="window.location.href='wallet.html'"><span class="nav-label">Wallet</span></button>
-      <button class="nav-item" onclick="window.location.href='profile.html'"><span class="nav-label">Profile</span></button>
-    </div>
-    <div id="toast-container"></div>
+
+          <!-- REGION LOCK -->
+          <div id="region-lock-message" style="display:none;background:rgba(246,70,93,0.1);border:1px solid var(--red);border-radius:8px;padding:10px;margin-top:8px;text-align:center;font-size:12px;color:var(--red);">
+            ⚠️ Futures & Margin are restricted in your region. Change region in Settings.
+          </div>
+
+          <!-- TRADE HISTORY -->
+          <div style="margin-top:10px;">
+            <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">Recent Trades</div>
+            <div id="trade-history-list"><div style="font-size:11px;color:var(--text3);">No trades yet.</div></div>
+          </div>
+        </div>
+
+    
+</div>
+<div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
-    <script src="region-gate.js"></script>
-    <script src="launchpad.js"></script>
+    <script src="wallet.js"></script>
+    <script src="trade.js"></script>
   </body>
 </html>

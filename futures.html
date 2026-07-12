@@ -91,7 +91,7 @@
         </div>
 
         <!-- REGION GATE -->
-        <div id="region-gate" class="region-gate-card">
+        <div id="region-gate" class="region-gate-card" style="display:none">
           <div class="region-gate-icon">🔒</div>
           <div class="region-gate-title">Not available in your region</div>
           <p class="region-gate-text">
@@ -103,46 +103,129 @@
 
         <!-- FEATURE CONTENT -->
         <div id="feature-content" style="display:none">
-          <div style="padding: 16px">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+          <!-- LIVE TICKER -->
+          <div class="pc-ticker-bar" id="pc-ticker-bar" style="margin:0 0 14px">
+            <div class="pc-ticker-track" id="pc-ticker-track">
+              <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
+            </div>
+          </div>
+
+          <div style="padding: 0 16px 16px">
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px; margin-bottom:14px">
               <div>
-                <div style="font-size:18px; font-weight:800" id="fut-pair">BTC/USDT Perpetual</div>
-                <div style="font-size:12px; color:var(--text2)">Up to 20x leverage</div>
+                <div style="font-size:20px; font-weight:800">⚡ Futures</div>
+                <div style="font-size:12px; color:var(--text2)">Trade perpetuals with up to 125x leverage</div>
               </div>
-              <div style="text-align:right">
-                <div style="font-size:20px; font-weight:800; color:var(--green)" id="fut-price">$67,500.00</div>
-                <div style="font-size:12px; color:var(--green)" id="fut-change">+1.24%</div>
+              <div style="display:flex; gap:24px">
+                <div style="text-align:right">
+                  <div style="font-size:11px; color:var(--text2)">Margin Balance</div>
+                  <div style="font-size:15px; font-weight:800" id="fut-margin-balance">$0.00</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-size:11px; color:var(--text2)">Unrealized PnL</div>
+                  <div style="font-size:15px; font-weight:800; color:var(--green)" id="fut-unrealized-pnl">+$0.00</div>
+                </div>
               </div>
             </div>
 
-            <div class="card" style="margin-bottom:12px; padding:14px">
-              <div style="display:flex; gap:8px; margin-bottom:14px">
-                <button class="tab active" style="flex:1" onclick="setFutSide('long', this)" id="fut-tab-long">Long</button>
-                <button class="tab" style="flex:1" onclick="setFutSide('short', this)" id="fut-tab-short">Short</button>
+            <div class="fut-grid" style="display:grid; grid-template-columns: 1fr 320px; gap:16px">
+              <div>
+                <div class="card" style="padding:14px; margin-bottom:16px">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px">
+                    <div style="display:flex; align-items:center; gap:10px">
+                      <div id="fut-coin-icon" style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800">B</div>
+                      <div>
+                        <div style="font-weight:800; font-size:14px" id="fut-pair-name">BTCUSDT Perpetual</div>
+                        <div style="display:flex; align-items:baseline; gap:8px">
+                          <span style="font-size:16px; font-weight:800" id="fut-price-val">$67,432.50</span>
+                          <span style="font-size:12px; font-weight:700" id="fut-change">+2.34%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display:flex; gap:8px">
+                      <button class="tab active" id="fut-tab-long" onclick="setFutSide('long', this)" style="background:var(--green);color:#fff;border-color:var(--green)">Open Long</button>
+                      <button class="tab" id="fut-tab-short" onclick="setFutSide('short', this)">Open Short</button>
+                    </div>
+                  </div>
+
+                  <div id="fut-pair-pills" style="display:flex; gap:8px; margin-bottom:14px; overflow-x:auto"></div>
+
+                  <div style="height:220px">
+                    <svg id="fut-chart-svg" viewBox="0 0 600 220" preserveAspectRatio="none" style="width:100%; height:100%"></svg>
+                  </div>
+
+                  <div style="display:flex; justify-content:space-between; margin-top:14px; font-size:11px; color:var(--text2); flex-wrap:wrap; gap:10px">
+                    <span>Mark Price<br /><strong style="color:var(--text)" id="fut-mark-price">--</strong></span>
+                    <span>Index Price<br /><strong style="color:var(--text)" id="fut-index-price">--</strong></span>
+                    <span>Funding/8h<br /><strong style="color:var(--yellow)" id="fut-funding">0.0125%</strong></span>
+                    <span>Open Interest<br /><strong style="color:var(--text)" id="fut-open-interest">$8.55B</strong></span>
+                  </div>
+                </div>
+
+                <p class="section-title">Your Positions</p>
+                <div class="card" style="padding:0; overflow-x:auto">
+                  <table style="width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap">
+                    <thead>
+                      <tr style="color:var(--text2); text-align:left">
+                        <th style="padding:10px">Symbol</th>
+                        <th>Side</th>
+                        <th>Size</th>
+                        <th>Entry</th>
+                        <th>Mark</th>
+                        <th>Liq. Price</th>
+                        <th>Margin</th>
+                        <th>PNL (ROE%)</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="fut-positions-body">
+                      <tr id="fut-positions-empty">
+                        <td colspan="9" style="text-align:center; color:var(--text3); padding:20px">No open positions</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
-              <label style="font-size:12px; color:var(--text2)">Leverage: <span id="fut-leverage-val">10x</span></label>
-              <input type="range" min="1" max="20" value="10" id="fut-leverage" style="width:100%; margin:8px 0 14px" oninput="document.getElementById('fut-leverage-val').textContent = this.value + 'x'" />
+              <div class="card" style="padding:16px; height:fit-content">
+                <div style="display:flex; gap:8px; margin-bottom:14px">
+                  <button class="tab active" id="fut-side-long-btn" onclick="setFutSide('long', this)" style="flex:1">Open Long</button>
+                  <button class="tab" id="fut-side-short-btn" onclick="setFutSide('short', this)" style="flex:1">Open Short</button>
+                </div>
 
-              <label style="font-size:12px; color:var(--text2)">Margin (USDT)</label>
-              <input type="number" id="fut-margin" placeholder="0.00" class="input-field" style="width:100%; margin:6px 0 14px" oninput="updateFutEstimate()" />
+                <label style="font-size:12px; color:var(--text2)">Leverage: <span id="fut-leverage-val">10x</span></label>
+                <div id="fut-leverage-buttons" style="display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 14px"></div>
 
-              <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:14px">
-                <span>Position Size</span>
-                <span id="fut-position-size">$0.00</span>
+                <label style="font-size:12px; color:var(--text2)">Margin (USDT)</label>
+                <input type="number" id="fut-margin" placeholder="0.00" class="input-field" style="width:100%; margin:6px 0 8px" oninput="updateFutEstimate()" />
+
+                <div style="display:flex; gap:6px; margin-bottom:14px">
+                  <button class="btn-secondary" style="flex:1; font-size:11px; padding:6px" onclick="setFutMarginPct(0.25)">25%</button>
+                  <button class="btn-secondary" style="flex:1; font-size:11px; padding:6px" onclick="setFutMarginPct(0.5)">50%</button>
+                  <button class="btn-secondary" style="flex:1; font-size:11px; padding:6px" onclick="setFutMarginPct(0.75)">75%</button>
+                  <button class="btn-secondary" style="flex:1; font-size:11px; padding:6px" onclick="setFutMarginPct(1)">100%</button>
+                </div>
+
+                <div style="font-size:12px; color:var(--text2); display:flex; flex-direction:column; gap:8px; margin-bottom:16px">
+                  <div style="display:flex; justify-content:space-between"><span>Position Size</span><strong style="color:var(--text)" id="fut-position-size">$0.00</strong></div>
+                  <div style="display:flex; justify-content:space-between"><span>Size (<span id="fut-size-coin">BTC</span>)</span><strong style="color:var(--text)" id="fut-size-coin-val">0.000000</strong></div>
+                  <div style="display:flex; justify-content:space-between"><span>Liq. Price</span><strong style="color:var(--red)" id="fut-liq-price">--</strong></div>
+                  <div style="display:flex; justify-content:space-between"><span>Margin Maint.</span><strong style="color:var(--text)">0.5%</strong></div>
+                </div>
+
+                <button class="btn-primary" id="fut-submit-btn" style="width:100%; background:var(--green)" onclick="openFutPosition()">Buy/Long BTC</button>
               </div>
-
-              <button class="btn-primary" id="fut-submit-btn" style="width:100%; background:var(--green)" onclick="openFutPosition()">Open Long Position</button>
-            </div>
-
-            <p class="section-title">Open Positions</p>
-            <div class="card" id="fut-positions-list">
-              <p style="text-align:center; color:var(--text3); font-size:13px; padding:20px 0">No open positions</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <style>
+      @media (max-width: 900px) {
+        .fut-grid { grid-template-columns: 1fr !important; }
+      }
+    </style>
 
     <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'"><span class="nav-label">Home</span></button>

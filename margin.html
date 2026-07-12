@@ -84,32 +84,73 @@
 <div class="pc-main">
 
 
-    <div class="page">
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()">←</span>
-        <div class="top-bar-logo">Margin Trading</div>
-        <span style="width: 20px"></span>
-      </div>
-      <div style="padding: 16px; max-width: 640px; margin: 0 auto">
-
-        <div class="card" style="margin-bottom:16px">
-          <p class="section-title">Isolated Margin</p>
-          <div class="input-row" style="margin-bottom:10px">
-            <select id="mg-pair" style="flex:1;background:transparent;color:var(--text);border:none;font-weight:600">
-              <option>BTC/USDT</option><option>ETH/USDT</option><option>SOL/USDT</option><option>BNB/USDT</option>
-            </select>
-          </div>
-          <div style="margin-bottom:14px">
-            <label style="font-size:12px;color:var(--text2)">Leverage: <span id="mg-lev-val">3x</span></label>
-            <input id="mg-lev" type="range" min="1" max="20" value="3" style="width:100%" oninput="document.getElementById('mg-lev-val').textContent = this.value + 'x'" />
-          </div>
-          <button class="btn-primary" style="width:100%" onclick="location.href='trade.html'">Continue to Trade</button>
-          <p style="font-size:11px;color:var(--text3);margin-top:10px">Margin trading carries a high risk of liquidation. Trade responsibly.</p>
-        </div>
-
+    <!-- LIVE TICKER -->
+    <div class="pc-ticker-bar" id="pc-ticker-bar" style="margin:0">
+      <div class="pc-ticker-track" id="pc-ticker-track">
+        <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
       </div>
     </div>
-    
+
+    <div class="page">
+      <div style="padding:16px 16px 0">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+          <div>
+            <div style="font-size:20px;font-weight:800">📈 Margin Trading</div>
+            <div style="font-size:12px;color:var(--text2)">Borrow funds to amplify your trading positions</div>
+          </div>
+          <div style="display:flex;gap:24px">
+            <div style="text-align:right">
+              <div style="font-size:11px;color:var(--text2)">Total Borrowed</div>
+              <div style="font-size:15px;font-weight:800" id="mg-total-borrowed">$0.00</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:11px;color:var(--text2)">Margin Ratio</div>
+              <div style="font-size:15px;font-weight:800;color:var(--green)" id="mg-ratio">--</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="section-title">Available to Borrow</p>
+        <div class="card" style="padding:0;overflow-x:auto;margin-bottom:20px">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap">
+            <thead>
+              <tr style="color:var(--text2);text-align:left">
+                <th style="padding:10px">Asset</th>
+                <th>Price</th>
+                <th>Daily Rate</th>
+                <th>Max Leverage</th>
+                <th>Available</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="mg-borrow-body"></tbody>
+          </table>
+        </div>
+
+        <p class="section-title">Active Loans</p>
+        <div class="card" id="mg-loans-list">
+          <p style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0" id="mg-loans-empty">No active loans</p>
+        </div>
+
+        <div style="background:rgba(217,53,74,0.1);border:1px solid var(--red);border-radius:8px;padding:10px;margin-top:16px;font-size:11px;color:var(--red)">
+          ⚠️ Margin trading involves significant risk. If your margin ratio falls below the maintenance margin, your positions may be liquidated. Always monitor your margin level.
+        </div>
+      </div>
+    </div>
+
+    <!-- BORROW MODAL -->
+    <div id="mg-borrow-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:center;justify-content:center">
+      <div class="card" style="width:90%;max-width:380px">
+        <p class="section-title">Borrow <span id="mg-modal-asset">BTC</span></p>
+        <label style="font-size:12px;color:var(--text2)">Amount</label>
+        <input type="number" id="mg-borrow-amount" placeholder="0.00" class="input-field" style="width:100%;margin:6px 0 14px" />
+        <div style="display:flex;gap:10px">
+          <button class="btn-secondary" style="flex:1" onclick="closeMgModal()">Cancel</button>
+          <button class="btn-primary" style="flex:1" onclick="confirmBorrow()">Borrow</button>
+        </div>
+      </div>
+    </div>
+
 </div>
 <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -117,6 +158,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
+    <script src="margin.js"></script>
 
   </body>
 </html>

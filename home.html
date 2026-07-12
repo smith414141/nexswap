@@ -16,26 +16,6 @@
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
-    <!-- PC NAV -->
-    <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        ><span class="logo-icon-mini">K</span>Kripex</a
-      >
-      <div class="pc-nav-right">
-        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
-        <a href="messages.html" class="nav-icon-btn" title="Messages">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-          </svg>
-        </a>
-        <a href="profile.html" class="nav-icon-btn" title="Profile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-          </svg>
-        </a>
-        <button class="btn-logout" onclick="logoutUser()">Logout</button>
-      </div>
-    </div>
 
     <div class="pc-sidebar">
       <div class="pc-sidebar-group-label">Main</div>
@@ -87,6 +67,7 @@
         Logout
       </a>
     </div>
+
 
 
     <!-- LIVE PRICE TICKER (scrolls continuously, top of page) -->
@@ -275,365 +256,249 @@
           </div>
         </div>
 
-        <!-- BALANCE SECTION -->
+        <!-- Hidden elements: home.js writes raw wallet figures here even though
+             the coin-by-coin breakdown is no longer shown on this page (it now
+             lives on wallet.html). Keeping these prevents home.js from throwing
+             on a missing element and breaking the Total Balance calculation. -->
+        <div style="display: none">
+          <span id="btc-balance">0.00000000</span>
+          <span id="usdt-balance">0.00</span>
+          <span id="btc-balance-usd">$0.00</span>
+          <span id="usdt-balance-usd">$0.00</span>
+        </div>
+
+        <!-- HERO ROW: banner carousel + quick convert -->
         <div class="section-padding" style="padding-top: 40px">
-          <div
-            class="card"
-            style="
-              background: linear-gradient(
-                135deg,
-                rgba(59, 130, 246, 0.15) 0%,
-                rgba(0, 0, 0, 0) 100%
-              );
-              border: 1px solid var(--brand);
-              border-radius: 20px;
-            "
-          >
-            <p class="section-title" style="color: var(--brand)">
-              Total Balance
-            </p>
-            <div
-              class="balance-total text-mono"
-              id="total-balance"
-              style="font-size: 42px; margin-bottom: 20px"
-            >
-              $0.00
-            </div>
-
-            <div class="flex-col gap-md">
-              <div class="flex-between">
-                <div class="flex-between" style="gap: 15px">
-                  <div
-                    class="coin-icon btc"
-                    style="background: rgba(212, 175, 55, 0.1)"
-                  >
-                    ₿
-                  </div>
-                  <div class="flex-col">
-                    <div style="font-weight: 700; font-size: 16px">Bitcoin</div>
-                    <div class="text-muted" style="font-size: 12px">BTC</div>
-                  </div>
-                </div>
-                <div class="flex-col" style="align-items: flex-end">
-                  <div
-                    style="font-weight: 700; font-size: 16px"
-                    class="text-mono"
-                    id="btc-balance"
-                  >
-                    0.00000000
-                  </div>
-                </div>
-              </div>
-              <div class="divider" style="margin: 10px 0; opacity: 0.3"></div>
-              <div class="flex-between">
-                <div class="flex-between" style="gap: 15px">
-                  <div
-                    class="coin-icon usdt"
-                    style="background: rgba(16, 185, 129, 0.1)"
-                  >
-                    ₮
-                  </div>
-                  <div class="flex-col">
-                    <div style="font-weight: 700; font-size: 16px">Tether</div>
-                    <div class="text-muted" style="font-size: 12px">USDT</div>
-                  </div>
-                </div>
-                <div class="flex-col" style="align-items: flex-end">
-                  <div
-                    style="font-weight: 700; font-size: 16px"
-                    class="text-mono"
-                    id="usdt-balance"
-                  >
-                    0.00
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- QUICK ACTIONS -->
-        <div class="section-padding" style="padding-top: 0">
-          <div style="display: flex; gap: 10px">
-            <button
-              class="btn btn-primary"
-              style="flex: 1"
-              onclick="window.location.href='deposit.html'"
-            >
-              Deposit
-            </button>
-            <button
-              class="btn btn-secondary"
-              style="flex: 1"
-              onclick="window.location.href='withdraw.html'"
-            >
-              Withdraw
-            </button>
-            <button
-              class="btn btn-secondary text-brass"
-              style="flex: 1; border-color: var(--brand)"
-              onclick="window.location.href='p2p.html'"
-            >
-              P2P
-            </button>
-          </div>
-        </div>
-
-        <!-- BANNER CAROUSEL -->
-        <div class="section-padding" style="padding-top: 0">
-          <div class="dash-banner" id="dash-banner" onclick="dashBannerClick()">
-            <div
-              class="dash-banner-slide banner-blue active"
-              data-target="trade.html"
-            >
-              <div class="tag">⚡ Featured</div>
-              <h3>Trade Smarter with Kripex</h3>
-              <p>
-                Zero-fee trading on 200+ pairs. Deep liquidity, fast execution.
-              </p>
-              <button class="dash-banner-cta">Start Trading →</button>
-            </div>
-            <div
-              class="dash-banner-slide banner-amber"
-              data-target="markets.html"
-            >
-              <div class="tag">⚡ Featured</div>
-              <h3>New Listings Available</h3>
-              <p>Trade the latest tokens including trending assets.</p>
-              <button class="dash-banner-cta">View Markets →</button>
-            </div>
-            <div class="dash-banner-slide banner-green" data-target="earn.html">
-              <div class="tag">🛡 Featured</div>
-              <h3>Earn Up to 15% APY</h3>
-              <p>Grow your crypto with flexible and locked savings products.</p>
-              <button class="dash-banner-cta">Explore Earn →</button>
-            </div>
-            <div class="dash-banner-dots" id="dash-banner-dots"></div>
-          </div>
-        </div>
-
-        <!-- QUICK CONVERT -->
-        <div class="section-padding" style="padding-top: 0">
-          <div
-            class="card"
-            style="
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-            "
-            onclick="window.location.href='trade.html'"
-          >
-            <div>
+          <div class="dash-hero-row">
+            <div class="dash-banner" id="dash-banner" onclick="dashBannerClick()">
               <div
-                style="font-weight: 700; font-size: 14px; margin-bottom: 2px"
+                class="dash-banner-slide banner-blue active"
+                data-target="trade.html"
               >
-                Quick Convert
+                <div class="tag">⚡ Featured</div>
+                <h3>Trade Smarter with Kripex</h3>
+                <p>
+                  Zero-fee trading on 200+ pairs. Deep liquidity, fast execution.
+                </p>
+                <button class="dash-banner-cta">Start Trading →</button>
               </div>
-              <div class="text-muted" style="font-size: 12px">
-                Swap between assets instantly
+              <div
+                class="dash-banner-slide banner-amber"
+                data-target="markets.html"
+              >
+                <div class="tag">⚡ Featured</div>
+                <h3>New Listings Available</h3>
+                <p>Trade the latest tokens including trending assets.</p>
+                <button class="dash-banner-cta">View Markets →</button>
               </div>
+              <div class="dash-banner-slide banner-green" data-target="earn.html">
+                <div class="tag">🛡 Featured</div>
+                <h3>Earn Up to 15% APY</h3>
+                <p>Grow your crypto with flexible and locked savings products.</p>
+                <button class="dash-banner-cta">Explore Earn →</button>
+              </div>
+              <div class="dash-banner-dots" id="dash-banner-dots"></div>
             </div>
-            <div style="color: var(--blue); font-size: 18px">›</div>
+
+            <div class="quick-convert-card">
+              <div class="quick-convert-title">Quick Convert</div>
+              <div class="convert-field">
+                <div class="convert-field-label">YOU PAY</div>
+                <div class="convert-field-row">
+                  <input class="convert-input" type="text" placeholder="0.00" readonly />
+                  <div class="convert-currency">₿ BTC <span class="chev">⌄</span></div>
+                </div>
+              </div>
+              <div class="convert-swap-wrap">
+                <div class="convert-swap-btn">⇅</div>
+              </div>
+              <div class="convert-field">
+                <div class="convert-field-label">YOU GET</div>
+                <div class="convert-field-row">
+                  <input class="convert-input" type="text" placeholder="0.00" readonly />
+                  <div class="convert-currency">$ USDT <span class="chev">⌄</span></div>
+                </div>
+              </div>
+              <button
+                class="btn btn-primary"
+                style="width: 100%; margin-top: 4px"
+                onclick="window.location.href='trade.html'"
+              >
+                Convert Now →
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- MARKET OVERVIEW + TOP MOVERS -->
+        <!-- STAT CARDS: Total Balance / 24H PNL / Open Orders / Assets -->
+        <div class="section-padding" style="padding-top: 0">
+          <div class="dash-stats-row">
+            <div class="dash-stat-card stat-blue">
+              <div class="dash-stat-top">
+                <span class="dash-stat-label">TOTAL BALANCE</span>
+                <span class="dash-stat-icon">💼</span>
+              </div>
+              <div class="dash-stat-value text-mono" id="total-balance">$0.00</div>
+              <div class="dash-stat-sub positive" id="total-balance-sub">+0.00% today</div>
+            </div>
+            <div class="dash-stat-card stat-green">
+              <div class="dash-stat-top">
+                <span class="dash-stat-label">24H PNL</span>
+                <span class="dash-stat-icon">↗</span>
+              </div>
+              <div class="dash-stat-value text-mono" id="pnl-24h">+$0.00</div>
+              <div class="dash-stat-sub positive" id="pnl-24h-sub">0.00%</div>
+            </div>
+            <div class="dash-stat-card stat-amber">
+              <div class="dash-stat-top">
+                <span class="dash-stat-label">OPEN ORDERS</span>
+                <span class="dash-stat-icon">⇄</span>
+              </div>
+              <div class="dash-stat-value" id="open-orders-count">0</div>
+              <div class="dash-stat-sub">No active orders</div>
+            </div>
+            <div class="dash-stat-card stat-purple">
+              <div class="dash-stat-top">
+                <span class="dash-stat-label">ASSETS</span>
+                <span class="dash-stat-icon">◔</span>
+              </div>
+              <div class="dash-stat-value" id="assets-count">0</div>
+              <div class="dash-stat-sub">Unique holdings</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MARKET OVERVIEW (table) + TOP MOVERS / HEATMAP (right column) -->
         <div class="section-padding" style="padding-top: 0">
           <div class="dash-market-row">
             <div>
-              <p class="section-title">Market Overview</p>
-              <div class="card" id="market-prices">
-                <div
-                  class="ticker-item"
-                  onclick="window.location.href='trade.html?symbol=BTC'"
-                  style="cursor: pointer"
-                >
-                  <div class="ticker-coin">
-                    <div class="coin-icon btc">₿</div>
-                    <div class="flex-col">
-                      <div class="coin-name">BTC</div>
-                      <div class="coin-fullname">Bitcoin</div>
-                    </div>
-                  </div>
-                  <div class="flex-col" style="align-items: flex-end">
-                    <div class="ticker-price text-mono" id="price-btc">$--</div>
-                    <div class="ticker-change text-mono" id="change-btc">
-                      --%
-                    </div>
-                  </div>
+              <div class="flex-between" style="margin-bottom: 8px">
+                <p class="section-title" style="margin-bottom: 0">Market Overview</p>
+                <a href="markets.html" class="section-link">View All ›</a>
+              </div>
+              <div class="card mkt-table-card">
+                <table class="mkt-table">
+                  <thead>
+                    <tr>
+                      <th class="mkt-col-rank">#</th>
+                      <th>Asset</th>
+                      <th class="mkt-col-num">Price</th>
+                      <th class="mkt-col-num">24h Change</th>
+                      <th class="mkt-col-num mkt-col-vol">Volume</th>
+                      <th class="mkt-col-chart">Chart</th>
+                      <th class="mkt-col-trade">Trade</th>
+                    </tr>
+                  </thead>
+                  <tbody id="market-overview-body">
+                    <tr>
+                      <td colspan="7" class="text-muted" style="text-align: center; padding: 20px 0">
+                        Loading markets...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="dash-right-col">
+              <div>
+                <p class="section-title">Top Movers (24h)</p>
+                <div class="card" id="top-movers">
+                  <p
+                    class="text-muted"
+                    style="text-align: center; font-size: 13px; padding: 20px 0"
+                  >
+                    Loading movers...
+                  </p>
                 </div>
-                <div
-                  class="ticker-item"
-                  onclick="window.location.href='trade.html?symbol=ETH'"
-                  style="cursor: pointer"
-                >
-                  <div class="ticker-coin">
-                    <div class="coin-icon eth">Ξ</div>
-                    <div class="flex-col">
-                      <div class="coin-name">ETH</div>
-                      <div class="coin-fullname">Ethereum</div>
-                    </div>
-                  </div>
-                  <div class="flex-col" style="align-items: flex-end">
-                    <div class="ticker-price text-mono" id="price-eth">$--</div>
-                    <div class="ticker-change text-mono" id="change-eth">
-                      --%
-                    </div>
-                  </div>
+              </div>
+
+              <div>
+                <p class="section-title">Market Heatmap</p>
+                <div class="card mkt-heatmap" id="market-heatmap">
+                  <p
+                    class="text-muted"
+                    style="text-align: center; font-size: 13px; padding: 20px 0; grid-column: 1 / -1"
+                  >
+                    Loading heatmap...
+                  </p>
                 </div>
-                <div
-                  class="ticker-item"
-                  onclick="window.location.href='trade.html?symbol=USDT'"
-                  style="cursor: pointer"
-                >
-                  <div class="ticker-coin">
-                    <div class="coin-icon usdt">₮</div>
-                    <div class="flex-col">
-                      <div class="coin-name">USDT</div>
-                      <div class="coin-fullname">Tether</div>
-                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EARN (rate tiles) + NEWS, side by side -->
+        <div class="section-padding" style="padding-top: 0">
+          <div class="dash-earn-news-row">
+            <div>
+              <div class="flex-between" style="margin-bottom: 8px">
+                <p class="section-title" style="margin-bottom: 0">Earn</p>
+                <a href="earn.html" class="section-link">View All ›</a>
+              </div>
+              <div class="card earn-grid-card">
+                <div class="earn-tile" onclick="window.location.href='portfolio.html'">
+                  <div class="earn-tile-top">
+                    <span class="coin-icon btc" style="width: 26px; height: 26px; font-size: 12px">₿</span>
+                    <span class="earn-tile-sym">BTC</span>
                   </div>
-                  <div class="flex-col" style="align-items: flex-end">
-                    <div class="ticker-price text-mono" id="price-usdt">
-                      $--
-                    </div>
-                    <div class="ticker-change text-mono" id="change-usdt">
-                      --%
-                    </div>
-                  </div>
+                  <div class="earn-tile-rate">3.5%</div>
+                  <div class="earn-tile-term">Flexible</div>
                 </div>
-                <div
-                  class="ticker-item"
-                  onclick="window.location.href='trade.html?symbol=BNB'"
-                  style="cursor: pointer"
-                >
-                  <div class="ticker-coin">
-                    <div class="coin-icon bnb">B</div>
-                    <div class="flex-col">
-                      <div class="coin-name">BNB</div>
-                      <div class="coin-fullname">BNB</div>
-                    </div>
+                <div class="earn-tile" onclick="window.location.href='portfolio.html'">
+                  <div class="earn-tile-top">
+                    <span class="coin-icon eth" style="width: 26px; height: 26px; font-size: 12px">Ξ</span>
+                    <span class="earn-tile-sym">ETH</span>
                   </div>
-                  <div class="flex-col" style="align-items: flex-end">
-                    <div class="ticker-price text-mono" id="price-bnb">$--</div>
-                    <div class="ticker-change text-mono" id="change-bnb">
-                      --%
-                    </div>
-                  </div>
+                  <div class="earn-tile-rate">4.2%</div>
+                  <div class="earn-tile-term">Flexible</div>
                 </div>
-                <div
-                  class="ticker-item"
-                  onclick="window.location.href='trade.html?symbol=SOL'"
-                  style="cursor: pointer"
-                >
-                  <div class="ticker-coin">
-                    <div class="coin-icon sol">S</div>
-                    <div class="flex-col">
-                      <div class="coin-name">SOL</div>
-                      <div class="coin-fullname">Solana</div>
-                    </div>
+                <div class="earn-tile" onclick="window.location.href='portfolio.html'">
+                  <div class="earn-tile-top">
+                    <span class="coin-icon usdt" style="width: 26px; height: 26px; font-size: 12px">$</span>
+                    <span class="earn-tile-sym">USDT</span>
                   </div>
-                  <div class="flex-col" style="align-items: flex-end">
-                    <div class="ticker-price text-mono" id="price-sol">$--</div>
-                    <div class="ticker-change text-mono" id="change-sol">
-                      --%
-                    </div>
-                  </div>
+                  <div class="earn-tile-rate">8.5%</div>
+                  <div class="earn-tile-term">Flexible</div>
                 </div>
-                <div
-                  class="ticker-item"
-                  onclick="window.location.href='trade.html?symbol=XRP'"
-                  style="cursor: pointer"
-                >
-                  <div class="ticker-coin">
-                    <div class="coin-icon xrp">X</div>
-                    <div class="flex-col">
-                      <div class="coin-name">XRP</div>
-                      <div class="coin-fullname">Ripple</div>
-                    </div>
+                <div class="earn-tile" onclick="window.location.href='portfolio.html'">
+                  <div class="earn-tile-top">
+                    <span class="coin-icon sol" style="width: 26px; height: 26px; font-size: 12px">S</span>
+                    <span class="earn-tile-sym">SOL</span>
                   </div>
-                  <div class="flex-col" style="align-items: flex-end">
-                    <div class="ticker-price text-mono" id="price-xrp">$--</div>
-                    <div class="ticker-change text-mono" id="change-xrp">
-                      --%
-                    </div>
+                  <div class="earn-tile-rate">12%</div>
+                  <div class="earn-tile-term">30-Day</div>
+                </div>
+                <div class="earn-tile" onclick="window.location.href='portfolio.html'">
+                  <div class="earn-tile-top">
+                    <span class="coin-icon bnb" style="width: 26px; height: 26px; font-size: 12px">B</span>
+                    <span class="earn-tile-sym">BNB</span>
                   </div>
+                  <div class="earn-tile-rate">15.5%</div>
+                  <div class="earn-tile-term">60-Day</div>
+                </div>
+                <div class="earn-tile" onclick="window.location.href='portfolio.html'">
+                  <div class="earn-tile-top">
+                    <span class="coin-icon usdt" style="width: 26px; height: 26px; font-size: 12px">$</span>
+                    <span class="earn-tile-sym">USDC</span>
+                  </div>
+                  <div class="earn-tile-rate">7.8%</div>
+                  <div class="earn-tile-term">Flexible</div>
                 </div>
               </div>
             </div>
 
             <div>
-              <p class="section-title">Top Movers</p>
-              <div class="card" id="top-movers">
+              <p class="section-title">Latest News</p>
+              <div class="card" id="news-list">
                 <p
                   class="text-muted"
                   style="text-align: center; font-size: 13px; padding: 20px 0"
                 >
-                  Loading movers...
+                  Loading news...
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- EARN FAQ ACCORDION -->
-        <div class="section-padding" style="padding-top: 0">
-          <p class="section-title">Earn</p>
-          <div class="card" id="earn-accordion">
-            <div class="earn-item" onclick="window.location.href='portfolio.html'">
-              <div class="earn-item-head">
-                <span class="q">How do I earn on BTC?</span>
-                <span class="chev">▾</span>
-              </div>
-              <div class="earn-item-body">
-                Deposit BTC into a flexible or locked savings plan from your
-                Portfolio to start earning rewards. Rates vary by term length.
-              </div>
-            </div>
-            <div class="earn-item" onclick="window.location.href='portfolio.html'">
-              <div class="earn-item-head">
-                <span class="q">How do I earn on USDT?</span>
-                <span class="chev">▾</span>
-              </div>
-              <div class="earn-item-body">
-                USDT flexible savings let you earn daily rewards with no
-                lock-up. Manage your position from your Portfolio.
-              </div>
-            </div>
-            <div class="earn-item" onclick="window.location.href='portfolio.html'">
-              <div class="earn-item-head">
-                <span class="q">What is Dual Investment?</span>
-                <span class="chev">▾</span>
-              </div>
-              <div class="earn-item-body">
-                Dual Investment lets you earn enhanced yield based on where the
-                market price settles. View active positions in your Portfolio.
-              </div>
-            </div>
-            <div class="earn-item" onclick="window.location.href='portfolio.html'">
-              <div class="earn-item-head">
-                <span class="q">How do referral rewards work?</span>
-                <span class="chev">▾</span>
-              </div>
-              <div class="earn-item-body">
-                Invite friends and earn a share of their trading fees. Track
-                your rewards in your Portfolio.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- NEWS -->
-        <div class="section-padding" style="padding-top: 0">
-          <p class="section-title">News</p>
-          <div class="card" id="news-list">
-            <p
-              class="text-muted"
-              style="text-align: center; font-size: 13px; padding: 20px 0"
-            >
-              Loading news...
-            </p>
           </div>
         </div>
 
@@ -687,7 +552,8 @@
     </div>
 
     <!-- BOTTOM NAV (mobile only) -->
-    <div class="bottom-nav">
+    
+<div class="bottom-nav">
       <button
         class="nav-item active"
         onclick="window.location.href='home.html'"

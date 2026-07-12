@@ -1398,6 +1398,30 @@ body {
   background: rgba(240, 185, 11, 0.15);
   color: var(--blue);
 }
+.coin-icon.avax {
+  background: rgba(232, 65, 66, 0.15);
+  color: #e84142;
+}
+.coin-icon.pepe {
+  background: rgba(74, 194, 107, 0.15);
+  color: #4ac26b;
+}
+.coin-icon.inj {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--blue);
+}
+.coin-icon.fet {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--purple);
+}
+.coin-icon.near {
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+}
+.coin-icon.sui {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--blue);
+}
 
 .coin-name {
   font-size: 14px;
@@ -2748,16 +2772,17 @@ body.home-v2 .pc-sidebar {
 /* Banner carousel */
 .dash-banner {
   position: relative;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
-  height: 140px;
+  height: 168px;
   cursor: pointer;
   background: linear-gradient(
     135deg,
     rgba(212, 175, 55, 0.18),
     rgba(212, 175, 55, 0.02)
   );
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.5);
 }
 .dash-banner-slide {
   position: absolute;
@@ -2765,38 +2790,79 @@ body.home-v2 .pc-sidebar {
   display: none;
   flex-direction: column;
   justify-content: center;
-  padding: 24px 28px;
+  padding: 26px 30px;
   opacity: 0;
-  transition: opacity 0.4s;
+  transition: opacity 0.5s ease;
+  overflow: hidden;
 }
 .dash-banner-slide.active {
   display: flex;
   opacity: 1;
 }
+/* soft glowing orbs for depth, like the reference screens */
+.dash-banner-slide::before,
+.dash-banner-slide::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.dash-banner-slide::before {
+  width: 220px;
+  height: 220px;
+  top: -90px;
+  right: -60px;
+  background: radial-gradient(circle, var(--banner-glow, #fff) 0%, transparent 70%);
+}
+.dash-banner-slide::after {
+  width: 140px;
+  height: 140px;
+  bottom: -70px;
+  right: 60px;
+  background: radial-gradient(circle, var(--banner-glow, #fff) 0%, transparent 70%);
+  opacity: 0.3;
+}
 .dash-banner-slide h3 {
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 800;
   margin: 0 0 6px;
-  color: var(--text);
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 .dash-banner-slide p {
   font-size: 13px;
-  color: var(--text2);
-  margin: 0 0 12px;
-  max-width: 70%;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 14px;
+  max-width: 62%;
+  position: relative;
+  z-index: 2;
+  line-height: 1.5;
 }
 .dash-banner-slide .tag {
   font-size: 11px;
   font-weight: 800;
-  color: var(--blue);
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
 }
 .dash-banner-dots {
   position: absolute;
-  bottom: 12px;
-  left: 28px;
+  bottom: 14px;
+  left: 30px;
   display: flex;
   gap: 6px;
   z-index: 5;
@@ -2805,12 +2871,13 @@ body.home-v2 .pc-sidebar {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--border2);
+  background: rgba(255, 255, 255, 0.35);
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 .dash-banner-dot.active {
-  background: var(--blue);
-  width: 18px;
+  background: #fff;
+  width: 20px;
   border-radius: 3px;
 }
 
@@ -2825,6 +2892,189 @@ body.home-v2 .pc-sidebar {
     gap: 16px;
     align-items: start;
   }
+}
+
+/* Hero row: banner carousel + quick convert widget (new dashboard layout) */
+.dash-hero-row {
+  display: block;
+}
+.dash-hero-row .dash-banner {
+  margin-bottom: 16px;
+}
+@media (min-width: 900px) {
+  .dash-hero-row {
+    display: grid;
+    grid-template-columns: 1.65fr 1fr;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .dash-hero-row .dash-banner {
+    margin-bottom: 0;
+  }
+}
+
+.quick-convert-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+.quick-convert-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.convert-field-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.convert-field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg3, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.convert-input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  width: 55%;
+}
+.convert-input::placeholder {
+  color: var(--text3);
+  opacity: 0.6;
+}
+.convert-currency {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+.convert-currency .chev {
+  color: var(--text3);
+  font-size: 11px;
+}
+.convert-swap-wrap {
+  display: flex;
+  justify-content: center;
+  margin: -4px 0;
+  position: relative;
+  z-index: 2;
+}
+.convert-swap-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--brand, var(--blue));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: 3px solid var(--bg2);
+}
+
+/* Stat card row */
+.dash-stats-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (min-width: 700px) {
+  .dash-stats-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.dash-stat-card {
+  border-radius: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+}
+.dash-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.dash-stat-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--text3);
+}
+.dash-stat-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.dash-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.dash-stat-sub {
+  font-size: 11.5px;
+  color: var(--text3);
+}
+.dash-stat-sub.positive {
+  color: var(--green);
+}
+.dash-stat-sub.negative {
+  color: var(--red);
+}
+.dash-stat-card.stat-blue {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(59, 130, 246, 0.02));
+  border-color: rgba(59, 130, 246, 0.35);
+}
+.dash-stat-card.stat-blue .dash-stat-icon {
+  background: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+}
+.dash-stat-card.stat-green {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(16, 185, 129, 0.02));
+  border-color: rgba(16, 185, 129, 0.35);
+}
+.dash-stat-card.stat-green .dash-stat-icon {
+  background: rgba(16, 185, 129, 0.18);
+  color: var(--green);
+}
+.dash-stat-card.stat-amber {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(245, 158, 11, 0.02));
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.dash-stat-card.stat-amber .dash-stat-icon {
+  background: rgba(245, 158, 11, 0.18);
+  color: #f59e0b;
+}
+.dash-stat-card.stat-purple {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.14), rgba(168, 85, 247, 0.02));
+  border-color: rgba(168, 85, 247, 0.35);
+}
+.dash-stat-card.stat-purple .dash-stat-icon {
+  background: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
 }
 
 .mover-item {
@@ -2842,6 +3092,221 @@ body.home-v2 .pc-sidebar {
   font-size: 11px;
   color: var(--text3);
   width: 16px;
+}
+
+.section-link {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--brand, var(--blue));
+  text-decoration: none;
+}
+.section-link:hover {
+  text-decoration: underline;
+}
+
+/* Right column of the market row: Top Movers stacked above Market Heatmap */
+.dash-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Market Overview table */
+.mkt-table-card {
+  padding: 0;
+  overflow-x: auto;
+}
+.mkt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 560px;
+}
+.mkt-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text3);
+  text-transform: uppercase;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.mkt-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.mkt-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.mkt-table tbody tr {
+  cursor: pointer;
+}
+.mkt-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+.mkt-col-rank {
+  width: 28px;
+  color: var(--text3);
+}
+.mkt-col-num,
+.mkt-table td.mkt-col-num {
+  text-align: right;
+}
+.mkt-col-vol {
+  color: var(--text3);
+}
+.mkt-col-chart {
+  width: 90px;
+}
+.mkt-col-trade {
+  width: 70px;
+  text-align: right;
+}
+.mkt-row-asset {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mkt-row-asset .coin-icon {
+  width: 26px;
+  height: 26px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.mkt-change-pill {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Roboto Mono", monospace;
+}
+.mkt-change-pill.positive {
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--green);
+}
+.mkt-change-pill.negative {
+  background: rgba(239, 68, 68, 0.14);
+  color: var(--red);
+}
+.mkt-chart-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+  width: 100%;
+}
+.mkt-chart-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+.mkt-chart-bar-fill.positive {
+  background: var(--green);
+}
+.mkt-chart-bar-fill.negative {
+  background: var(--red);
+}
+.mkt-trade-btn {
+  background: var(--brand, var(--blue));
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+}
+.mkt-trade-btn:hover {
+  opacity: 0.88;
+}
+
+/* Market Heatmap */
+.mkt-heatmap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.heatmap-tile {
+  border-radius: 10px;
+  padding: 10px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.heatmap-tile .sym {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+.heatmap-tile .chg {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+.heatmap-tile.positive {
+  background: rgba(16, 185, 129, 0.35);
+}
+.heatmap-tile.negative {
+  background: rgba(239, 68, 68, 0.35);
+}
+
+/* Earn tile grid + Earn/News row */
+.dash-earn-news-row {
+  display: block;
+}
+@media (min-width: 900px) {
+  .dash-earn-news-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+}
+.earn-grid-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+@media (min-width: 520px) {
+  .earn-grid-card {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.earn-tile {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+}
+.earn-tile:hover {
+  border-color: var(--brand, var(--blue));
+}
+.earn-tile-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.earn-tile-sym {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+.earn-tile-rate {
+  font-size: 17px;
+  font-weight: 800;
+  color: #f0b90b;
+}
+.earn-tile-term {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
 }
 
 /* Earn accordion */
@@ -2981,43 +3446,18 @@ body.home-v2 .text-brass {
   color: var(--brand);
 }
 
-body.home-v2 .dash-banner-dot.active {
-  background: var(--brand);
-}
-
-/* Per-slide banner tints, sampled from the UI reference screenshots */
+/* Per-slide banner gradients — vivid & saturated, matching the UI reference screenshots */
 .dash-banner-slide.banner-blue {
-  background: linear-gradient(
-    135deg,
-    rgba(59, 130, 246, 0.16) 0%,
-    rgba(59, 130, 246, 0.02) 100%
-  );
-}
-.dash-banner-slide.banner-blue .tag {
-  color: var(--brand);
+  background: linear-gradient(135deg, #3b5bfd 0%, #7c3aed 55%, #a855f7 100%);
+  --banner-glow: #60a5fa;
 }
 .dash-banner-slide.banner-amber {
-  background: linear-gradient(
-    135deg,
-    rgba(245, 158, 11, 0.16) 0%,
-    rgba(245, 158, 11, 0.02) 100%
-  );
-}
-.dash-banner-slide.banner-amber .tag {
-  color: #f59e0b;
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 55%, #ef4444 100%);
+  --banner-glow: #fcd34d;
 }
 .dash-banner-slide.banner-green {
-  background: linear-gradient(
-    135deg,
-    rgba(16, 185, 129, 0.16) 0%,
-    rgba(16, 185, 129, 0.02) 100%
-  );
-}
-.dash-banner-slide.banner-green .tag {
-  color: var(--green);
-}
-.dash-banner-slide {
-  background: none;
+  background: linear-gradient(135deg, #059669 0%, #10b981 55%, #34d399 100%);
+  --banner-glow: #6ee7b7;
 }
 .dash-banner {
   background: var(--bg2);
@@ -3032,16 +3472,21 @@ body.home-v2 #earn-accordion .chev {
 
 .dash-banner-cta {
   align-self: flex-start;
-  background: var(--brand);
-  color: #fff;
+  background: #fff;
+  color: #1a1a2e;
   border: none;
-  border-radius: 8px;
-  padding: 9px 16px;
+  border-radius: 9px;
+  padding: 10px 18px;
   font-size: 12.5px;
-  font-weight: 700;
+  font-weight: 800;
   font-family: "Inter", sans-serif;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .dash-banner-cta:hover {
-  background: #559bf7;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
 }

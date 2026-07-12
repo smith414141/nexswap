@@ -51,6 +51,7 @@ function loadWallet(uid) {
 
       document.getElementById("btc-balance").textContent = btc.toFixed(8);
       document.getElementById("usdt-balance").textContent = usdt.toFixed(2);
+      updateAssetsCount(btc, usdt);
 
       // Show USD from cache immediately
       const cached = localStorage.getItem("cachedPrices");
@@ -63,6 +64,16 @@ function loadWallet(uid) {
       }
       updateBalanceUSD(btc, usdt);
     });
+}
+
+// ---- DASHBOARD STAT CARD: Assets count ----
+// Counts real, non-zero holdings from the wallet doc. (Total Balance stat
+// card is filled by the existing updateBalanceUSD() below — unchanged.)
+function updateAssetsCount(btc, usdt) {
+  const el = document.getElementById("assets-count");
+  if (!el) return;
+  const count = (btc > 0 ? 1 : 0) + (usdt > 0 ? 1 : 0);
+  el.textContent = count;
 }
 
 function updateBalanceUSD(btc, usdt) {
@@ -92,7 +103,7 @@ function fetchPrices() {
 
   // Fetch fresh prices in background
   fetch(
-    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,ripple,cardano,dogecoin&vs_currencies=usd&include_24hr_change=true"
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,ripple,cardano,dogecoin,avalanche-2,pepe,injective-protocol,fetch-ai,near,sui&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true"
   )
     .then((res) => res.json())
     .then((data) => {
@@ -129,7 +140,25 @@ const COIN_META = {
   ripple: { symbol: "XRP", name: "Ripple", icon: "X", cls: "xrp" },
   cardano: { symbol: "ADA", name: "Cardano", icon: "A", cls: "ada" },
   dogecoin: { symbol: "DOGE", name: "Dogecoin", icon: "D", cls: "doge" },
+  "avalanche-2": { symbol: "AVAX", name: "Avalanche", icon: "A", cls: "avax" },
+  pepe: { symbol: "PEPE", name: "Pepe", icon: "🐸", cls: "pepe" },
+  "injective-protocol": { symbol: "INJ", name: "Injective", icon: "I", cls: "inj" },
+  "fetch-ai": { symbol: "FET", name: "Fetch.ai", icon: "F", cls: "fet" },
+  near: { symbol: "NEAR", name: "NEAR Protocol", icon: "N", cls: "near" },
+  sui: { symbol: "SUI", name: "Sui", icon: "S", cls: "sui" },
 };
+
+// Fixed coin list for the Market Overview table + Heatmap (matches the UI reference)
+const MARKET_TABLE_COINS = [
+  "bitcoin",
+  "ethereum",
+  "binancecoin",
+  "solana",
+  "ripple",
+  "dogecoin",
+  "cardano",
+  "avalanche-2",
+];
 
 function applyPrices(data) {
   const coins = {
@@ -161,6 +190,90 @@ function applyPrices(data) {
 
   renderTopMovers(data);
   renderTickerBar(data);
+  renderMarketOverviewTable(data);
+  renderMarketHeatmap(data);
+}
+
+// ---- MARKET OVERVIEW TABLE (real price/change/volume; chart is a CSS
+// proportional bar, not a live sparkline — see note to project owner) ----
+function renderMarketOverviewTable(data) {
+  const body = document.getElementById("market-overview-body");
+  if (!body) return;
+
+  const rows = MARKET_TABLE_COINS.filter((id) => data[id]).map((id, i) => {
+    const meta = COIN_META[id];
+    const d = data[id];
+    const change = d.usd_24h_change || 0;
+    const price = d.usd;
+    const vol = d.usd_24h_vol;
+    const dir = change >= 0 ? "positive" : "negative";
+    const priceStr =
+      price >= 1
+        ? "$" + price.toLocaleString("en-US", { maximumFractionDigits: 2 })
+        : "$" + price.toFixed(4);
+    const volStr =
+      vol == null
+        ? "--"
+        : vol >= 1e9
+        ? "$" + (vol / 1e9).toFixed(2) + "B"
+        : "$" + (vol / 1e6).toFixed(1) + "M";
+    // Bar length reflects magnitude of 24h move, capped so it stays readable
+    const barPct = Math.max(6, Math.min(100, Math.abs(change) * 8));
+
+    return `
+      <tr onclick="window.location.href='trade.html?symbol=${meta.symbol}'">
+        <td class="mkt-col-rank">${i + 1}</td>
+        <td>
+          <div class="mkt-row-asset">
+            <div class="coin-icon ${meta.cls}">${meta.icon}</div>
+            <div class="flex-col">
+              <div class="coin-name">${meta.symbol}</div>
+              <div class="coin-fullname">${meta.name}</div>
+            </div>
+          </div>
+        </td>
+        <td class="mkt-col-num text-mono">${priceStr}</td>
+        <td class="mkt-col-num">
+          <span class="mkt-change-pill ${dir}">${
+      change >= 0 ? "↗ +" : "↘ "
+    }${change.toFixed(2)}%</span>
+        </td>
+        <td class="mkt-col-num mkt-col-vol text-mono">${volStr}</td>
+        <td class="mkt-col-chart">
+          <div class="mkt-chart-bar"><div class="mkt-chart-bar-fill ${dir}" style="width:${barPct}%"></div></div>
+        </td>
+        <td class="mkt-col-trade">
+          <button class="mkt-trade-btn" onclick="event.stopPropagation(); window.location.href='trade.html?symbol=${
+            meta.symbol
+          }'">Trade</button>
+        </td>
+      </tr>`;
+  });
+
+  if (rows.length === 0) return;
+  body.innerHTML = rows.join("");
+}
+
+// ---- MARKET HEATMAP ----
+function renderMarketHeatmap(data) {
+  const container = document.getElementById("market-heatmap");
+  if (!container) return;
+
+  const tiles = MARKET_TABLE_COINS.filter((id) => data[id]).map((id) => {
+    const meta = COIN_META[id];
+    const change = data[id].usd_24h_change || 0;
+    const dir = change >= 0 ? "positive" : "negative";
+    return `
+      <div class="heatmap-tile ${dir}" onclick="window.location.href='trade.html?symbol=${
+      meta.symbol
+    }'">
+        <span class="sym">${meta.symbol}</span>
+        <span class="chg">${change >= 0 ? "+" : ""}${change.toFixed(1)}%</span>
+      </div>`;
+  });
+
+  if (tiles.length === 0) return;
+  container.innerHTML = tiles.join("");
 }
 
 // ---- LIVE PRICE TICKER (top of page, scrolls continuously) ----

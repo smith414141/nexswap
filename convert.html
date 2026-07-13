@@ -13,6 +13,31 @@
     />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <style>
+      .cv-field {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        font-family: "Inter", sans-serif;
+        outline: none;
+      }
+      select.cv-field {
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a919e' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 14px;
+        padding-right: 26px;
+      }
+      .cv-field:focus {
+        border-color: var(--blue);
+      }
+      .cv-field::placeholder {
+        color: var(--text3);
+      }
+    </style>
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
@@ -99,113 +124,108 @@
         <span style="width: 20px"></span>
       </div>
 
-      <div style="padding: 16px">
-        <!-- FROM -->
-        <p class="section-title">From</p>
-        <div class="card" style="margin-bottom: 12px">
-          <div
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 10px;
-            "
-          >
+      <div class="desktop-page-head" style="padding: 20px 16px 4px">
+        <div style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px">
+          💱 Convert
+        </div>
+        <div style="font-size: 12px; color: var(--text2); margin-top: 2px">
+          No-fee instant swaps at live market rates
+        </div>
+      </div>
+
+      <div style="padding: 16px; max-width: 400px; margin: 0 auto">
+        <div class="card" style="padding: 16px; height: fit-content">
+          <!-- FROM -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px">
+            <label style="font-size: 12px; color: var(--text2)">From</label>
+            <span id="from-balance" style="font-size: 11px; color: var(--text3)">Available: --</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-bottom: 4px">
             <select
               id="from-coin-select"
+              class="cv-field"
               style="
-                font-size: 16px;
+                width: 96px;
+                flex-shrink: 0;
+                font-size: 13px;
                 font-weight: 800;
-                background: none;
-                border: none;
                 color: var(--text);
                 cursor: pointer;
               "
             ></select>
-            <span id="from-balance" style="font-size: 11px; color: var(--text3)"
-              >Available: --</span
-            >
-          </div>
-          <div class="input-row" style="margin: 0">
             <input
               type="number"
               id="convert-amount"
+              class="cv-field"
               placeholder="0.00"
               min="0"
+              style="flex: 1; min-width: 0"
               oninput="updateConvertPreview()"
             />
-            <span id="from-coin-label" class="input-suffix">USDT</span>
+          </div>
+          <span id="from-coin-label" style="display: none">USDT</span>
+
+          <div style="display: flex; gap: 6px; margin: 8px 0 14px">
+            <button class="btn-secondary" style="flex: 1; font-size: 11px; padding: 6px" onclick="setMaxConvert()">MAX</button>
+          </div>
+
+          <!-- SWAP DIRECTION -->
+          <div style="text-align: center; margin: -6px 0">
             <button
-              onclick="setMaxConvert()"
+              onclick="swapDirection()"
               style="
-                background: var(--blue);
-                color: #0b0e11;
-                border: none;
-                border-radius: 6px;
-                padding: 4px 10px;
-                font-size: 11px;
-                font-weight: 700;
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                font-size: 15px;
+                line-height: 1;
                 cursor: pointer;
-                margin-left: 4px;
+                position: relative;
+                z-index: 2;
               "
+              title="Swap direction"
             >
-              MAX
+              ⇅
             </button>
           </div>
-        </div>
 
-        <!-- SWAP DIRECTION -->
-        <div style="text-align: center; margin-bottom: 12px">
-          <button
-            onclick="swapDirection()"
-            style="
-              background: var(--bg2);
-              border: 1px solid var(--border);
-              border-radius: 50%;
-              width: 36px;
-              height: 36px;
-              font-size: 18px;
-              cursor: pointer;
-            "
-          >
-            ⇅
-          </button>
-        </div>
-
-        <!-- TO -->
-        <p class="section-title">To</p>
-        <div class="card" style="margin-bottom: 20px">
-          <div style="margin-bottom: 10px">
+          <!-- TO -->
+          <label style="font-size: 12px; color: var(--text2)">To</label>
+          <div style="display: flex; gap: 8px; margin: 6px 0 4px">
             <select
               id="to-coin-select"
+              class="cv-field"
               style="
-                font-size: 16px;
+                width: 96px;
+                flex-shrink: 0;
+                font-size: 13px;
                 font-weight: 800;
-                background: none;
-                border: none;
                 color: var(--text);
                 cursor: pointer;
               "
             ></select>
+            <div
+              id="convert-preview"
+              class="cv-field"
+              style="flex: 1; min-width: 0; display: flex; align-items: center; font-size: 14px; font-weight: 800; color: var(--text)"
+            >
+              -- BTC
+            </div>
           </div>
-          <div
-            id="convert-preview"
-            style="font-size: 22px; font-weight: 800; color: var(--text)"
-          >
-            -- BTC
-          </div>
-          <div
-            id="convert-rate"
-            style="font-size: 11px; color: var(--text3); margin-top: 4px"
-          >
-            --
-          </div>
-        </div>
+          <span id="to-coin-label" style="display: none">BTC</span>
 
-        <!-- SUBMIT -->
-        <button id="convert-btn" class="btn-primary" onclick="submitConvert()">
-          Convert
-        </button>
+          <div style="font-size: 12px; color: var(--text2); display: flex; justify-content: space-between; margin: 12px 0 16px">
+            <span>Rate</span>
+            <strong id="convert-rate" style="color: var(--text)">--</strong>
+          </div>
+
+          <!-- SUBMIT -->
+          <button id="convert-btn" class="btn-primary" style="width: 100%" onclick="submitConvert()">
+            Convert
+          </button>
+        </div>
 
         <div
           style="

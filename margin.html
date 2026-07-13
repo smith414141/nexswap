@@ -2,9 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>Kripex — Margin Trading</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
@@ -18,13 +24,30 @@
       <div class="pc-nav-right">
         <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
         <a href="messages.html" class="nav-icon-btn" title="Messages">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+            />
           </svg>
         </a>
         <a href="profile.html" class="nav-icon-btn" title="Profile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            width="20"
+            height="20"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
           </svg>
         </a>
         <button class="btn-logout" onclick="logoutUser()">Logout</button>
@@ -33,132 +56,331 @@
 
     <div class="pc-sidebar">
       <div class="pc-sidebar-group-label">Main</div>
-      <a class="pc-sidebar-link " href="home.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+      <a class="pc-sidebar-link" href="home.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
         </svg>
         Dashboard
       </a>
-      <a class="pc-sidebar-link " href="markets.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
+      <a class="pc-sidebar-link" href="markets.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M4 20V10M12 20V4M20 20v-7" />
+        </svg>
         Markets
       </a>
-      <a class="pc-sidebar-link " href="trade.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
+      <a class="pc-sidebar-link" href="trade.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M7 3L3 7l4 4" />
+          <path d="M3 7h13a4 4 0 014 4v1" />
+          <path d="M17 21l4-4-4-4" />
+          <path d="M21 17H8a4 4 0 01-4-4v-1" />
         </svg>
         Trade
       </a>
-      <a class="pc-sidebar-link " href="wallet.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
+      <a class="pc-sidebar-link" href="wallet.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="2" y="6" width="20" height="14" rx="2" />
+          <path d="M2 10h20" />
+          <circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
         </svg>
         Wallet
       </a>
-      <a class="pc-sidebar-link " href="portfolio.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
+      <a class="pc-sidebar-link" href="portfolio.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 2a10 10 0 1010 10H12V2z" />
+          <path d="M21 8A8.99 8.99 0 0014 2v6h7z" />
+        </svg>
         Portfolio
       </a>
       <div class="pc-sidebar-group-label">Discover</div>
-      <a class="pc-sidebar-link " href="p2p.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
+      <a class="pc-sidebar-link" href="p2p.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="9" cy="7" r="4" />
+          <path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+          <path d="M16 3.13a4 4 0 010 7.75" />
+          <path d="M21 21v-2a4 4 0 00-3-3.87" />
         </svg>
         P2P Trading
       </a>
-      <a class="pc-sidebar-link " href="earn.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
+      <a class="pc-sidebar-link" href="earn.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 17l6-6 4 4 8-8" />
+          <path d="M17 7h4v4" />
+        </svg>
         Earn
       </a>
-      <a class="pc-sidebar-link " href="products.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
+      <a class="pc-sidebar-link" href="products.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="5" cy="12" r="1.5" fill="currentColor" />
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+          <circle cx="19" cy="12" r="1.5" fill="currentColor" />
+        </svg>
         More
       </a>
       <div class="pc-sidebar-spacer"></div>
-      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+      <a
+        class="pc-sidebar-link pc-sidebar-logout"
+        href="#"
+        onclick="logoutUser();return false;"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+          <path d="M16 17l5-5-5-5" />
+          <path d="M21 12H9" />
+        </svg>
         Logout
       </a>
     </div>
-<div class="pc-main">
-
-
-    <!-- LIVE TICKER -->
-    <div class="pc-ticker-bar" id="pc-ticker-bar" style="margin:0">
-      <div class="pc-ticker-track" id="pc-ticker-track">
-        <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
+    <div class="pc-main">
+      <!-- LIVE TICKER -->
+      <div class="pc-ticker-bar" id="pc-ticker-bar" style="margin: 0">
+        <div class="pc-ticker-track" id="pc-ticker-track">
+          <span class="pc-ticker-item"
+            ><span class="sym">Loading prices…</span></span
+          >
+        </div>
       </div>
-    </div>
 
-    <div class="page">
-      <div style="padding:16px 16px 0">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:14px">
-          <div>
-            <div style="font-size:20px;font-weight:800">📈 Margin Trading</div>
-            <div style="font-size:12px;color:var(--text2)">Borrow funds to amplify your trading positions</div>
-          </div>
-          <div style="display:flex;gap:24px">
-            <div style="text-align:right">
-              <div style="font-size:11px;color:var(--text2)">Total Borrowed</div>
-              <div style="font-size:15px;font-weight:800" id="mg-total-borrowed">$0.00</div>
+      <div class="page">
+        <div style="padding: 16px 16px 0">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              flex-wrap: wrap;
+              gap: 12px;
+              margin-bottom: 14px;
+            "
+          >
+            <div>
+              <div style="font-size: 20px; font-weight: 800">
+                📈 Margin Trading
+              </div>
+              <div style="font-size: 12px; color: var(--text2)">
+                Borrow funds to amplify your trading positions
+              </div>
             </div>
-            <div style="text-align:right">
-              <div style="font-size:11px;color:var(--text2)">Margin Ratio</div>
-              <div style="font-size:15px;font-weight:800;color:var(--green)" id="mg-ratio">--</div>
+            <div style="display: flex; gap: 24px">
+              <div style="text-align: right">
+                <div style="font-size: 11px; color: var(--text2)">
+                  Collateral (Wallet Value)
+                </div>
+                <div
+                  style="font-size: 15px; font-weight: 800"
+                  id="mg-collateral"
+                >
+                  $0.00
+                </div>
+              </div>
+              <div style="text-align: right">
+                <div style="font-size: 11px; color: var(--text2)">
+                  Total Borrowed
+                </div>
+                <div
+                  style="font-size: 15px; font-weight: 800"
+                  id="mg-total-borrowed"
+                >
+                  $0.00
+                </div>
+              </div>
+              <div style="text-align: right">
+                <div style="font-size: 11px; color: var(--text2)">
+                  Margin Ratio
+                </div>
+                <div
+                  style="font-size: 15px; font-weight: 800; color: var(--green)"
+                  id="mg-ratio"
+                >
+                  --
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+          <div
+            id="mg-no-collateral-banner"
+            style="
+              display: none;
+              background: rgba(240, 185, 11, 0.1);
+              border: 1px solid var(--yellow);
+              border-radius: 8px;
+              padding: 10px;
+              margin-bottom: 14px;
+              font-size: 12px;
+              color: var(--yellow);
+            "
+          >
+            ⚠️ You have no collateral in your wallet. Deposit funds first —
+            borrowing power is based on your wallet balance.
+          </div>
 
-        <p class="section-title">Available to Borrow</p>
-        <div class="card" style="padding:0;overflow-x:auto;margin-bottom:20px">
-          <table style="width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap">
-            <thead>
-              <tr style="color:var(--text2);text-align:left">
-                <th style="padding:10px">Asset</th>
-                <th>Price</th>
-                <th>Daily Rate</th>
-                <th>Max Leverage</th>
-                <th>Available</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="mg-borrow-body"></tbody>
-          </table>
-        </div>
+          <p class="section-title">Available to Borrow</p>
+          <div
+            class="card"
+            style="padding: 0; overflow-x: auto; margin-bottom: 20px"
+          >
+            <table
+              style="
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+                white-space: nowrap;
+              "
+            >
+              <thead>
+                <tr style="color: var(--text2); text-align: left">
+                  <th style="padding: 10px">Asset</th>
+                  <th>Price</th>
+                  <th>Daily Rate</th>
+                  <th>Max Leverage</th>
+                  <th>Available</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="mg-borrow-body"></tbody>
+            </table>
+          </div>
 
-        <p class="section-title">Active Loans</p>
-        <div class="card" id="mg-loans-list">
-          <p style="text-align:center;color:var(--text3);font-size:13px;padding:20px 0" id="mg-loans-empty">No active loans</p>
-        </div>
+          <p class="section-title">Active Loans</p>
+          <div class="card" id="mg-loans-list">
+            <p
+              style="
+                text-align: center;
+                color: var(--text3);
+                font-size: 13px;
+                padding: 20px 0;
+              "
+              id="mg-loans-empty"
+            >
+              No active loans
+            </p>
+          </div>
 
-        <div style="background:rgba(217,53,74,0.1);border:1px solid var(--red);border-radius:8px;padding:10px;margin-top:16px;font-size:11px;color:var(--red)">
-          ⚠️ Margin trading involves significant risk. If your margin ratio falls below the maintenance margin, your positions may be liquidated. Always monitor your margin level.
+          <div
+            style="
+              background: rgba(217, 53, 74, 0.1);
+              border: 1px solid var(--red);
+              border-radius: 8px;
+              padding: 10px;
+              margin-top: 16px;
+              font-size: 11px;
+              color: var(--red);
+            "
+          >
+            ⚠️ Margin trading involves significant risk. If your margin ratio
+            falls below the maintenance margin, your positions may be
+            liquidated. Always monitor your margin level.
+          </div>
+        </div>
+      </div>
+
+      <!-- BORROW MODAL -->
+      <div
+        id="mg-borrow-modal"
+        style="
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 100;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div class="card" style="width: 90%; max-width: 380px">
+          <p class="section-title">
+            Borrow <span id="mg-modal-asset">BTC</span>
+          </p>
+          <div
+            style="font-size: 11px; color: var(--text2); margin-bottom: 10px"
+          >
+            Max borrowable:
+            <span id="mg-modal-max" style="color: var(--text); font-weight: 700"
+              >0.00</span
+            >
+            based on your collateral
+          </div>
+          <label style="font-size: 12px; color: var(--text2)">Amount</label>
+          <input
+            type="number"
+            id="mg-borrow-amount"
+            placeholder="0.00"
+            class="input-field"
+            style="width: 100%; margin: 6px 0 14px"
+          />
+          <div style="display: flex; gap: 10px">
+            <button
+              class="btn-secondary"
+              style="flex: 1"
+              onclick="closeMgModal()"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn-primary"
+              style="flex: 1"
+              onclick="confirmBorrow()"
+            >
+              Borrow
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- BORROW MODAL -->
-    <div id="mg-borrow-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:center;justify-content:center">
-      <div class="card" style="width:90%;max-width:380px">
-        <p class="section-title">Borrow <span id="mg-modal-asset">BTC</span></p>
-        <label style="font-size:12px;color:var(--text2)">Amount</label>
-        <input type="number" id="mg-borrow-amount" placeholder="0.00" class="input-field" style="width:100%;margin:6px 0 14px" />
-        <div style="display:flex;gap:10px">
-          <button class="btn-secondary" style="flex:1" onclick="closeMgModal()">Cancel</button>
-          <button class="btn-primary" style="flex:1" onclick="confirmBorrow()">Borrow</button>
-        </div>
-      </div>
-    </div>
-
-</div>
-<div id="toast-container"></div>
+    <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
     <script src="margin.js"></script>
-
   </body>
 </html>

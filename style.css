@@ -701,6 +701,11 @@ body {
   color: var(--blue);
 }
 
+/* Page title shown only on desktop (mobile already has it in the sticky .top-bar) */
+.desktop-page-head {
+  display: none;
+}
+
 .top-bar-right {
   display: flex;
   align-items: center;
@@ -2089,6 +2094,9 @@ body {
   }
   .top-bar {
     display: none !important;
+  }
+  .desktop-page-head {
+    display: block !important;
   }
 
   /* Modals centered on desktop */

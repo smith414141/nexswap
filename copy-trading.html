@@ -2,11 +2,146 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>Kripex — Copy Trading</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <style>
+      .ct-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 16px;
+        overflow-x: auto;
+      }
+      .ct-tab {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg2);
+        color: var(--text2);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .ct-tab.active {
+        background: var(--brand, #3b82f6);
+        color: #fff;
+        border-color: transparent;
+      }
+      .ct-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+      }
+      .ct-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        cursor: pointer;
+        transition: border-color 0.15s ease;
+      }
+      .ct-card:hover {
+        border-color: var(--border2);
+      }
+      .ct-card-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .ct-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        background: var(--bg3);
+        flex-shrink: 0;
+        position: relative;
+      }
+      .ct-crown {
+        position: absolute;
+        top: -8px;
+        right: -4px;
+        font-size: 13px;
+      }
+      .ct-name {
+        font-weight: 800;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .ct-followers {
+        font-size: 11px;
+        color: var(--text3);
+      }
+      .ct-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .ct-stat-label {
+        font-size: 10px;
+        color: var(--text3);
+        margin-bottom: 2px;
+      }
+      .ct-stat-value {
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .ct-pairs {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .ct-pair-chip {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text2);
+        background: var(--bg3);
+        border-radius: 6px;
+        padding: 3px 7px;
+      }
+      .ct-risk-low {
+        color: var(--green);
+      }
+      .ct-risk-medium {
+        color: var(--yellow);
+      }
+      .ct-risk-high {
+        color: var(--red);
+      }
+      .ct-copy-btn {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        background: var(--brand, #3b82f6);
+        color: #fff;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .ct-copy-btn.is-copying {
+        background: var(--bg3);
+        color: var(--red);
+        border: 1px solid var(--red);
+      }
+    </style>
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
@@ -18,13 +153,30 @@
       <div class="pc-nav-right">
         <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
         <a href="messages.html" class="nav-icon-btn" title="Messages">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            width="20"
+            height="20"
+          >
+            <path
+              d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+            />
           </svg>
         </a>
         <a href="profile.html" class="nav-icon-btn" title="Profile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            width="20"
+            height="20"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
           </svg>
         </a>
         <button class="btn-logout" onclick="logoutUser()">Logout</button>
@@ -33,73 +185,250 @@
 
     <div class="pc-sidebar">
       <div class="pc-sidebar-group-label">Main</div>
-      <a class="pc-sidebar-link " href="home.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+      <a class="pc-sidebar-link" href="home.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
         </svg>
         Dashboard
       </a>
-      <a class="pc-sidebar-link " href="markets.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
+      <a class="pc-sidebar-link" href="markets.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M4 20V10M12 20V4M20 20v-7" />
+        </svg>
         Markets
       </a>
-      <a class="pc-sidebar-link " href="trade.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
+      <a class="pc-sidebar-link" href="trade.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M7 3L3 7l4 4" />
+          <path d="M3 7h13a4 4 0 014 4v1" />
+          <path d="M17 21l4-4-4-4" />
+          <path d="M21 17H8a4 4 0 01-4-4v-1" />
         </svg>
         Trade
       </a>
-      <a class="pc-sidebar-link " href="wallet.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
+      <a class="pc-sidebar-link" href="wallet.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="2" y="6" width="20" height="14" rx="2" />
+          <path d="M2 10h20" />
+          <circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
         </svg>
         Wallet
       </a>
-      <a class="pc-sidebar-link " href="portfolio.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
+      <a class="pc-sidebar-link" href="portfolio.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 2a10 10 0 1010 10H12V2z" />
+          <path d="M21 8A8.99 8.99 0 0014 2v6h7z" />
+        </svg>
         Portfolio
       </a>
       <div class="pc-sidebar-group-label">Discover</div>
-      <a class="pc-sidebar-link " href="p2p.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
+      <a class="pc-sidebar-link" href="p2p.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="9" cy="7" r="4" />
+          <path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+          <path d="M16 3.13a4 4 0 010 7.75" />
+          <path d="M21 21v-2a4 4 0 00-3-3.87" />
         </svg>
         P2P Trading
       </a>
-      <a class="pc-sidebar-link " href="earn.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
+      <a class="pc-sidebar-link" href="earn.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M3 17l6-6 4 4 8-8" />
+          <path d="M17 7h4v4" />
+        </svg>
         Earn
       </a>
-      <a class="pc-sidebar-link " href="products.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
+      <a class="pc-sidebar-link" href="products.html">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="5" cy="12" r="1.5" fill="currentColor" />
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+          <circle cx="19" cy="12" r="1.5" fill="currentColor" />
+        </svg>
         More
       </a>
       <div class="pc-sidebar-spacer"></div>
-      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+      <a
+        class="pc-sidebar-link pc-sidebar-logout"
+        href="#"
+        onclick="logoutUser();return false;"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+          <path d="M16 17l5-5-5-5" />
+          <path d="M21 12H9" />
+        </svg>
         Logout
       </a>
     </div>
-<div class="pc-main">
+    <div class="pc-main">
+      <div class="page">
+        <div style="padding: 16px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              flex-wrap: wrap;
+              gap: 14px;
+              margin-bottom: 18px;
+            "
+          >
+            <div>
+              <div
+                style="
+                  font-size: 20px;
+                  font-weight: 800;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                "
+              >
+                👥 Copy Trading
+              </div>
+              <div
+                style="font-size: 12px; color: var(--text2); margin-top: 2px"
+              >
+                Auto-copy top traders' strategies — their trades, your account
+              </div>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 10px 18px;
+              "
+            >
+              <div style="text-align: right">
+                <div style="font-size: 11px; color: var(--text2)">
+                  You're Copying
+                </div>
+                <div
+                  style="font-size: 15px; font-weight: 800"
+                  id="ct-copying-count"
+                >
+                  0
+                </div>
+              </div>
+              <div style="text-align: right">
+                <div style="font-size: 11px; color: var(--text2)">Copy P&L</div>
+                <div
+                  style="font-size: 15px; font-weight: 800; color: var(--green)"
+                  id="ct-copy-pnl"
+                >
+                  +$0
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="ct-tabs" id="ct-tabs">
+            <button
+              class="ct-tab active"
+              data-sort="roi"
+              onclick="ctSetSort('roi', this)"
+            >
+              Top ROI
+            </button>
+            <button
+              class="ct-tab"
+              data-sort="winRate"
+              onclick="ctSetSort('winRate', this)"
+            >
+              Win Rate
+            </button>
+            <button
+              class="ct-tab"
+              data-sort="followers"
+              onclick="ctSetSort('followers', this)"
+            >
+              Most Copied
+            </button>
+            <button
+              class="ct-tab"
+              data-sort="followersAlt"
+              onclick="ctSetSort('followers', this)"
+            >
+              Followers
+            </button>
+          </div>
 
-    <div class="page">
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()">←</span>
-        <div class="top-bar-logo">Copy Trading</div>
-        <span style="width: 20px"></span>
-      </div>
-      <div style="padding: 16px; max-width: 640px; margin: 0 auto">
-
-        <p class="section-title">Top Traders</p>
-        <div id="ct-list"></div>
-
+          <div class="ct-grid" id="ct-list"></div>
+        </div>
       </div>
     </div>
-    
-</div>
-<div id="toast-container"></div>
+
+    <!-- COPY SETTINGS MODAL -->
+    <div id="ct-modal-overlay" class="modal-overlay" style="display: none" onclick="if(event.target===this) closeCopyModal()">
+      <div class="modal-sheet" style="padding: 18px; max-width: 380px">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px">
+          <div style="font-size: 15px; font-weight: 800">Copy Settings</div>
+          <span style="cursor: pointer; font-size: 18px; color: var(--text2)" onclick="closeCopyModal()">✕</span>
+        </div>
+        <div id="ct-modal-trader-name" style="font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 16px"></div>
+
+        <label style="font-size: 12px; color: var(--text2)">Allocation (USDT)</label>
+        <input id="ct-modal-allocation" type="number" min="10" placeholder="e.g. 500" style="width: 100%; margin: 6px 0 4px; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; box-sizing: border-box" />
+        <div style="font-size: 11px; color: var(--text3); margin-bottom: 14px">How much of your simulated balance to mirror this trader with.</div>
+
+        <label style="font-size: 12px; color: var(--text2)">Max Loss Limit (%)</label>
+        <input id="ct-modal-limit" type="number" min="5" max="100" value="20" style="width: 100%; margin: 6px 0 4px; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; box-sizing: border-box" />
+        <div style="font-size: 11px; color: var(--text3); margin-bottom: 16px">Copying automatically stops feeding further losses once your allocation drops by this percentage — similar to a margin stop-out.</div>
+
+        <button class="btn-primary" style="width: 100%" onclick="confirmCopy()">Confirm & Copy</button>
+      </div>
+    </div>
+    <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>

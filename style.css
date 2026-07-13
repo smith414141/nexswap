@@ -599,6 +599,65 @@ body {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
+/* REGISTRATION WIZARD */
+.reg-step-email-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text2);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+
+.pw-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 12px 0;
+  padding: 12px;
+  background: var(--bg3);
+  border-radius: 10px;
+}
+.pw-check {
+  font-size: 12px;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: color 0.15s ease;
+}
+.pw-check-icon {
+  font-size: 10px;
+}
+.pw-check.met {
+  color: var(--green);
+}
+.pw-check.met .pw-check-icon::before {
+  content: "●";
+}
+
+.terms-scroll-box {
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+.terms-scroll-box p {
+  margin-bottom: 10px;
+}
+.terms-scroll-box strong {
+  color: var(--text);
+}
+
 .auth-page .btn-primary {
   background: var(--blue);
   color: #fff;

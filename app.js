@@ -109,13 +109,15 @@ function register() {
   const name = document.getElementById("reg-name").value.trim();
   const email = document.getElementById("reg-email").value.trim();
   const password = document.getElementById("reg-password").value;
-  const phoneCode = document.getElementById("reg-phone-code").value;
+  const countrySelect = document.getElementById("reg-country");
+  const countryCode = countrySelect ? countrySelect.value : "ET";
+  const phoneCodeVal = document.getElementById("reg-phone-code").value;
   const phoneNumber = document.getElementById("reg-phone").value.trim();
   const phone = phoneNumber
-    ? `${phoneCode}${phoneNumber.replace(/\s/g, "")}`
+    ? `${phoneCodeVal}${phoneNumber.replace(/\s/g, "")}`
     : "";
 
-  if (!name || !email || !password || !phoneNumber) {
+  if (!name || !email || !password) {
     showToast("Please fill in all fields", "error");
     return;
   }
@@ -124,10 +126,17 @@ function register() {
     return;
   }
 
-  const phoneClean = phone.replace(/\s/g, "");
-  const phoneRegex = /^\+[1-9]\d{9,14}$/;
-  if (!phoneRegex.test(phoneClean)) {
-    showToast("Enter a valid phone number (e.g. 912345678)", "error");
+  // Phone is optional only when the user was shown and used the
+  // Ethiopia "phone verification unavailable, skip" path in the wizard.
+  if (phoneNumber) {
+    const phoneClean = phone.replace(/\s/g, "");
+    const phoneRegex = /^\+[1-9]\d{9,14}$/;
+    if (!phoneRegex.test(phoneClean)) {
+      showToast("Enter a valid phone number (e.g. 912345678)", "error");
+      return;
+    }
+  } else if (countryCode !== "ET") {
+    showToast("Enter your phone number", "error");
     return;
   }
 
@@ -169,7 +178,7 @@ function register() {
         grecaptcha.reset();
         return;
       }
-      proceedWithRegistration(name, email, password, phone, btn);
+      proceedWithRegistration(name, email, password, phone, countryCode, btn);
     })
     .catch(() => {
       if (settled) return;
@@ -182,7 +191,7 @@ function register() {
     });
 }
 
-function proceedWithRegistration(name, email, password, phone, btn) {
+function proceedWithRegistration(name, email, password, phone, countryCode, btn) {
   btn.textContent = "Creating account...";
 
   auth
@@ -196,7 +205,7 @@ function proceedWithRegistration(name, email, password, phone, btn) {
           phone,
           kycStatus: "none",
           merchantStatus: "none",
-          country: "ET",
+          country: countryCode || "ET",
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         }),
         db.collection("wallets").doc(user.uid).set({
@@ -284,9 +293,7 @@ function login() {
     });
 }
 // ---- GOOGLE SIGN-IN ----
-function loginWithGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-
+function _handleOAuthSignIn(provider) {
   auth
     .signInWithPopup(provider)
     .then((result) => {
@@ -294,19 +301,17 @@ function loginWithGoogle() {
       const isNewUser = result.additionalUserInfo?.isNewUser;
 
       if (!isNewUser) {
-        // Returning user — just log them in, don't touch their data
         window.location.href = "home.html";
         return;
       }
 
-      // New user — create their user + wallet docs, same as email signup
       return Promise.all([
         db
           .collection("users")
           .doc(user.uid)
           .set({
             name: user.displayName || "User",
-            email: user.email,
+            email: user.email || "",
             phone: "",
             kycStatus: "none",
             merchantStatus: "none",
@@ -324,8 +329,28 @@ function loginWithGoogle() {
     })
     .catch((err) => {
       if (err.code === "auth/popup-closed-by-user") return;
+      if (err.code === "auth/account-exists-with-different-credential") {
+        showToast(
+          "An account already exists with this email using a different sign-in method.",
+          "error"
+        );
+        return;
+      }
       showToast(err.message, "error");
     });
+}
+
+function loginWithGoogle() {
+  _handleOAuthSignIn(new firebase.auth.GoogleAuthProvider());
+}
+
+function loginWithGithub() {
+  _handleOAuthSignIn(new firebase.auth.GithubAuthProvider());
+}
+
+function loginWithMicrosoft() {
+  const provider = new firebase.auth.OAuthProvider("microsoft.com");
+  _handleOAuthSignIn(provider);
 }
 
 function forgotPassword() {

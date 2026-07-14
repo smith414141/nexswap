@@ -12,6 +12,9 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
       allow read, write: if isAdmin();
     }
+    match /emailOTPs/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
     match /withdrawals/{withdrawalId} {
       // Validate that amount is numeric and greater than 0
       allow create: if request.auth != null 

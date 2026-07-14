@@ -667,6 +667,8 @@
     linear-gradient(90deg, hsl(220 20% 12% / 0.5) 1px, transparent 1px) 0 0 / 24px 24px,
     var(--bg2);
   border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
 }
 .fortress-visual-icon {
   width: 140px;

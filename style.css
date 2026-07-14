@@ -3168,13 +3168,9 @@ body.home-v2 .pc-sidebar {
   overflow: hidden;
   height: 168px;
   cursor: pointer;
-  background: linear-gradient(
-    135deg,
-    rgba(212, 175, 55, 0.18),
-    rgba(212, 175, 55, 0.02)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.5);
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 40px -8px rgba(0,0,0,0.5);
 }
 .dash-banner-slide {
   position: absolute;
@@ -3198,7 +3194,7 @@ body.home-v2 .pc-sidebar {
   position: absolute;
   border-radius: 50%;
   filter: blur(2px);
-  opacity: 0.55;
+  opacity: 0.7;
   pointer-events: none;
 }
 .dash-banner-slide::before {
@@ -3214,7 +3210,7 @@ body.home-v2 .pc-sidebar {
   bottom: -70px;
   right: 60px;
   background: radial-gradient(circle, var(--banner-glow, #fff) 0%, transparent 70%);
-  opacity: 0.3;
+  opacity: 0.4;
 }
 .dash-banner-slide h3 {
   font-size: 21px;
@@ -3227,7 +3223,7 @@ body.home-v2 .pc-sidebar {
 }
 .dash-banner-slide p {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255,255,255,0.92);
   margin: 0 0 14px;
   max-width: 62%;
   position: relative;
@@ -3253,28 +3249,15 @@ body.home-v2 .pc-sidebar {
 }
 .banner-watermark {
   position: absolute;
-  right: -30px;
-  bottom: -20px;
-  width: 160px;
-  height: 160px;
-  opacity: 0.12;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  opacity: 0.18;
   pointer-events: none;
   z-index: 1;
-}
-.banner-blue .banner-watermark {
-  stroke: #60a5fa;
-  bottom: -30px;
-  right: -40px;
-}
-.banner-amber .banner-watermark {
-  stroke: #fcd34d;
-  bottom: -20px;
-  right: -30px;
-}
-.banner-green .banner-watermark {
-  stroke: #6ee7b7;
-  bottom: -25px;
-  right: -35px;
+  stroke: #fff;
 }
 .dash-banner-dots {
   position: absolute;
@@ -3865,19 +3848,26 @@ body.home-v2 .text-brass {
 
 /* Per-slide banner gradients — vivid & saturated, matching the UI reference screenshots */
 .dash-banner-slide.banner-blue {
-  background: linear-gradient(135deg, #3b5bfd 0%, #7c3aed 55%, #a855f7 100%);
-  --banner-glow: #60a5fa;
+  background: linear-gradient(135deg, #1a56db 0%, #3b5bfd 40%, #6d28d9 100%);
+  --banner-glow: #93c5fd;
 }
 .dash-banner-slide.banner-amber {
-  background: linear-gradient(135deg, #f59e0b 0%, #f97316 55%, #ef4444 100%);
-  --banner-glow: #fcd34d;
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 40%, #ef4444 100%);
+  --banner-glow: #fde68a;
 }
 .dash-banner-slide.banner-green {
-  background: linear-gradient(135deg, #059669 0%, #10b981 55%, #34d399 100%);
+  background: linear-gradient(135deg, #065f46 0%, #059669 40%, #10b981 100%);
   --banner-glow: #6ee7b7;
 }
 .dash-banner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 168px;
+  cursor: pointer;
   background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 40px -8px rgba(0,0,0,0.5);
 }
 
 body.home-v2 .quick-grid-item:hover {
@@ -3888,24 +3878,38 @@ body.home-v2 #earn-accordion .chev {
 }
 
 .dash-banner-cta {
-  align-self: flex-start;
-  background: #fff;
-  color: #1a1a2e;
-  border: none;
-  border-radius: 9px;
-  padding: 10px 18px;
-  font-size: 12.5px;
-  font-weight: 800;
-  font-family: "Inter", sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   position: relative;
   z-index: 2;
-  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: background 0.15s;
+  width: fit-content;
 }
 .dash-banner-cta:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
+  background: rgba(255,255,255,0.28);
+}
+
+.dash-banner-watermark {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 1;
+  stroke: #fff;
 }
 
 /* ---- RESEARCH PAGE STYLES ---- */

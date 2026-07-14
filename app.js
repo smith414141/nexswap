@@ -83,6 +83,29 @@ function showToast(message, type = "success") {
   }, 4000);
 }
 
+function friendlyAuthError(err) {
+  const map = {
+    "auth/user-not-found": "No account found with that email or phone.",
+    "auth/wrong-password": "Incorrect password. Please try again.",
+    "auth/invalid-email": "Please enter a valid email address.",
+    "auth/email-already-in-use": "An account with this email already exists.",
+    "auth/weak-password": "Password must be at least 6 characters.",
+    "auth/too-many-requests": "Too many attempts. Please wait a few minutes and try again.",
+    "auth/network-request-failed": "Network error. Check your connection and try again.",
+    "auth/popup-blocked": "Popup was blocked. Please allow popups for this site.",
+    "auth/cancelled-popup-request": "Sign-in was cancelled.",
+    "auth/invalid-credential": "Incorrect email or password.",
+    "auth/user-disabled": "This account has been disabled. Contact support.",
+    "auth/account-exists-with-different-credential": "An account already exists with this email using a different sign-in method.",
+    "auth/requires-recent-login": "Please log out and log in again to continue.",
+    "auth/expired-action-code": "This link has expired. Please request a new one.",
+    "auth/invalid-action-code": "This link is invalid or has already been used.",
+  };
+  if (err && err.code && map[err.code]) return map[err.code];
+  if (err && err.message && err.message.toLowerCase().includes("network")) return "Network error. Check your connection and try again.";
+  return "Something went wrong. Please try again.";
+}
+
 // ---- AUTH FUNCTIONS ----
 function switchTab(tab) {
   document
@@ -198,38 +221,49 @@ function proceedWithRegistration(name, email, password, phone, countryCode, btn)
     .createUserWithEmailAndPassword(email, password)
     .then((cred) => {
       const user = cred.user;
-      return Promise.all([
-        db.collection("users").doc(user.uid).set({
-          name,
-          email,
-          phone,
-          kycStatus: "none",
-          merchantStatus: "none",
-          country: countryCode || "ET",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        }),
-        db.collection("wallets").doc(user.uid).set({
-          BTC: 0,
-          USDT: 0,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        }),
-        // Minimal phone -> email mapping only, used so users can log in
-        // with their phone number instead of typing their email.
-        db.collection("phoneIndex").doc(phone).set({
-          email,
-        }),
-        user.sendEmailVerification(),
-      ]);
+      // Generate a 6-digit code and store it in Firestore
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpExpiry = Date.now() + 15 * 60 * 1000; // 15 minutes
+      return db.collection("emailOTPs").doc(user.uid).set({
+        code: otp,
+        expiry: otpExpiry,
+        email: user.email,
+      }).then(() => {
+        // Also send the Firebase verification email as backup delivery
+        return user.sendEmailVerification({
+          url: window.location.origin + "/verify.html?uid=" + user.uid + "&code=" + otp,
+          handleCodeInApp: false,
+        });
+      }).then(() => {
+        return Promise.all([
+          db.collection("users").doc(user.uid).set({
+            name,
+            email,
+            phone,
+            kycStatus: "none",
+            merchantStatus: "none",
+            country: countryCode || "ET",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          }),
+          db.collection("wallets").doc(user.uid).set({
+            BTC: 0,
+            USDT: 0,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          }),
+          // Minimal phone -> email mapping only, used so users can log in
+          // with their phone number instead of typing their email.
+          db.collection("phoneIndex").doc(phone).set({
+            email,
+          }),
+        ]);
+      });
     })
     .then(() => {
-      showToast(
-        "Account created! Check your email (and SPAM folder) to verify.",
-        "success"
-      );
+      showToast("Account created! A 6-digit code has been sent to your email.", "success");
       setTimeout(() => (window.location.href = "verify.html"), 2000);
     })
     .catch((err) => {
-      showToast(err.message, "error");
+      showToast(friendlyAuthError(err), "error");
       btn.disabled = false;
       btn.textContent = "Create Account";
     });
@@ -287,58 +321,51 @@ function login() {
     })
     .catch((err) => {
       clearTimeout(timeout);
-      showToast(err.message, "error");
+      showToast(friendlyAuthError(err), "error");
       btn.disabled = false;
       btn.textContent = "Log in";
     });
 }
 // ---- GOOGLE SIGN-IN ----
 function _handleOAuthSignIn(provider) {
-  auth
-    .signInWithPopup(provider)
-    .then((result) => {
-      const user = result.user;
-      const isNewUser = result.additionalUserInfo?.isNewUser;
-
-      if (!isNewUser) {
-        window.location.href = "home.html";
-        return;
-      }
-
-      return Promise.all([
-        db
-          .collection("users")
-          .doc(user.uid)
-          .set({
-            name: user.displayName || "User",
-            email: user.email || "",
-            phone: "",
-            kycStatus: "none",
-            merchantStatus: "none",
-            country: "ET",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          }),
-        db.collection("wallets").doc(user.uid).set({
-          BTC: 0,
-          USDT: 0,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        }),
-      ]).then(() => {
-        window.location.href = "home.html";
-      });
-    })
-    .catch((err) => {
-      if (err.code === "auth/popup-closed-by-user") return;
-      if (err.code === "auth/account-exists-with-different-credential") {
-        showToast(
-          "An account already exists with this email using a different sign-in method.",
-          "error"
-        );
-        return;
-      }
-      showToast(err.message, "error");
-    });
+  // Use redirect to avoid Firebase-branded popup screen
+  auth.signInWithRedirect(provider).catch((err) => {
+    if (err.code === "auth/cancelled-popup-request") return;
+    showToast(friendlyAuthError(err), "error");
+  });
 }
+
+// Handle redirect result on page load
+auth.getRedirectResult().then((result) => {
+  if (!result || !result.user) return;
+  const user = result.user;
+  const isNewUser = result.additionalUserInfo?.isNewUser;
+  if (!isNewUser) {
+    window.location.href = "home.html";
+    return;
+  }
+  return Promise.all([
+    db.collection("users").doc(user.uid).set({
+      name: user.displayName || "User",
+      email: user.email || "",
+      phone: "",
+      kycStatus: "none",
+      merchantStatus: "none",
+      country: "ET",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }),
+    db.collection("wallets").doc(user.uid).set({
+      BTC: 0,
+      USDT: 0,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }),
+  ]).then(() => {
+    window.location.href = "home.html";
+  });
+}).catch((err) => {
+  if (!err || err.code === "auth/cancelled-popup-request") return;
+  showToast(friendlyAuthError(err), "error");
+});
 
 function loginWithGoogle() {
   _handleOAuthSignIn(new firebase.auth.GoogleAuthProvider());
@@ -346,11 +373,6 @@ function loginWithGoogle() {
 
 function loginWithGithub() {
   _handleOAuthSignIn(new firebase.auth.GithubAuthProvider());
-}
-
-function loginWithMicrosoft() {
-  const provider = new firebase.auth.OAuthProvider("microsoft.com");
-  _handleOAuthSignIn(provider);
 }
 
 function forgotPassword() {
@@ -362,7 +384,7 @@ function forgotPassword() {
   auth
     .sendPasswordResetEmail(email)
     .then(() => showToast("Password reset link sent to your email!", "success"))
-    .catch((err) => showToast(err.message, "error"));
+    .catch((err) => showToast(friendlyAuthError(err), "error"));
 }
 
 // ---- INIT ----

@@ -3,11 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify Email — kriptex</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <title>Verify Email — Kripex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -16,29 +13,23 @@
     <div class="verify-wrapper">
       <div class="verify-icon">📧</div>
       <h2>Verify Your Email</h2>
-      <p>
-        We sent a verification link to your email.
-        <strong>Check your inbox and spam/junk folder.</strong> Click the link
-        inside the email to activate your account, then come back here and tap
-        the button below.
-      </p>
+      <p id="verify-desc">We sent a 6-digit code to your email address. Enter it below to activate your account.</p>
 
-      <button
-        class="btn-primary"
-        style="max-width: 280px"
-        onclick="checkVerification()"
-      >
-        I've Verified My Email
-      </button>
-      <button class="btn-secondary" onclick="resendEmail()">
-        Resend Verification Email
-      </button>
-      <button
-        class="btn-secondary"
-        onclick="auth.signOut().then(() => window.location.href = '/')"
-      >
-        Back to Login
-      </button>
+      <!-- OTP INPUT ROW -->
+      <div id="otp-section" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:320px;margin:0 auto;">
+        <div style="display:flex;gap:8px;justify-content:center;">
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+          <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
+        </div>
+        <button class="btn-primary" style="max-width:280px;width:100%;" onclick="verifyOTP()">Verify Code</button>
+        <button class="btn-secondary" onclick="resendCode()">Resend Code</button>
+        <button class="btn-secondary" onclick="auth.signOut().then(() => window.location.href = '/')">Back to Login</button>
+        <div id="otp-timer" style="font-size:12px;color:var(--text3);">Code expires in <span id="otp-countdown">15:00</span></div>
+      </div>
     </div>
 
     <div id="toast-container"></div>
@@ -48,30 +39,91 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
+    <style>
+      .verify-wrapper { display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px 20px;gap:16px;text-align:center; }
+      .otp-box { width:44px;height:52px;text-align:center;font-size:22px;font-weight:700;background:var(--bg2);border:2px solid var(--border);border-radius:10px;color:var(--text);outline:none;transition:border-color 0.15s; }
+      .otp-box:focus { border-color:var(--blue); }
+    </style>
     <script>
-      function checkVerification() {
-        const user = auth.currentUser;
-        if (!user) {
-          window.location.href = "/";
-          return;
-        }
-        user.reload().then(() => {
-          if (user.emailVerified) {
-            showToast("Email verified! Welcome to kriptex 🎉", "success");
-            setTimeout(() => (window.location.href = "/home.html"), 1500);
-          } else {
-            showToast("Email not verified yet. Check your inbox.", "warning");
-          }
-        });
+      // Auto-fill code from URL if user clicked the email link
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlCode = urlParams.get("code");
+      if (urlCode && urlCode.length === 6) {
+        const boxes = document.querySelectorAll(".otp-box");
+        urlCode.split("").forEach((ch, i) => { if (boxes[i]) boxes[i].value = ch; });
       }
 
-      function resendEmail() {
+      // OTP box auto-advance
+      document.querySelectorAll(".otp-box").forEach((box, idx, arr) => {
+        box.addEventListener("input", () => {
+          box.value = box.value.replace(/[^0-9]/g, "").slice(-1);
+          if (box.value && idx < arr.length - 1) arr[idx + 1].focus();
+        });
+        box.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !box.value && idx > 0) arr[idx - 1].focus();
+        });
+      });
+
+      // Countdown timer
+      let expiryTime = Date.now() + 15 * 60 * 1000;
+      function updateCountdown() {
+        const remaining = Math.max(0, expiryTime - Date.now());
+        const m = Math.floor(remaining / 60000);
+        const s = Math.floor((remaining % 60000) / 1000);
+        document.getElementById("otp-countdown").textContent = m + ":" + String(s).padStart(2,"0");
+        if (remaining > 0) setTimeout(updateCountdown, 1000);
+        else document.getElementById("otp-countdown").textContent = "Expired";
+      }
+      updateCountdown();
+
+      function friendlyAuthError(err){const m={"auth/too-many-requests":"Too many attempts. Wait a few minutes.","auth/network-request-failed":"Network error. Check your connection."};return(err&&err.code&&m[err.code])||"Something went wrong. Please try again.";}
+
+      async function verifyOTP() {
+        const boxes = document.querySelectorAll(".otp-box");
+        const enteredCode = Array.from(boxes).map(b => b.value).join("");
+        if (enteredCode.length !== 6) {
+          showToast("Please enter the full 6-digit code.", "warning");
+          return;
+        }
         const user = auth.currentUser;
-        if (!user) return;
-        user
-          .sendEmailVerification()
-          .then(() => showToast("Verification email sent!", "success"))
-          .catch((err) => showToast(err.message, "error"));
+        if (!user) { window.location.href = "/"; return; }
+
+        try {
+          const doc = await db.collection("emailOTPs").doc(user.uid).get();
+          if (!doc.exists) { showToast("Code not found. Please request a new one.", "error"); return; }
+          const { code, expiry } = doc.data();
+          if (Date.now() > expiry) { showToast("Code has expired. Please request a new one.", "error"); return; }
+          if (enteredCode !== code) { showToast("Incorrect code. Please try again.", "error"); return; }
+
+          // Code is correct — mark as verified in Firestore and delete OTP doc
+          await Promise.all([
+            db.collection("users").doc(user.uid).update({ emailVerified: true }),
+            db.collection("emailOTPs").doc(user.uid).delete(),
+          ]);
+          showToast("Email verified! Welcome to Kripex 🎉", "success");
+          setTimeout(() => (window.location.href = "/home.html"), 1500);
+        } catch(err) {
+          showToast(friendlyAuthError(err), "error");
+        }
+      }
+
+      async function resendCode() {
+        const user = auth.currentUser;
+        if (!user) { window.location.href = "/"; return; }
+        try {
+          const otp = Math.floor(100000 + Math.random() * 900000).toString();
+          const otpExpiry = Date.now() + 15 * 60 * 1000;
+          await db.collection("emailOTPs").doc(user.uid).set({ code: otp, expiry: otpExpiry, email: user.email });
+          await user.sendEmailVerification({
+            url: window.location.origin + "/verify.html?uid=" + user.uid + "&code=" + otp,
+            handleCodeInApp: false,
+          });
+          expiryTime = otpExpiry;
+          updateCountdown();
+          showToast("New code sent! Check your email.", "success");
+        } catch(err) {
+          showToast(friendlyAuthError(err), "error");
+        }
       }
     </script>
   </body>

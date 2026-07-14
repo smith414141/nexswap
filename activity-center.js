@@ -44,7 +44,7 @@ function renderTasks(data) {
       label: "Invite a friend",
       done: false,
       points: 20,
-      href: "referral.html",
+      href: "rewards-center.html",
     },
   ];
 

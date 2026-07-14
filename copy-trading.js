@@ -107,18 +107,12 @@ const TRADERS = [
 ];
 
 let ctSort = "roi";
-// ctCopySettings: { [traderId]: { allocation: number, maxLossLimit: number } }
-let ctCopySettings = JSON.parse(localStorage.getItem("ct-copy-settings") || "{}");
-let ctModalTraderId = null;
+let ctCopying = new Set(JSON.parse(localStorage.getItem("ct-copying") || "[]"));
 
 document.addEventListener("DOMContentLoaded", () => {
   renderTraders();
   updateCopySummary();
 });
-
-function ctSaveSettings() {
-  localStorage.setItem("ct-copy-settings", JSON.stringify(ctCopySettings));
-}
 
 function ctSetSort(field, btn) {
   ctSort = field;
@@ -147,8 +141,7 @@ function renderTraders() {
   );
   list.innerHTML = sorted
     .map((t, i) => {
-      const settings = ctCopySettings[t.id];
-      const isCopying = !!settings;
+      const isCopying = ctCopying.has(t.id);
       return `
     <div class="ct-card" onclick="goToTraderProfile(event, '${t.id}')">
       <div class="ct-card-top">
@@ -193,17 +186,9 @@ function renderTraders() {
       <div class="ct-pairs">
         ${t.pairs.map((p) => `<span class="ct-pair-chip">${p}</span>`).join("")}
       </div>
-      ${
-        isCopying
-          ? `<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);background:var(--bg3);border-radius:8px;padding:8px 10px;margin-bottom:10px">
-              <span>Allocated: <strong style="color:var(--text)">$${settings.allocation.toLocaleString()}</strong></span>
-              <span>Loss limit: <strong style="color:var(--yellow)">${settings.maxLossLimit}%</strong></span>
-            </div>`
-          : ""
-      }
       <button class="ct-copy-btn${isCopying ? " is-copying" : ""}" id="ct-btn-${
         t.id
-      }" onclick="${isCopying ? `cancelCopy(event, '${t.id}')` : `openCopyModal(event, '${t.id}')`}">
+      }" onclick="toggleCopy(event, '${t.id}')">
         ${isCopying ? "Cancel Copy" : "Copy Trader →"}
       </button>
     </div>`;
@@ -211,73 +196,33 @@ function renderTraders() {
     .join("");
 }
 
-function openCopyModal(event, id) {
+function toggleCopy(event, id) {
   event.stopPropagation();
   const trader = TRADERS.find((t) => t.id === id);
-  ctModalTraderId = id;
-  document.getElementById("ct-modal-trader-name").textContent = `${trader.avatar} ${trader.name}`;
-  document.getElementById("ct-modal-allocation").value = "";
-  document.getElementById("ct-modal-limit").value = 20;
-  document.getElementById("ct-modal-overlay").style.display = "flex";
-}
-
-function closeCopyModal() {
-  document.getElementById("ct-modal-overlay").style.display = "none";
-  ctModalTraderId = null;
-}
-
-function confirmCopy() {
-  const id = ctModalTraderId;
-  if (!id) return;
-  const trader = TRADERS.find((t) => t.id === id);
-  const allocation = parseFloat(document.getElementById("ct-modal-allocation").value);
-  const maxLossLimit = parseFloat(document.getElementById("ct-modal-limit").value);
-
-  if (!allocation || allocation < 10) {
-    showToast("Enter at least $10 to allocate", "error");
-    return;
+  const btn = document.getElementById("ct-btn-" + id);
+  if (ctCopying.has(id)) {
+    ctCopying.delete(id);
+    btn.classList.remove("is-copying");
+    btn.textContent = "Copy Trader →";
+    showToast(`Stopped copying ${trader.name}`, "info");
+  } else {
+    ctCopying.add(id);
+    btn.classList.add("is-copying");
+    btn.textContent = "Cancel Copy";
+    showToast(`Now copying ${trader.name}`, "success");
   }
-  if (!maxLossLimit || maxLossLimit < 5 || maxLossLimit > 100) {
-    showToast("Loss limit must be between 5% and 100%", "error");
-    return;
-  }
-
-  ctCopySettings[id] = { allocation, maxLossLimit };
-  ctSaveSettings();
-  closeCopyModal();
-  renderTraders();
+  localStorage.setItem("ct-copying", JSON.stringify([...ctCopying]));
   updateCopySummary();
-  showToast(`Now copying ${trader.name} — $${allocation.toLocaleString()} allocated, ${maxLossLimit}% loss limit`, "success");
-}
-
-function cancelCopy(event, id) {
-  event.stopPropagation();
-  const trader = TRADERS.find((t) => t.id === id);
-  delete ctCopySettings[id];
-  ctSaveSettings();
-  renderTraders();
-  updateCopySummary();
-  showToast(`Stopped copying ${trader.name}`, "info");
 }
 
 function updateCopySummary() {
   const countEl = document.getElementById("ct-copying-count");
   const pnlEl = document.getElementById("ct-copy-pnl");
   if (!countEl || !pnlEl) return;
-  const ids = Object.keys(ctCopySettings);
-  countEl.textContent = ids.length;
-  const pnl = ids.reduce((sum, id) => {
+  countEl.textContent = ctCopying.size;
+  const pnl = [...ctCopying].reduce((sum, id) => {
     const t = TRADERS.find((tr) => tr.id === id);
-    const settings = ctCopySettings[id];
-    if (!t || !settings) return sum;
-    const rawPnl = settings.allocation * (t.roi / 100);
-    const rawPnlPct = (rawPnl / settings.allocation) * 100;
-    // Enforce the max loss limit — copying stops feeding further losses past this point
-    const cappedPnl =
-      rawPnlPct < -settings.maxLossLimit
-        ? -settings.allocation * (settings.maxLossLimit / 100)
-        : rawPnl;
-    return sum + cappedPnl;
+    return sum + (t ? t.aum * 0.001 * (t.roi / 100) : 0);
   }, 0);
   pnlEl.textContent =
     (pnl >= 0 ? "+" : "") + "$" + Math.round(pnl).toLocaleString();

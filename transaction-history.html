@@ -12,9 +12,7 @@
     <canvas id="bg-canvas"></canvas>
     <!-- PC NAV -->
     <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        ><span class="logo-icon-mini">K</span>Kripex</a
-      >
+      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"><span class="logo-icon-mini">K</span>Kripex</a>
       <div class="pc-nav-right">
         <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
         <a href="messages.html" class="nav-icon-btn" title="Messages">
@@ -81,7 +79,7 @@
         Logout
       </a>
     </div>
-<div class="pc-main">
+    <div class="pc-main">
 
 
     <div class="page">
@@ -91,11 +89,16 @@
         <span style="width: 20px"></span>
       </div>
       <div style="padding: 20px 16px 4px" class="desktop-page-head">
-        <div style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px">
-          📜 Transaction History
-        </div>
-        <div style="font-size: 12px; color: var(--text2); margin-top: 2px">
-          All your deposits, withdrawals and trades
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px">
+          <div>
+            <div style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px">
+              📜 Transaction History
+            </div>
+            <div style="font-size: 12px; color: var(--text2); margin-top: 2px">
+              All your deposits, withdrawals and trades
+            </div>
+          </div>
+          <button class="btn-secondary" style="padding: 8px 12px; font-size: 12px;" onclick="exportCsv()">⬇ Export CSV</button>
         </div>
       </div>
       <div style="padding: 16px; max-width: 640px; margin: 0 auto">
@@ -106,14 +109,16 @@
           <button class="fh-tab" data-t="withdrawal" onclick="filterTx('withdrawal', this)">Withdrawals</button>
           <button class="fh-tab" data-t="trade" onclick="filterTx('trade', this)">Trades</button>
         </div>
-        <div id="th-list"></div>
+        
+        <!-- Transaction Table -->
+        <div id="tx-table-container" style="overflow-x: auto;"></div>
         <div id="th-empty" class="empty-state" style="display:none">No transactions yet.</div>
 
       </div>
     </div>
     
-</div>
-<div id="toast-container"></div>
+    </div>
+    <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>

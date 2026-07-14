@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>Kripex — Launchpad</title>
+    <title>Kripex — Auto-Invest</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
-  <body class="has-pc-nav">
+  <body>
+    <canvas id="bg-canvas"></canvas>
+    <!-- PC NAV -->
     <div class="pc-nav">
       <a class="pc-nav-logo" href="home.html" style="text-decoration: none"><span class="logo-icon-mini">K</span>Kripex</a>
       <div class="pc-nav-right">
@@ -67,7 +69,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
         Earn
       </a>
-      <a class="pc-sidebar-link active" href="products.html">
+      <a class="pc-sidebar-link " href="products.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
         More
       </a>
@@ -78,89 +80,71 @@
       </a>
     </div>
     <div class="pc-main">
-      <div class="top-bar"><div class="top-bar-logo">⚡ Kripex</div></div>
 
-      <div id="region-gate" class="region-gate-card" style="display:none">
-        <div class="region-gate-icon">🔒</div>
-        <div class="region-gate-title">Not available in your region</div>
-        <p class="region-gate-text">
-          <span class="region-gate-feature-name">Launchpad</span> isn't currently offered for accounts registered in
-          <span class="region-gate-current-region">your region</span>.
-        </p>
-        <button class="btn-primary" onclick="window.location.href='settings.html'">Change Region</button>
+
+    <div class="page">
+      <div class="top-bar">
+        <span style="font-size: 20px; cursor: pointer" onclick="goBack()">←</span>
+        <div class="top-bar-logo">Auto-Invest</div>
+        <span style="width: 20px"></span>
       </div>
 
-      <div id="feature-content" style="display:none">
-        <div style="padding: 28px 36px;">
-          <div class="flex-between" style="align-items:flex-start; margin-bottom: 24px;">
-            <div>
-              <div class="section-title" style="font-size: 14px;">🚀 Launchpad</div>
-              <div style="font-size: 13px; color: var(--text2); margin-top: 4px;">Invest in vetted token sales before they hit the market</div>
+      <div style="padding: 20px 16px 4px" class="desktop-page-head">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px">
+          <div>
+            <div style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px">
+              🌱 Auto-Invest
             </div>
-            <div style="display:flex; gap:16px;">
-              <div style="background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px 20px; min-width:140px;">
-                <div style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">Total Raised</div>
-                <div id="total-raised" style="font-weight:800; font-size:20px; font-family:var(--font-mono); color:var(--yellow);">$0</div>
-              </div>
-              <div style="background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:16px 20px; min-width:140px;">
-                <div style="font-size:10px; font-weight:700; color:var(--text3); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:4px;">Your Allocation</div>
-                <div id="user-allocation-total" style="font-weight:800; font-size:20px; font-family:var(--font-mono); color:var(--yellow);">$0</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tabs" style="margin-bottom: 20px; max-width: 400px;">
-            <button class="tab active" onclick="switchLaunchpadTab('active', this)">Active</button>
-            <button class="tab" onclick="switchLaunchpadTab('upcoming', this)">Upcoming</button>
-            <button class="tab" onclick="switchLaunchpadTab('completed', this)">Completed</button>
-          </div>
-
-          <div id="launchpad-active" class="tab-content active">
-            <div id="grid-active" class="launchpad-grid"></div>
-          </div>
-          <div id="launchpad-upcoming" class="tab-content">
-            <div id="grid-upcoming" class="launchpad-grid"></div>
-          </div>
-          <div id="launchpad-completed" class="tab-content">
-            <div id="grid-completed" class="launchpad-grid"></div>
-          </div>
-
-          <div style="margin-top: 24px; padding: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;">
-            <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text2);">
-              <span>ℹ️</span>
-              <span style="font-weight:700; color:var(--text);">How Launchpad Works</span>
-              <span>Commit USDT to token sales. If oversubscribed, allocations are distributed proportionally. Uncommitted funds are fully refunded. Tokens are distributed to your spot wallet after the sale ends.</span>
+            <div style="font-size: 12px; color: var(--text2); margin-top: 2px">
+              Automate your buys with a recurring plan
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div id="commit-modal" class="modal-overlay" style="display: none">
-      <div class="modal-sheet">
-        <div class="modal-header">
-          <span class="modal-title" id="commit-modal-title">Commit to Token</span>
-          <span class="modal-close" onclick="closeCommitModal()">✕</span>
-        </div>
-        <div style="padding: 16px 20px 20px;">
-          <div id="commit-summary" style="margin-bottom: 20px;"></div>
-          <div class="form-group">
-            <label>Commit Amount (USDT)</label>
-            <input type="number" id="commit-amount" placeholder="0.00" min="0" step="0.01" />
+      <div style="padding: 12px 16px 0">
+        <!-- Create Plan Card -->
+        <div class="card" style="margin-bottom: 20px; padding: 20px;">
+          <p class="section-title">Create Plan</p>
+          
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label>Coin</label>
+            <select id="ai-coin" class="form-group-select-plain" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; font-weight: 700; margin-top: 6px;"></select>
           </div>
-          <button id="commit-btn" class="btn-primary" style="width:100%; margin-top:16px;" onclick="confirmCommit()">Confirm Commitment →</button>
-          <p style="font-size: 11px; color: var(--text3); margin-top: 12px; text-align: center;">Funds will be locked until the sale ends. Refunds for unallocated amounts are automatic.</p>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label>Amount per buy (USDT)</label>
+            <input type="number" id="ai-amount" placeholder="e.g. 50" min="1" step="1" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; margin-top: 6px; box-sizing: border-box;" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label>Frequency</label>
+            <select id="ai-frequency" class="form-group-select-plain" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; font-weight: 700; margin-top: 6px;">
+              <option value="daily">Daily</option>
+              <option value="weekly" selected>Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+
+          <button class="btn-primary" style="width: 100%; padding: 14px;" onclick="createPlan()">Start Plan</button>
+          <p style="font-size: 11px; color: var(--text3); margin-top: 10px; text-align: center;">USDT will be deducted from your wallet on each execution. Minimum 1 USDT per buy.</p>
         </div>
+
+        <!-- Your Plans Section -->
+        <p class="section-title" style="margin-bottom: 12px;">Your Plans</p>
+        <div id="ai-plans-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        <div id="ai-plans-empty" class="empty-state" style="display: none;">You have no active plans yet.</div>
       </div>
     </div>
-
+    
+    </div>
     <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
-    <script src="region-gate.js"></script>
-    <script src="launchpad.js"></script>
+    <script src="wallet.js"></script>
+    <script src="auto-invest.js"></script>
   </body>
 </html>

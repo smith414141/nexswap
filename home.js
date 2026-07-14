@@ -1,3 +1,67 @@
+// Shared articles data (same as research.js) for the dashboard news widget
+const HOME_ARTICLES = [
+  {
+    title: "Bitcoin ETF Inflows Signal Institutional Accumulation Phase",
+    category: "bitcoin",
+    categoryLabel: "₿",
+    categoryColor: "#F7931A",
+    summary: "BlackRock and Fidelity ETFs saw $3.2B net inflows last week, the highest since March. On-chain data suggests long-term holders are absorbing supply.",
+    author: "Marcus Chen",
+    timeAgo: "2h ago",
+    readTime: "5 min read",
+    featured: true,
+    trending: false,
+  },
+  {
+    title: "Ethereum's Dencun Upgrade Slashes L2 Fees by 90%",
+    category: "ethereum",
+    categoryLabel: "Ξ",
+    categoryColor: "#627EEA",
+    summary: "Proto-danksharding (EIP-4844) goes live, introducing blobspace for rollups. Optimism, Arbitrum, and Base transaction costs drop from ~$1 to ~$0.10.",
+    author: "Sarah Kim",
+    timeAgo: "5h ago",
+    readTime: "6 min read",
+    featured: false,
+    trending: true,
+  },
+  {
+    title: "Aave V4 Proposes Unified Liquidity Across Chains",
+    category: "defi",
+    categoryLabel: "🏦",
+    categoryColor: "#B6509E",
+    summary: "New AIP introduces cross-chain liquidity pools with unified interest rates. Could solve fragmentation but raises bridge risk questions.",
+    author: "David Park",
+    timeAgo: "8h ago",
+    readTime: "7 min read",
+    featured: false,
+    trending: false,
+  },
+  {
+    title: "AI Agents Launch Tokens on Pump.fun — $50M Volume in Week 1",
+    category: "ai",
+    categoryLabel: "🤖",
+    categoryColor: "#8B5CF6",
+    summary: "Autonomous AI agents are creating and trading memecoins on Solana. Truth Terminal's GOAT hits $500M market cap. Regulators watching closely.",
+    author: "Lisa Wang",
+    timeAgo: "12h ago",
+    readTime: "5 min read",
+    featured: true,
+    trending: true,
+  },
+  {
+    title: "SEC vs. Uniswap: Wells Notice Signals Regulatory Escalation",
+    category: "regulation",
+    categoryLabel: "⚖️",
+    categoryColor: "#EF4444",
+    summary: "Uniswap Labs receives Wells notice alleging unregistered securities exchange operation. UNI drops 18%. Industry braces for broader DEX crackdown.",
+    author: "James Rodriguez",
+    timeAgo: "1d ago",
+    readTime: "6 min read",
+    featured: false,
+    trending: true,
+  },
+];
+
 // ---- LOAD USER DATA ----
 auth.onAuthStateChanged((user) => {
   if (!user || !user.emailVerified) return;
@@ -488,41 +552,28 @@ function dashBannerClick() {
 
 initDashBanner();
 
-// ---- NEWS (opens original article in a new tab, never redirects away) ----
+// ---- NEWS (from local articles data, links to research.html) ----
 function loadNews() {
   const container = document.getElementById("news-list");
   if (!container) return;
 
-  fetch("https://min-api.cryptocompare.com/data/v2/news/?lang=EN")
-    .then((res) => res.json())
-    .then((data) => {
-      const items = (data.Data || []).slice(0, 6);
-      if (items.length === 0) {
-        container.innerHTML =
-          '<p class="text-muted" style="text-align:center; font-size:13px; padding:20px 0;">No news available</p>';
-        return;
-      }
-      container.innerHTML = items
-        .map(
-          (n) => `
-        <a class="news-item" href="${
-          n.url
-        }" target="_blank" rel="noopener noreferrer">
+  // Use the shared articles data - show top 5
+  const items = HOME_ARTICLES.slice(0, 5);
+  if (items.length === 0) {
+    container.innerHTML =
+      '<p class="text-muted" style="text-align:center; font-size:13px; padding:20px 0;">No news available</p>';
+    return;
+  }
+
+  container.innerHTML = items
+    .map(
+      (n) => `
+        <a class="news-item" href="research.html" target="_blank" rel="noopener noreferrer">
           <div class="news-title">${n.title}</div>
-          <div class="news-meta">${
-            n.source_info?.name || n.source || "News"
-          } · ${new Date(n.published_on * 1000).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          })}</div>
+          <div class="news-meta">${n.author} · ${n.timeAgo}</div>
         </a>`
-        )
-        .join("");
-    })
-    .catch(() => {
-      container.innerHTML =
-        '<p class="text-muted" style="text-align:center; font-size:13px; padding:20px 0;">Unable to load news right now</p>';
-    });
+    )
+    .join("");
 }
 
 loadNews();

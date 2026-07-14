@@ -1124,6 +1124,243 @@ body {
   color: #000;
 }
 
+/* ---- LAUNCHPAD GRID ---- */
+.launchpad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 767px) {
+  .launchpad-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* ---- REWARDS GRID ---- */
+.rewards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .rewards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---- RESEARCH PAGE ---- */
+.rs-filter-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.rs-filter-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.rs-filter-pill:hover:not(.active) {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.rs-article-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.rs-article-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.rs-article-header {
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.rs-category-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.rs-article-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.rs-article-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.rs-tag-featured {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.rs-tag-trending {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--red);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.rs-article-title {
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.rs-article-summary {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.rs-article-byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.rs-article-bookmark {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text3);
+  cursor: pointer;
+}
+
+.rs-article-body {
+  padding: 0 16px 16px;
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.rs-article-body p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* Chain pills for web3 wallet */
+.chain-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.chain-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.chain-pill:hover:not(.active) {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* w3 dapp card */
+.w3-dapp-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.w3-dapp-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+}
+
+/* w3 address chip */
+.w3-addr-chip {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 100px;
+  cursor: default;
+}
+
+/* ---- REWARDS CENTER ---- */
+.rewards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .rewards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---- GIFTCARD LAYOUT ---- */
+.giftcard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .giftcard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 /* ---- ONLINE/OFFLINE ---- */
 .online-dot {
   width: 7px;
@@ -2392,8 +2629,96 @@ h3 {
   border-color: hsl(280 65% 60% / 0.25);
 }
 
+/* ---- CHARITY PAGE STYLES ---- */
+.cause-card {
+  border-left: 3px solid var(--cause-color);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.cause-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.cause-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--cause-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.cause-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--cause-color-light);
+  color: var(--cause-color);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.cause-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.cause-progress-label {
+  font-weight: 700;
+  color: var(--text3);
+}
+.cause-progress-pct {
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--cause-color);
+  background: var(--cause-color-light);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+.cause-progress-bar {
+  height: 10px;
+  background: var(--bg3);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+.cause-progress-fill {
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--cause-color-start), var(--cause-color-end));
+  transition: width 0.4s ease;
+}
+
+/* Hero banner gradient for charity page */
+.charity-hero-banner {
+  height: 4px;
+  background: linear-gradient(90deg, rgba(236, 72, 153, 0.4), rgba(244, 114, 182, 0.2), transparent);
+  margin: 0 -16px 0 -16px;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Stat box styling for charity page */
+.stat-box {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.01)
+  ) !important;
+  border: 1px solid var(--border) !important;
+}
+.stat-box-icon {
+  font-size: 14px;
+  margin-right: 4px;
+}
+
 /* ---- PRODUCT HUB TABS + BADGES ---- */
-.fh-tabs {
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -2925,6 +3250,31 @@ body.home-v2 .pc-sidebar {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(4px);
+}
+.banner-watermark {
+  position: absolute;
+  right: -30px;
+  bottom: -20px;
+  width: 160px;
+  height: 160px;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 1;
+}
+.banner-blue .banner-watermark {
+  stroke: #60a5fa;
+  bottom: -30px;
+  right: -40px;
+}
+.banner-amber .banner-watermark {
+  stroke: #fcd34d;
+  bottom: -20px;
+  right: -30px;
+}
+.banner-green .banner-watermark {
+  stroke: #6ee7b7;
+  bottom: -25px;
+  right: -35px;
 }
 .dash-banner-dots {
   position: absolute;
@@ -3556,4 +3906,187 @@ body.home-v2 #earn-accordion .chev {
 .dash-banner-cta:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* ---- RESEARCH PAGE STYLES ---- */
+.rs-filter-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.rs-filter-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.rs-filter-pill:hover:not(.active) {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.rs-article-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.rs-article-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.rs-article-header {
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.rs-category-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.rs-article-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.rs-article-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.rs-tag-featured {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.rs-tag-trending {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--red);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.rs-article-title {
+  font-weight: 800;
+  font-size: 15px;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.rs-article-summary {
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.rs-article-byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.rs-article-bookmark {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text3);
+  cursor: pointer;
+}
+
+.rs-article-body {
+  padding: 0 16px 16px;
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.rs-article-body p {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* Chain pills for web3 wallet */
+.chain-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.chain-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.chain-pill:hover:not(.active) {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* w3 dapp card */
+.w3-dapp-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.w3-dapp-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+}
+
+/* w3 address chip */
+.w3-addr-chip {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 100px;
+  cursor: default;
 }

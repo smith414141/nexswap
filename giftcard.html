@@ -12,9 +12,7 @@
     <canvas id="bg-canvas"></canvas>
     <!-- PC NAV -->
     <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        ><span class="logo-icon-mini">K</span>Kripex</a
-      >
+      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"><span class="logo-icon-mini">K</span>Kripex</a>
       <div class="pc-nav-right">
         <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
         <a href="messages.html" class="nav-icon-btn" title="Messages">
@@ -81,7 +79,7 @@
         Logout
       </a>
     </div>
-<div class="pc-main">
+    <div class="pc-main">
 
 
     <div class="page">
@@ -90,28 +88,94 @@
         <div class="top-bar-logo">Gift Cards</div>
         <span style="width: 20px"></span>
       </div>
+
       <div style="padding: 20px 16px 4px" class="desktop-page-head">
-        <div style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px">
-          🎟️ Gift Cards
-        </div>
-        <div style="font-size: 12px; color: var(--text2); margin-top: 2px">
-          Shop thousands of brands with crypto
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px">
+          <div>
+            <div style="font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px">
+              🎟️ Gift Cards
+            </div>
+            <div style="font-size: 12px; color: var(--text2); margin-top: 2px">
+              Shop thousands of brands with crypto
+            </div>
+          </div>
         </div>
       </div>
-      <div style="padding: 16px; max-width: 640px; margin: 0 auto">
 
-        <div class="feature-hub-grid" id="gc-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
+      <div style="padding: 12px 16px 0">
+        <div class="giftcard-grid">
+          <!-- Left Column: Create Gift Card -->
+          <div class="card" style="padding: 20px;">
+            <p class="section-title" style="margin-bottom: 20px;">Create Gift Card</p>
 
+            <!-- Choose Design -->
+            <div style="margin-bottom: 20px;">
+              <label style="font-size: 12px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 12px;">Choose Design</label>
+              <div id="gc-designs" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+            </div>
+
+            <!-- Amount -->
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label>Amount (USDT)</label>
+              <input type="number" id="gc-amount" placeholder="e.g. 50" min="1" step="1" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; margin-top: 6px; box-sizing: border-box;" oninput="updatePreview()" />
+              <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-secondary" style="padding: 8px 16px; font-size: 12px;" onclick="setAmount(25)">$25</button>
+                <button type="button" class="btn-secondary" style="padding: 8px 16px; font-size: 12px;" onclick="setAmount(50)">$50</button>
+                <button type="button" class="btn-secondary" style="padding: 8px 16px; font-size: 12px;" onclick="setAmount(100)">$100</button>
+                <button type="button" class="btn-secondary" style="padding: 8px 16px; font-size: 12px;" onclick="setAmount(250)">$250</button>
+              </div>
+            </div>
+
+            <!-- Recipient Email -->
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label>Recipient Email</label>
+              <input type="email" id="gc-email" placeholder="friend@email.com" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; margin-top: 6px; box-sizing: border-box;" oninput="updatePreview()" />
+            </div>
+
+            <!-- Message -->
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label>Message (optional)</label>
+              <input type="text" id="gc-message" placeholder="Happy Birthday!" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; margin-top: 6px; box-sizing: border-box;" oninput="updatePreview()" />
+            </div>
+
+            <button class="btn-primary" style="width: 100%; padding: 14px;" onclick="sendGiftCard()">Send Gift Card →</button>
+          </div>
+
+          <!-- Right Column: Live Preview -->
+          <div class="card" style="padding: 20px; position: sticky; top: 100px;">
+            <p class="section-title" style="margin-bottom: 16px;">Preview</p>
+            <div id="gc-preview" style="background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; min-height: 320px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                  <div style="font-weight: 800; font-size: 14px; color: var(--blue);">K KRIPEX GIFT</div>
+                  <div id="preview-icon" style="font-size: 36px;">🎁</div>
+                </div>
+                <div style="margin-bottom: 24px;">
+                  <div style="font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">VALUE</div>
+                  <div id="preview-amount" style="font-size: 48px; font-weight: 900; font-family: var(--font-mono); color: var(--yellow);">$0</div>
+                </div>
+                <div style="font-size: 11px; color: var(--text3);">
+                  <div style="margin-bottom: 4px;">TO: <span id="preview-to" style="color: var(--text); font-weight: 600;">—</span></div>
+                  <div>FROM: <span style="color: var(--text); font-weight: 600;">You</span></div>
+                </div>
+              </div>
+              <div id="preview-message" style="font-size: 12px; color: var(--text2); font-style: italic; padding-top: 16px; border-top: 1px solid var(--border); display: none;">
+                "<span id="preview-message-text"></span>"
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     
-</div>
-<div id="toast-container"></div>
+    </div>
+    <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
+    <script src="wallet.js"></script>
     <script src="giftcard.js"></script>
   </body>
 </html>

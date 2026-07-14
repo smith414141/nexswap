@@ -126,6 +126,10 @@ function switchTab(tab) {
     if (title) title.textContent = "Create an account";
     if (subtitle) subtitle.textContent = "Sign up to get started";
   }
+  // Reset reCAPTCHA widget when switching tabs
+  if (typeof grecaptcha !== "undefined") {
+    grecaptcha.reset();
+  }
 }
 
 function register() {
@@ -195,7 +199,7 @@ function register() {
       settled = true;
       clearTimeout(failSafe);
       if (!data.success) {
-        showToast("Security check failed. Please try again.", "error");
+        showToast("The security check has expired. Please tick the captcha again and try submitting.", "error");
         btn.disabled = false;
         btn.textContent = "Create Account";
         grecaptcha.reset();

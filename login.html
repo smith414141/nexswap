@@ -170,6 +170,7 @@
           <div
             class="g-recaptcha"
             data-sitekey="6LexgSotAAAAAMBLYiVZ7BCC1O-IFPncGy0mOzTG"
+            data-expired-callback="onCaptchaExpired"
             style="margin-bottom: 14px"
           ></div>
           <button class="btn-primary" onclick="register()">Create Account</button>
@@ -222,6 +223,12 @@
 
     <!-- Toast -->
     <div id="toast-container"></div>
+
+    <script>
+      function onCaptchaExpired() {
+        showToast("The security check has expired. Please tick the captcha again.", "warning");
+      }
+    </script>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>

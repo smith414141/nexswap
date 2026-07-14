@@ -653,11 +653,19 @@
             switchTab(tab);
             if (typeof grecaptcha !== 'undefined') {
                 const container = document.getElementById('recaptcha-container');
-                if(container && container.innerHTML === '') grecaptcha.render('recaptcha-container', { 'sitekey': '6Lf79U8tAAAAAKTNsdM-nLBhJC8hsLO1r3qpXIVq' });
+                if(container && container.innerHTML === '') grecaptcha.render('recaptcha-container', { 
+                    'sitekey': '6Lf79U8tAAAAAKTNsdM-nLBhJC8hsLO1r3qpXIVq',
+                    'expired-callback': function() {
+                        showToast("The security check has expired. Please tick the captcha again.", "warning");
+                    }
+                });
             }
         }
         function closeAuth() {
             document.getElementById('auth-overlay').style.display = 'none';
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {

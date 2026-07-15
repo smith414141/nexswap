@@ -267,6 +267,51 @@ function proceedWithRegistration(name, email, password, phone, countryCode, btn)
       setTimeout(() => (window.location.href = "verify.html"), 2000);
     })
     .catch((err) => {
+      if (err.code === "auth/email-already-in-use") {
+        // User already exists — try signing in with the same password
+        auth.signInWithEmailAndPassword(email, password)
+          .then((cred) => {
+            const user = cred.user;
+            if (!user.emailVerified) {
+              // Check for existing valid OTP
+              return db.collection("emailOTPs").doc(user.uid).get()
+                .then((doc) => {
+                  if (doc.exists && doc.data().expiry && doc.data().expiry > Date.now()) {
+                    showToast("Account exists. Please verify your email.", "warning");
+                    setTimeout(() => (window.location.href = "verify.html"), 1500);
+                    return;
+                  }
+                  // No valid OTP — generate new one and resend
+                  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+                  const otpExpiry = Date.now() + 15 * 60 * 1000;
+                  return db.collection("emailOTPs").doc(user.uid).set({
+                    code: otp,
+                    expiry: otpExpiry,
+                    email: user.email,
+                  }).then(() => {
+                    return user.sendEmailVerification({
+                      url: window.location.origin + "/verify.html?uid=" + user.uid + "&code=" + otp,
+                      handleCodeInApp: false,
+                    });
+                  }).then(() => {
+                    showToast("Account exists. We sent a new code to your email.", "success");
+                    setTimeout(() => (window.location.href = "verify.html"), 1500);
+                  });
+                });
+            }
+            // Already verified — log them in
+            window.location.href = "home.html";
+          })
+          .catch((signInErr) => {
+            // Wrong password or other error
+            if (signInErr.code === "auth/wrong-password" || signInErr.code === "auth/invalid-credential") {
+              showToast("An account with this email already exists. Please log in instead.", "error");
+            } else {
+              showToast(friendlyAuthError(signInErr), "error");
+            }
+          });
+        return;
+      }
       showToast(friendlyAuthError(err), "error");
       btn.disabled = false;
       btn.textContent = "Create Account";
@@ -316,9 +361,33 @@ function login() {
     .then((cred) => {
       clearTimeout(timeout);
       if (!cred.user.emailVerified) {
-        showToast("Please verify your email first", "warning");
-        setTimeout(() => (window.location.href = "verify.html"), 1500);
-        return;
+        const user = cred.user;
+        // Check for existing valid OTP in Firestore
+        return db.collection("emailOTPs").doc(user.uid).get()
+          .then((doc) => {
+            if (doc.exists && doc.data().expiry && doc.data().expiry > Date.now()) {
+              // Valid OTP exists, redirect normally
+              showToast("Please verify your email first", "warning");
+              setTimeout(() => (window.location.href = "verify.html"), 1500);
+              return;
+            }
+            // No valid OTP — generate new one and resend
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            const otpExpiry = Date.now() + 15 * 60 * 1000;
+            return db.collection("emailOTPs").doc(user.uid).set({
+              code: otp,
+              expiry: otpExpiry,
+              email: user.email,
+            }).then(() => {
+              return user.sendEmailVerification({
+                url: window.location.origin + "/verify.html?uid=" + user.uid + "&code=" + otp,
+                handleCodeInApp: false,
+              });
+            }).then(() => {
+              showToast("We sent a new code to your email.", "success");
+              setTimeout(() => (window.location.href = "verify.html"), 1500);
+            });
+          });
       }
       btn.textContent = "Success!";
       window.location.href = "home.html";

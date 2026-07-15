@@ -12,202 +12,198 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="wallet.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body>
     <canvas id="bg-canvas"></canvas>
     <!-- PC NAV -->
-    <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        ><span class="logo-icon-mini">K</span>Kripex</a
-      >
+    <div class="pc-nav with-ticker">
+      <a class="pc-nav-logo" href="home.html">⚡ Kripex</a>
       <div class="pc-nav-right">
-        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
-        <a href="messages.html" class="nav-icon-btn" title="Messages">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-          </svg>
-        </a>
-        <a href="profile.html" class="nav-icon-btn" title="Profile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-          </svg>
-        </a>
-        <button class="btn-logout" onclick="logoutUser()">Logout</button>
-      </div>
-    </div>
-
-    <div class="pc-sidebar">
-      <div class="pc-sidebar-group-label">Main</div>
-      <a class="pc-sidebar-link " href="home.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
-        </svg>
-        Dashboard
-      </a>
-      <a class="pc-sidebar-link " href="markets.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
-        Markets
-      </a>
-      <a class="pc-sidebar-link " href="trade.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
-        </svg>
-        Trade
-      </a>
-      <a class="pc-sidebar-link active" href="wallet.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
-        </svg>
-        Wallet
-      </a>
-      <a class="pc-sidebar-link " href="portfolio.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
-        Portfolio
-      </a>
-      <div class="pc-sidebar-group-label">Discover</div>
-      <a class="pc-sidebar-link " href="p2p.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
-        </svg>
-        P2P Trading
-      </a>
-      <a class="pc-sidebar-link " href="earn.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
-        Earn
-      </a>
-      <a class="pc-sidebar-link " href="products.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
-        More
-      </a>
-      <div class="pc-sidebar-spacer"></div>
-      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
-        Logout
-      </a>
-    </div>
-
-    <div class="page">
-      <div class="pc-main">
-        <div class="section-padding" style="padding-top: 40px;">
-          <p class="section-title">My Wallet</p>
-          <div
-            id="wallet-total-card"
-            class="card"
-            style="text-align: center; margin-bottom: 32px; border-radius: 20px; background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%); border: 1px solid var(--border);"
-          >
-            <div class="text-muted" style="font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em;">
-              Total Portfolio Value
-            </div>
-            <div id="wallet-total-usd" style="font-size: 48px; font-weight: 900; color: var(--blue);" class="text-mono">
-              $0.00
-            </div>
-          </div>
-          
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;">
-            <a href="deposit.html" class="card" style="text-decoration:none;text-align:center;padding:20px; border-radius: 16px;">
-              <div style="font-size:24px;margin-bottom:8px;">⬇️</div>
-              <div style="font-size:14px;font-weight:700;">Deposit</div>
-            </a>
-            <a href="withdraw.html" class="card" style="text-decoration:none;text-align:center;padding:20px; border-radius: 16px;">
-              <div style="font-size:24px;margin-bottom:8px;">⬆️</div>
-              <div style="font-size:14px;font-weight:700;">Withdraw</div>
-            </a>
-          </div>
-
-          <p class="section-title">Asset Balances</p>
-          <div id="wallet-balances-list" class="card" style="padding:0; border-radius: 16px; overflow: hidden;">
-            <div class="empty-state">Loading...</div>
+        <button class="icon-btn" title="Notifications" onclick="window.location.href='notifications.html'">
+          🔔
+        </button>
+        <button class="icon-btn" title="Messages" onclick="window.location.href='messages.html'">
+          ✉️
+        </button>
+        <div class="profile-menu-wrap" id="profile-menu-wrap">
+          <div class="profile-avatar" onclick="toggleProfileMenu()">👤</div>
+          <div class="profile-menu">
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
           </div>
         </div>
       </div>
     </div>
+    <div class="pc-sidebar">
+      <div class="pc-sidebar-group-label">Main</div>
+      <a class="pc-sidebar-link" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Dashboard
+      </a>
+      <a class="pc-sidebar-link" href="markets.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+        Markets
+      </a>
+      <a class="pc-sidebar-link" href="trade.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 3L3 7l4 4"/><path d="M3 7h13a4 4 0 014 4v1"/>
+          <path d="M17 21l4-4-4-4"/><path d="M21 17H8a4 4 0 01-4-4v-1"/>
+        </svg>
+        Trade
+      </a>
+      <a class="pc-sidebar-link" href="wallet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+          <circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none"/>
+        </svg>
+        Wallet
+      </a>
+      <a class="pc-sidebar-link" href="portfolio.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z"/><path d="M21 8A8.99 8.99 0 0014 2v6h7z"/></svg>
+        Portfolio
+      </a>
+      <div class="pc-sidebar-group-label">Discover</div>
+      <a class="pc-sidebar-link" href="p2p.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/>
+        </svg>
+        P2P Trading
+      </a>
+      <a class="pc-sidebar-link" href="earn.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
+        Earn
+      </a>
+      <a class="pc-sidebar-link" href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
+        More
+      </a>
+      <div class="pc-sidebar-spacer"></div>
+      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Logout
+      </a>
+    </div>
+    <div class="pc-main">
+      <!-- LIVE PRICE TICKER -->
+      <div class="pc-ticker-bar" id="pc-ticker-bar">
+        <div class="pc-ticker-track" id="pc-ticker-track">
+          <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
+        </div>
+      </div>
+
+      <div class="wallet-page">
+        <!-- HEADER -->
+        <div class="wallet-header">
+          <div class="wallet-header-left">
+            <h1 class="wallet-title">Wallet</h1>
+            <p class="wallet-subtitle">Manage your assets across accounts</p>
+          </div>
+          <div class="wallet-header-right">
+            <a href="deposit.html" class="wallet-btn btn-primary" style="background:var(--green);color:#000;">⬇️ Deposit</a>
+            <a href="withdraw.html" class="wallet-btn btn-secondary">⬆️ Withdraw</a>
+          </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="wallet-tabs">
+          <button class="wallet-tab active" id="tab-spot" onclick="switchWalletTab('spot')">Spot Account</button>
+          <button class="wallet-tab" id="tab-funding" onclick="switchWalletTab('funding')">Funding Account</button>
+        </div>
+
+        <!-- BALANCE SECTION -->
+        <div class="wallet-balance-section">
+          <div class="wallet-balance-value" id="wallet-total-usd">$0.00</div>
+          <div class="wallet-balance-actions">
+            <a href="deposit.html" class="wallet-action-link">➤ Send</a>
+            <a href="deposit.html" class="wallet-action-link">➤ Receive</a>
+            <a href="trade.html" class="wallet-action-link">➤ Trade</a>
+          </div>
+        </div>
+
+        <!-- GRID: ASSETS + ACTIVITY -->
+        <div class="wallet-grid">
+          <!-- LEFT: ASSETS TABLE -->
+          <div class="wallet-assets-card" id="spot-content">
+            <h3 class="wallet-section-title">Your Assets</h3>
+            <div class="wallet-assets-table-wrap">
+              <table class="wallet-assets-table" id="wallet-assets-table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Value</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="wallet-assets-body"></tbody>
+              </table>
+            </div>
+            <div class="wallet-empty-state" id="spot-empty" style="display:none;">No balances yet. Deposit to get started.</div>
+          </div>
+          <div class="wallet-assets-card" id="funding-content" style="display:none;">
+            <h3 class="wallet-section-title">Funding Account</h3>
+            <div class="wallet-empty-state">Funding account is empty.</div>
+          </div>
+
+          <!-- RIGHT: RECENT ACTIVITY -->
+          <div class="wallet-activity-card">
+            <h3 class="wallet-section-title">Recent Activity</h3>
+            <div class="wallet-activity-list" id="wallet-activity-list">
+              <div class="wallet-empty-state">Loading activity...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-          />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
         </svg>
         <span class="nav-label">Home</span>
       </button>
       <button class="nav-item" onclick="window.location.href='p2p.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M7 3L3 7l4 4" />
-          <path d="M3 7h13a4 4 0 014 4v1" />
-          <path d="M17 21l4-4-4-4" />
-          <path d="M21 17H8a4 4 0 01-4-4v-1" />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
         </svg>
         <span class="nav-label">P2P</span>
       </button>
-      <button
-        class="nav-item active"
-        onclick="window.location.href='wallet.html'"
-      >
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+      <button class="nav-item" onclick="window.location.href='portfolio.html'">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4l3 3" />
+        </svg>
+        <span class="nav-label">Portfolio</span>
+      </button>
+      <button class="nav-item active" onclick="window.location.href='wallet.html'">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="5" width="20" height="14" rx="2" />
           <path d="M16 12h2" />
         </svg>
         <span class="nav-label">Wallet</span>
       </button>
-      <button class="nav-item" onclick="window.location.href='markets.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M3 3v18h18" />
-          <path d="M18 17V9" />
-          <path d="M13 17V5" />
-          <path d="M8 17v-3" />
-        </svg>
-        <span class="nav-label">Markets</span>
-      </button>
       <button class="nav-item" onclick="window.location.href='profile.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="8" r="4" />
           <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
         </svg>
         <span class="nav-label">Profile</span>
       </button>
     </div>
+
     <div id="toast-container"></div>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -215,28 +211,5 @@
     <script src="firebase.js"></script>
     <script src="app.js"></script>
     <script src="wallet.js"></script>
-    <script>
-      auth.onAuthStateChanged((user) => {
-        if (!user || !user.emailVerified) return;
-        db.collection("wallets").doc(user.uid).onSnapshot((doc) => {
-          if (!doc.exists) return;
-          const data = doc.data();
-          const list = document.getElementById("wallet-balances-list");
-           const coins = typeof CRYPTO_LIST !== "undefined" ? CRYPTO_LIST : [];
-           let html = "";
-           coins.forEach((c) => {
-             const bal = data[c.symbol] || 0;
-             if (bal <= 0) return;
-             html += '<div class="listing-card" style="display:flex;align-items:center;gap:12px;padding:12px 16px;">';
-             html += '<div style="width:36px;height:36px;border-radius:50%;background:' + c.color + '22;color:' + c.color + ';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">' + c.icon + "</div>";
-             html += '<div style="flex:1;"><div style="font-size:13px;font-weight:700;">' + c.symbol + "</div><div class='text-muted' style='font-size:11px;'>" + c.name + "</div></div>";
-             const decimals = c.symbol === "BTC" ? 8 : bal < 1 ? 6 : 4;
-             html += '<div class="text-mono" style="text-align:right;font-size:13px;font-weight:700;">' + bal.toFixed(decimals) + "</div></div>";
-           });
-           list.innerHTML = html || '<div class="empty-state">No balances yet. Deposit to get started.</div>';
-
-        });
-      });
-    </script>
   </body>
 </html>

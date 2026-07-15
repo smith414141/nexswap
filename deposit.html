@@ -12,295 +12,42 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="deposit.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <style>
-      /* ── Deposit-specific styles ── */
-      .dep-coin-row {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 14px 16px;
-        cursor: pointer;
-        border-bottom: 1px solid var(--border);
-        transition: background 0.15s;
-      }
-      .dep-coin-row:last-child {
-        border-bottom: none;
-      }
-      .dep-coin-row:hover {
-        background: var(--bg3);
-      }
-      .dep-coin-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 900;
-        font-size: 17px;
-        flex-shrink: 0;
-      }
-      .dep-coin-symbol {
-        font-weight: 700;
-        font-size: 14px;
-      }
-      .dep-coin-name {
-        font-size: 11px;
-        color: var(--text2);
-        margin-top: 2px;
-      }
-      .dep-coin-nets {
-        margin-left: auto;
-        font-size: 11px;
-        color: var(--text3);
-      }
-
-      .net-card {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 16px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        transition: border-color 0.15s, background 0.15s;
-      }
-      .net-card:hover {
-        border-color: var(--blue);
-        background: var(--bg3);
-      }
-      .net-card.selected {
-        border-color: var(--blue);
-        background: rgba(240, 185, 11, 0.06);
-      }
-      .net-key {
-        font-weight: 800;
-        font-size: 15px;
-      }
-      .net-name {
-        font-size: 12px;
-        color: var(--text2);
-        margin-top: 3px;
-      }
-      .net-meta {
-        display: flex;
-        gap: 16px;
-        margin-top: 8px;
-        font-size: 11px;
-        color: var(--text3);
-      }
-
-      .addr-box {
-        background: var(--bg);
-        border: 1px solid var(--border2);
-        border-radius: 10px;
-        padding: 14px 16px;
-        font-family: monospace;
-        font-size: 13px;
-        word-break: break-all;
-        color: var(--blue);
-        letter-spacing: 0.3px;
-        line-height: 1.6;
-      }
-      .qr-wrap {
-        width: 200px;
-        height: 200px;
-        background: #fff;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      }
-      .copy-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-        padding: 13px;
-        border-radius: 10px;
-        background: var(--blue);
-        color: #000;
-        font-weight: 700;
-        font-size: 14px;
-        border: none;
-        cursor: pointer;
-        font-family: "Inter", sans-serif;
-        transition: opacity 0.15s;
-        margin-bottom: 16px;
-      }
-      .copy-btn:hover {
-        opacity: 0.88;
-      }
-      .share-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-        padding: 12px;
-        border-radius: 10px;
-        background: var(--bg3);
-        color: var(--text);
-        font-weight: 600;
-        font-size: 13px;
-        border: 1px solid var(--border2);
-        cursor: pointer;
-        font-family: "Inter", sans-serif;
-        margin-bottom: 20px;
-      }
-      .info-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 16px;
-      }
-      .info-cell {
-        background: var(--bg3);
-        border-radius: 10px;
-        padding: 12px 14px;
-      }
-      .info-cell-label {
-        font-size: 10px;
-        color: var(--text3);
-        margin-bottom: 4px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      .info-cell-val {
-        font-size: 13px;
-        font-weight: 700;
-      }
-      .warn-box {
-        border-radius: 10px;
-        padding: 14px 16px;
-        font-size: 12px;
-        line-height: 1.6;
-      }
-      .warn-red {
-        background: rgba(246, 70, 93, 0.08);
-        border: 1px solid rgba(246, 70, 93, 0.2);
-        color: var(--red);
-      }
-      .warn-yellow {
-        background: rgba(240, 185, 11, 0.07);
-        border: 1px solid rgba(240, 185, 11, 0.2);
-        color: #c9930a;
-      }
-      .step-indicator {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-      .step-num {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        background: var(--blue);
-        color: #000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 900;
-        font-size: 13px;
-        flex-shrink: 0;
-      }
-      .step-label {
-        font-weight: 700;
-        font-size: 15px;
-      }
-      .back-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 20px;
-        cursor: pointer;
-      }
-      .back-row:hover {
-        opacity: 0.8;
-      }
-      .selected-coin-chip {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: var(--bg3);
-        border-radius: 10px;
-        padding: 10px 14px;
-        margin-bottom: 20px;
-      }
-      .chip-change {
-        margin-left: auto;
-        font-size: 11px;
-        color: var(--blue);
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      /* PC two-col layout on address step */
-      @media (min-width: 768px) {
-        .addr-layout {
-          display: grid;
-          grid-template-columns: 280px 1fr;
-          gap: 24px;
-          align-items: start;
-        }
-        .addr-qr-col {
-          position: sticky;
-          top: 80px;
-        }
-        #coin-grid-inner {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 0;
-        }
-        #coin-grid-inner .dep-coin-row {
-          border-right: 1px solid var(--border);
-          border-bottom: 1px solid var(--border);
-        }
-        #coin-grid-inner .dep-coin-row:nth-child(2n) {
-          border-right: none;
-        }
-      }
-    </style>
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
 
     <!-- PC NAV -->
-    <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        >⚡ Kripex</a
-      >
+    <div class="pc-nav with-ticker">
+      <a class="pc-nav-logo" href="home.html">⚡ Kripex</a>
       <div class="pc-nav-right">
-        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
-        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+        <button class="icon-btn" title="Notifications" onclick="window.location.href='notifications.html'">
+          🔔
+        </button>
+        <button class="icon-btn" title="Messages" onclick="window.location.href='messages.html'">
+          ✉️
+        </button>
+        <div class="profile-menu-wrap" id="profile-menu-wrap">
+          <div class="profile-avatar" onclick="toggleProfileMenu()">👤</div>
+          <div class="profile-menu">
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- PC SIDEBAR -->
     <div class="pc-sidebar">
       <a class="pc-sidebar-link" href="home.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-          /></svg
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" /></svg
         >Home</a
       >
       <a class="pc-sidebar-link" href="p2p.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M7 3L3 7l4 4" />
           <path d="M3 7h13a4 4 0 014 4v1" />
           <path d="M17 21l4-4-4-4" />
@@ -308,59 +55,34 @@
         >P2P</a
       >
       <a class="pc-sidebar-link active" href="deposit.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 3v12" />
           <path d="M7 10l5 5 5-5" />
           <path d="M5 19h14" /></svg
         >Deposit</a
       >
       <a class="pc-sidebar-link" href="withdraw.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 19V7" />
           <path d="M7 12l5-5 5 5" />
           <path d="M5 19h14" /></svg
         >Withdraw</a
       >
       <a class="pc-sidebar-link" href="messages.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path
             d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
           /></svg
         >Messages</a
       >
       <a class="pc-sidebar-link" href="profile.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="8" r="4" />
           <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
         >Profile</a
       >
       <a class="pc-sidebar-link" href="settings.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
+        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3" />
           <path
             d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
@@ -371,146 +93,108 @@
 
     <div class="page">
       <div class="pc-main">
-        <div style="padding: 16px; max-width: 780px">
-          <!-- ── STEP 1: SELECT COIN ── -->
-          <div id="step-coin">
-            <p class="section-title">Select Coin</p>
-            <div class="input-row" style="margin-bottom: 14px">
-              <input
-                type="text"
-                id="coin-search"
-                placeholder="Search coin name or symbol..."
-                oninput="filterCoins()"
-              />
-            </div>
-            <div class="card" style="padding: 0; overflow: hidden">
-              <div id="coin-grid-inner"></div>
+        <div class="deposit-page">
+          <!-- HEADER -->
+          <div class="deposit-header">
+            <div class="deposit-header-left">
+              <h1 class="deposit-title" id="deposit-title">Deposit USDT</h1>
             </div>
           </div>
 
-          <!-- ── STEP 2: SELECT NETWORK ── -->
-          <div id="step-network" style="display: none">
-            <div class="back-row" onclick="backToCoin()">
-              <span style="font-size: 20px">←</span>
-              <span style="font-size: 14px; color: var(--text2)">Back to coin list</span>
+          <!-- SELECT ASSET (pills) -->
+          <div class="deposit-section">
+            <p class="deposit-section-label">Select Asset</p>
+            <div class="deposit-pill-group" id="deposit-asset-pills">
+              <button class="deposit-pill active" data-sym="USDT" onclick="selectDepositAsset('USDT')">USDT</button>
+              <button class="deposit-pill" data-sym="BTC" onclick="selectDepositAsset('BTC')">BTC</button>
+              <button class="deposit-pill" data-sym="ETH" onclick="selectDepositAsset('ETH')">ETH</button>
+              <button class="deposit-pill" data-sym="SOL" onclick="selectDepositAsset('SOL')">SOL</button>
+              <button class="deposit-pill" data-sym="BNB" onclick="selectDepositAsset('BNB')">BNB</button>
             </div>
-
-            <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px;">
-              <div id="selected-coin-icon" class="coin-icon"></div>
-              <div>
-                <div id="selected-coin-symbol" style="font-weight: 800; font-size: 15px"></div>
-                <div id="selected-coin-fullname" class="text-muted" style="font-size: 11px"></div>
-              </div>
-              <span class="chip-change" onclick="backToCoin()">Change</span>
-            </div>
-
-            <p class="section-title">Select Network</p>
-            <div class="warn-box warn-red" style="margin-bottom: 16px">
-              ⚠️ Make sure to select the correct network. Depositing via the
-              wrong network may result in permanent loss of funds.
-            </div>
-
-            <div id="network-list"></div>
           </div>
 
-          <!-- ── STEP 3: ADDRESS + QR ── -->
-          <div id="step-address" style="display: none">
-            <div class="back-row" onclick="backToNetwork()">
-              <span style="font-size: 20px">←</span>
-              <span style="font-size: 14px; color: var(--text2)">Back to network</span>
+          <!-- SELECT NETWORK (pills) -->
+          <div class="deposit-section">
+            <p class="deposit-section-label">Network</p>
+            <div class="deposit-pill-group" id="deposit-network-pills"></div>
+          </div>
+
+          <!-- WARNING -->
+          <div class="deposit-warning" id="deposit-warning">
+            Only send <strong id="warn-network"></strong> <strong id="warn-coin"></strong> to this address.
+          </div>
+
+          <!-- QR CODE -->
+          <div class="deposit-qr-section">
+            <div class="qr-wrap" id="qr-wrap"></div>
+            <p class="deposit-qr-note">
+              Scan QR code to get deposit address
+            </p>
+          </div>
+
+          <!-- DEPOSIT ADDRESS -->
+          <div class="deposit-address-section">
+            <p class="deposit-section-label">
+              Deposit Address (<span id="addr-network"></span>)
+            </p>
+            <div class="deposit-addr-box">
+              <div class="deposit-addr-text" id="deposit-address">Loading…</div>
+              <button class="deposit-copy-btn" onclick="copyDepositAddress()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                Copy
+              </button>
             </div>
-
-            <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px;">
-              <div id="addr-coin-icon" class="coin-icon"></div>
-              <div>
-                <div id="addr-coin-name" style="font-weight: 800; font-size: 15px"></div>
-                <div id="addr-network-name" class="text-brass" style="font-size: 11px"></div>
-              </div>
-            </div>
-
-            <div class="addr-layout">
-              <div class="addr-qr-col">
-                <div class="card" style="text-align: center; padding: 24px 16px">
-                  <p class="text-muted" style="font-size: 11px; margin-bottom: 16px;">
-                    Scan QR code to get deposit address
-                  </p>
-                  <div class="qr-wrap" style="background:#fff; padding:10px; border-radius:12px;">
-                    <div id="qr-container"></div>
-                  </div>
-                  <p style="font-size: 11px; color: var(--text3)">
-                    Only send <strong id="addr-crypto-warn"></strong><br />
-                    via <strong id="addr-network-warn"></strong>
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <div class="card" style="margin-bottom: 16px">
-                  <p class="section-title">Deposit Address</p>
-                  <div class="addr-box" id="deposit-address-display">Loading...</div>
-                  <div style="display: flex; gap: 10px; margin-top: 12px">
-                    <button class="btn btn-primary" onclick="copyDepositAddress()" style="flex: 1">
-                      📋 Copy Address
-                    </button>
-                    <button class="btn btn-secondary" onclick="shareAddress()" style="flex: 1">
-                      ↗ Share
-                    </button>
-                  </div>
-                </div>
-
-                <div class="info-grid">
-                  <div class="info-cell">
-                    <div class="info-cell-label">Network</div>
-                    <div id="info-network" style="font-size:13px; font-weight:700;">--</div>
-                  </div>
-                  <div class="info-cell">
-                    <div class="info-cell-label">Confirmations</div>
-                    <div id="info-confirms" style="font-size:13px; font-weight:700;">--</div>
-                  </div>
-                  <div class="info-cell">
-                    <div class="info-cell-label">Est. Arrival</div>
-                    <div id="info-time" style="font-size:13px; font-weight:700;">--</div>
-                  </div>
-                  <div class="info-cell">
-                    <div class="info-cell-label">Network Fee</div>
-                    <div id="info-fee" style="font-size:13px; font-weight:700;">--</div>
-                  </div>
-                </div>
+            <!-- MEMO/TAG FIELD (for XRP, XLM, ATOM, HBAR) -->
+            <div class="deposit-memo-section" id="deposit-memo-section" style="display:none; margin-top:12px;">
+              <p class="deposit-memo-warning">⚠️ You MUST include the memo or your deposit will be lost.</p>
+              <div class="deposit-addr-box">
+                <div class="deposit-addr-text" id="deposit-memo">—</div>
+                <button class="deposit-copy-btn" onclick="copyMemo()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Copy Memo
+                </button>
               </div>
             </div>
           </div>
+
+          <!-- INFO ROWS -->
+          <div class="deposit-info-grid">
+            <div class="deposit-info-cell">
+              <div class="deposit-info-label">Min Deposit</div>
+              <div class="deposit-info-value" id="info-min-deposit">—</div>
+            </div>
+            <div class="deposit-info-cell">
+              <div class="deposit-info-label">Confirmations</div>
+              <div class="deposit-info-value" id="info-confirms">—</div>
+            </div>
+            <div class="deposit-info-cell">
+              <div class="deposit-info-label">Est. Arrival</div>
+              <div class="deposit-info-value" id="info-time">—</div>
+            </div>
+            <div class="deposit-info-cell">
+              <div class="deposit-info-label">Network Fee</div>
+              <div class="deposit-info-value" id="info-fee">—</div>
+            </div>
+          </div>
+
+          <!-- COMPLETE BUTTON -->
+          <button class="deposit-complete-btn" onclick="showToast('Deposit completed notification sent', 'success')">
+            I've Completed My Deposit
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- BOTTOM NAV (mobile) -->
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-          />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
         </svg>
         <span class="nav-label">Home</span>
       </button>
       <button class="nav-item" onclick="window.location.href='p2p.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M7 3L3 7l4 4" />
           <path d="M3 7h13a4 4 0 014 4v1" />
           <path d="M17 21l4-4-4-4" />
@@ -519,50 +203,14 @@
         <span class="nav-label">P2P</span>
       </button>
       <button class="nav-item" onclick="window.location.href='portfolio.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5" />
-          <path d="M11 5l4 4L21 3" />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4l3 3" />
         </svg>
         <span class="nav-label">Portfolio</span>
       </button>
-      <button class="nav-item" onclick="window.location.href='markets.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M3 3v18h18" />
-          <path d="M18 17V9" />
-          <path d="M13 17V5" />
-          <path d="M8 17v-3" />
-        </svg>
-        <span class="nav-label">Markets</span>
-      </button>
-      <button
-        class="nav-item active"
-        onclick="window.location.href='deposit.html'"
-      >
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+      <button class="nav-item active" onclick="window.location.href='deposit.html'">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v12" />
           <path d="M7 10l5 5 5-5" />
           <path d="M5 19h14" />
@@ -570,29 +218,13 @@
         <span class="nav-label">Deposit</span>
       </button>
       <button class="nav-item" onclick="window.location.href='messages.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
         </svg>
         <span class="nav-label">Messages</span>
       </button>
       <button class="nav-item" onclick="window.location.href='profile.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="8" r="4" />
           <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
         </svg>

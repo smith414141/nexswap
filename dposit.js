@@ -144,14 +144,22 @@ function selectNetwork(networkKey) {
     selectedCoin.symbol + " (" + networkKey + ")";
   document.getElementById("addr-network-warn").textContent =
     selectedNetwork.name;
-  document.getElementById("addr-crypto-warn2").textContent =
-    selectedCoin.symbol;
   document.getElementById("deposit-address-display").textContent = address;
   document.getElementById("info-network").textContent = selectedNetwork.name;
   document.getElementById("info-confirms").textContent =
     selectedNetwork.confirms;
   document.getElementById("info-time").textContent = selectedNetwork.time;
   document.getElementById("info-fee").textContent = selectedNetwork.fee;
+
+  // Handle memo/tag for XRP, XLM, ATOM, HBAR
+  const memo = DEPOSIT_MEMOS[selectedCoin.symbol];
+  const memoSection = document.getElementById("deposit-memo-section");
+  if (memo) {
+    document.getElementById("deposit-memo").textContent = memo;
+    memoSection.style.display = "block";
+  } else {
+    memoSection.style.display = "none";
+  }
 
   generateQR(address);
 }
@@ -224,4 +232,24 @@ function shareAddress() {
   } else {
     copyDepositAddress();
   }
+}
+
+function copyMemo() {
+  const memo = document.getElementById("deposit-memo").textContent;
+  if (!memo || memo === "—") {
+    showToast("No memo to copy", "warning");
+    return;
+  }
+  navigator.clipboard
+    .writeText(memo)
+    .then(() => showToast("Memo copied!", "success"))
+    .catch(() => {
+      const el = document.createElement("textarea");
+      el.value = memo;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      showToast("Memo copied!", "success");
+    });
 }

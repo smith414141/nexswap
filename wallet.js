@@ -13,7 +13,6 @@ const CRYPTO_LIST = [
   { symbol: "TON", name: "Toncoin", icon: "T", color: "#0088CC" },
   { symbol: "AVAX", name: "Avalanche", icon: "A", color: "#E84142" },
   { symbol: "DOT", name: "Polkadot", icon: "●", color: "#E6007A" },
-  { symbol: "MATIC", name: "Polygon", icon: "M", color: "#8247E5" },
   { symbol: "LINK", name: "Chainlink", icon: "⬡", color: "#2A5ADA" },
   { symbol: "LTC", name: "Litecoin", icon: "Ł", color: "#BFBBBB" },
   { symbol: "SHIB", name: "Shiba Inu", icon: "S", color: "#FFA409" },
@@ -137,6 +136,7 @@ const DEPOSIT_NETWORKS = {
       time: "~5 sec",
       fee: "~0.0001 XRP",
       confirms: "1 confirmation",
+      memo: "494478573",
     },
   ],
   ADA: [
@@ -193,15 +193,6 @@ const DEPOSIT_NETWORKS = {
       confirms: "10 confirmations",
     },
   ],
-  MATIC: [
-    {
-      key: "ERC20",
-      name: "Ethereum (ERC20)",
-      time: "~5 min",
-      fee: "~5 MATIC",
-      confirms: "12 confirmations",
-    },
-  ],
   LINK: [
     {
       key: "ERC20",
@@ -254,6 +245,7 @@ const DEPOSIT_NETWORKS = {
       time: "~5 sec",
       fee: "~0.00001 XLM",
       confirms: "1 confirmation",
+      memo: "396141952",
     },
   ],
   ATOM: [
@@ -263,6 +255,7 @@ const DEPOSIT_NETWORKS = {
       time: "~10 sec",
       fee: "~0.01 ATOM",
       confirms: "1 confirmation",
+      memo: "103850192",
     },
   ],
   ETC: [
@@ -317,6 +310,7 @@ const DEPOSIT_NETWORKS = {
       time: "~5 sec",
       fee: "~0.01 HBAR",
       confirms: "1 confirmation",
+      memo: "106280749",
     },
   ],
   AAVE: [
@@ -349,11 +343,6 @@ const DEPOSIT_NETWORKS = {
 };
 
 // ── YOUR DEPOSIT ADDRESSES ──
-// IMPORTANT: Some coins use a memo/tag (XRP, XLM, ATOM, HBAR) — these are noted
-// in comments next to the address. Your deposit page UI does not currently
-// display memo/tag fields — flag this to your developer if you need it added,
-// since users depositing XRP/XLM/ATOM/HBAR without the memo may have delayed
-// or lost funds depending on the receiving exchange's policy.
 const DEPOSIT_ADDRESSES = {
   BTC: {
     BTC: "16a8iDqW6zykcCCXxgCiSRLiSVe2zPrxqB",
@@ -380,7 +369,7 @@ const DEPOSIT_ADDRESSES = {
     SOL: "21YK8faUSgHsmpZG77oKbHf2XaGo6dS8ahqVGS1Xrxwr",
   },
   XRP: {
-    XRP: "21YK8faUSgHsmpZG77oKbHf2XaGo6dS8ahqVGS1Xrxwr", // memo/tag: 494478573
+    XRP: "21YK8faUSgHsmpZG77oKbHf2XaGo6dS8ahqVGS1Xrxwr",
   },
   ADA: {
     ADA: "addr1vy7872dgyv2jffs9ecgpjmfs8safapx6yr0t5pu4am39snggxff64",
@@ -400,9 +389,6 @@ const DEPOSIT_ADDRESSES = {
   DOT: {
     DOT: "14xFQcYCgEC5GKzAd1ZiLoJK91snija1v1JrhhjM3G6NZYEo",
   },
-  MATIC: {
-    ERC20: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
-  },
   LINK: {
     ERC20: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
   },
@@ -419,10 +405,10 @@ const DEPOSIT_ADDRESSES = {
     ERC20: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
   },
   XLM: {
-    XLM: "GABFQIK63R2NETJM7T673EAMZN4RJLLGP3OFUEJU5SZVTGWUKULZJNL6", // memo/tag: 396141952
+    XLM: "GABFQIK63R2NETJM7T673EAMZN4RJLLGP3OFUEJU5SZVTGWUKULZJNL6",
   },
   ATOM: {
-    ATOM: "cosmos1j8pp7zvcu9z8vd882m284j29fn2dszh05cqvf9", // memo/tag: 103850192
+    ATOM: "cosmos1j8pp7zvcu9z8vd882m284j29fn2dszh05cqvf9",
   },
   ETC: {
     ETC: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
@@ -440,7 +426,7 @@ const DEPOSIT_ADDRESSES = {
     ICP: "4a23c09a9098f63ccc7920bbea89d9d64014928187d053bd14f8ff2994658bee",
   },
   HBAR: {
-    HBAR: "0.0.1873771", // memo/tag: 106280749
+    HBAR: "0.0.1873771",
   },
   AAVE: {
     ERC20: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
@@ -452,12 +438,16 @@ const DEPOSIT_ADDRESSES = {
     THETA: "0x36f8a456acb7cc6035267eb40ecbd8cb4c7c2f08",
   },
 };
-// ── ADD THIS BLOCK at the bottom of your existing wallet.js ──
-// Multi-wallet sub-balance display helper
-// Your wallets Firestore doc already stores all coin balances as flat fields.
-// This function reads them and groups by sub-wallet for display.
-// Sub-wallets are logical groupings only — there is no actual separation in Firestore.
 
+// Memo/tag map for coins that require it
+const DEPOSIT_MEMOS = {
+  XRP: "494478573",
+  XLM: "396141952",
+  ATOM: "103850192",
+  HBAR: "106280749",
+};
+
+// ── SUB WALLET MAP ──
 const SUB_WALLET_MAP = {
   Spot: [
     "BTC",
@@ -473,7 +463,6 @@ const SUB_WALLET_MAP = {
     "TON",
     "AVAX",
     "DOT",
-    "MATIC",
     "LINK",
     "LTC",
     "SHIB",
@@ -494,7 +483,6 @@ const SUB_WALLET_MAP = {
 };
 
 function renderSubWallets(walletData, prices) {
-  // prices = { BTC: 67500, ETH: 3500, USDT: 1, ... }
   const container = document.getElementById("sub-wallets");
   if (!container) return;
 

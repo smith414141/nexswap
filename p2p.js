@@ -2,6 +2,9 @@ let currentType = "buy";
 let currentCrypto = "USDT";
 let currentCurrency = "ETB";
 let currentListings = [];
+let searchQuery = "";
+let paymentFilter = "all";
+let expressFilter = false;
 
 // ---- KYC CHECK ----
 auth.onAuthStateChanged((user) => {
@@ -35,6 +38,8 @@ function setOrderType(type) {
   document
     .getElementById("tab-sell")
     .classList.toggle("active", type === "sell");
+  document.getElementById("toggle-buy").classList.toggle("active", type === "buy");
+  document.getElementById("toggle-sell").classList.toggle("active", type === "sell");
   renderListings();
 }
 
@@ -47,7 +52,25 @@ function setCrypto(crypto) {
   document
     .getElementById("tab-btc")
     .classList.toggle("active", crypto === "BTC");
+  document.querySelectorAll(".coin-tab").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.crypto === crypto);
+  });
   renderListings();
+}
+
+// ---- PAYMENT FILTER ----
+function setPaymentFilter(method) {
+  paymentFilter = method;
+  document.querySelectorAll(".pay-filter-pill").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.method === method);
+  });
+  filterListingsDisplay();
+}
+
+// ---- EXPRESS FILTER ----
+function filterListingsDisplay() {
+  expressFilter = document.getElementById("p2p-express-filter")?.checked || false;
+  renderListingsDisplay();
 }
 
 // ---- CURRENCY PICKER ----
@@ -103,6 +126,11 @@ function selectCurrency(code) {
 
 // ---- AMOUNT FILTER ----
 function filterByAmount() {
+  renderListingsDisplay();
+}
+
+function filterListingsBySearch(query) {
+  searchQuery = query.toLowerCase().trim();
   renderListingsDisplay();
 }
 
@@ -181,6 +209,24 @@ function renderListingsDisplay() {
     );
   }
 
+  if (searchQuery) {
+    listings = listings.filter(
+      (l) =>
+        l.name.toLowerCase().includes(searchQuery) ||
+        l.methods.some((m) => m.toLowerCase().includes(searchQuery))
+    );
+  }
+
+  if (paymentFilter !== "all") {
+    listings = listings.filter((l) =>
+      l.methods.some((m) => m.toLowerCase() === paymentFilter.toLowerCase())
+    );
+  }
+
+  if (expressFilter) {
+    listings = listings.filter((l) => l.verified === true);
+  }
+
   if (listings.length === 0) {
     container.innerHTML = `
       <div style="text-align:center; padding:60px 20px; color:var(--text3);">
@@ -194,55 +240,69 @@ function renderListingsDisplay() {
   container.innerHTML = listings
     .map(
       (l) => `
-      <div class="listing-card" style="${
+      <div class="p2p-listing-row" style="${
         l.online ? "" : "opacity:0.5;"
-      } padding:16px; border-bottom:1px solid var(--border);" onclick="openOrder('${l.id}')">
-        <div class="flex-between" style="margin-bottom:12px;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:38px; height:38px; border-radius:50%; background:${
+      } border-bottom:1px solid var(--border);" onclick="openOrder('${l.id}')">
+        <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; padding: 12px 16px;">
+          <div style="min-width: 0; display: flex; align-items: center; gap: 12px;">
+            <div style="position: relative; width:36px; height:36px; border-radius:50%; background:${
               l.color
             }22; color:${
-          l.color
-        }; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">
+        l.color
+      }; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">
               ${l.initials}
+              <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; border-radius:50%; background:${
+                l.online ? "var(--green)" : "var(--text3)"
+              }; border:2px solid var(--bg);"></span>
             </div>
-            <div>
-              <div style="font-weight:700; font-size:14px;">${l.name} ${l.verified ? '<span class="verified-icon">✓</span>' : ""}</div>
+            <div style="min-width: 0;">
+              <div style="font-weight:700; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                ${l.name} ${l.verified ? '<span class="verified-icon" style="margin-left: 6px;">✓</span>' : ""}
+              </div>
               <div class="text-muted" style="font-size:11px; margin-top:2px;">
-                ${l.trades} trades • ${l.completion}%
+                ★ ${l.completion}% &middot; ${l.trades} trades
               </div>
             </div>
           </div>
-          <div style="text-align:right;">
+
+          <div class="p2p-price-col" style="text-align: right; min-width: 160px;">
             <div class="text-mono" style="font-size:16px; font-weight:800; color:${
-              currentType === "sell" ? "var(--green)" : "var(--text)"
+              currentType === "buy" ? "var(--green)" : "var(--text)"
             };">
               ${formatPrice(l.price)}
             </div>
-            <div class="text-muted" style="font-size:10px;">${l.crypto}</div>
+            <div class="text-muted" style="font-size:10px; margin-top:2px;">per ${l.crypto}</div>
+            <button class="btn" style="margin-top: 8px; padding: 8px 16px; font-size: 12px; font-weight: 700; ${
+              currentType === "buy"
+                ? "background: var(--green); color: #fff;"
+                : "background: var(--red); color: #fff;"
+            }" onclick="event.stopPropagation(); openOrder('${l.id}')">
+              ${currentType === "buy" ? "Buy" : "Sell"} &rarr;
+            </button>
           </div>
-        </div>
 
-        <div class="flex-between" style="font-size:12px; margin-bottom:12px;">
-          <span class="text-muted">Limit: ${formatNumber(l.minLimit)} - ${formatNumber(l.maxLimit)} ${l.currency}</span>
-          <span class="text-muted">Avail: ${l.available} ${l.crypto}</span>
-        </div>
-
-        <div class="flex-between">
-          <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            ${l.methods
-              .map((m) => `<span class="badge badge-grey">${m}</span>`)
-              .join("")}
+          <div style="text-align: right; min-width: 120px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px;">
+            <div class="text-muted" style="font-size:12px; white-space: nowrap;">
+              ${formatNumber(l.minLimit)} - ${formatNumber(l.maxLimit)} ${l.currency}
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;">
+              ${l.methods
+                .slice(0, 2)
+                .map((m) => `<span class="p2p-method-tag" style="font-size:9px; padding: 2px 6px;">${m}</span>`)
+                .join("")}
+              ${
+                l.methods.length > 2
+                  ? `<span class="p2p-method-tag" style="font-size:9px; padding: 2px 6px; background:var(--blue); color:#fff;">+${l.methods.length - 2}</span>`
+                  : ""
+              }
+            </div>
+            <div class="text-muted" style="font-size:11px; font-weight:600; color:${parseFloat(l.completion) >= 95 ? "var(--green)" : parseFloat(l.completion) >= 80 ? "var(--yellow)" : "var(--red)"};">
+              ${l.completion}% completion
+            </div>
           </div>
-          <button class="btn btn-primary" style="padding:8px 20px; ${
-            currentType === "sell" ? "background:var(--red); color:#fff;" : ""
-          }" onclick="event.stopPropagation(); openOrder('${l.id}')">
-            ${currentType === "buy" ? "Buy" : "Sell"}
-          </button>
         </div>
       </div>
-
-  `
+    `
     )
     .join("");
 }
@@ -307,3 +367,8 @@ function waitForPrices(cb) {
   }
 }
 waitForPrices(renderListings);
+// Modal helper
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = "none";
+}

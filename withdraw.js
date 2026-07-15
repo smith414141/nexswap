@@ -1,6 +1,26 @@
 let withdrawCrypto = "USDT";
 let withdrawNetwork = "";
-let userBalance = { BTC: 0, USDT: 0 };
+let userBalance = {};
+
+// Poll until wallet.js CRYPTO_LIST is ready, then render crypto pills
+function waitForCryptoList(cb) {
+  if (typeof CRYPTO_LIST !== "undefined" && CRYPTO_LIST.length) {
+    cb();
+  } else {
+    setTimeout(() => waitForCryptoList(cb), 50);
+  }
+}
+waitForCryptoList(() => initWithdrawCryptoPills());
+
+// Initialize crypto pills on load
+function initWithdrawCryptoPills() {
+  const container = document.getElementById("withdraw-crypto-pills");
+  if (!container || typeof CRYPTO_LIST === "undefined") return;
+  container.innerHTML = CRYPTO_LIST
+    .map((c, i) => `
+      <button class="withdraw-pill ${i === 0 ? "active" : ""}" data-sym="${c.symbol}" onclick="selectWithdrawCrypto('${c.symbol}')">${c.symbol}</button>
+    `).join("");
+}
 
 auth.onAuthStateChanged((user) => {
   if (!user || !user.emailVerified) return;
@@ -54,12 +74,9 @@ function updateBalanceDisplay() {
 
 function selectWithdrawCrypto(crypto) {
   withdrawCrypto = crypto;
-  document
-    .getElementById("wd-usdt")
-    .classList.toggle("active", crypto === "USDT");
-  document
-    .getElementById("wd-btc")
-    .classList.toggle("active", crypto === "BTC");
+  document.querySelectorAll("#withdraw-crypto-pills .withdraw-pill").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.sym === crypto);
+  });
   document.getElementById("wd-amount-suffix").textContent = crypto;
   withdrawNetwork = "";
   document.getElementById("wd-address").value = "";

@@ -1,91 +1,294 @@
-.portfolio-hero {
-  text-align: center;
-  padding: 24px 20px 16px;
+/* Portfolio Page Styles */
+
+.portfolio-page {
+  padding: 0 24px 24px;
 }
 
-.portfolio-hero-label {
-  font-size: 12px;
+.pc-ticker-bar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.pc-ticker-track {
+  display: inline-flex;
+  animation: pc-ticker-scroll 32s linear infinite;
+  padding: 8px 0;
+  will-change: transform;
+}
+.pc-ticker-bar:hover .pc-ticker-track { animation-play-state: paused; }
+.pc-ticker-item {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 20px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--text2);
+  border-right: 1px solid var(--border); cursor: pointer;
+}
+.pc-ticker-item .sym { color: var(--text); font-weight: 700; }
+.pc-ticker-item .chg.positive { color: var(--green); }
+.pc-ticker-item .chg.negative { color: var(--red); }
+@keyframes pc-ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* STAT CARDS ROW */
+.portfolio-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) {
+  .portfolio-stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 500px) {
+  .portfolio-stats-row { grid-template-columns: 1fr; }
+}
+
+.portfolio-stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+.portfolio-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--text3);
+  margin-bottom: 8px;
+}
+.portfolio-stat-value {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
   margin-bottom: 4px;
 }
+.portfolio-stat-value.positive { color: var(--green); }
+.portfolio-stat-value.negative { color: var(--red); }
+.portfolio-stat-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+}
+.portfolio-stat-sub.positive { color: var(--green); }
+.portfolio-stat-sub.negative { color: var(--red); }
 
-.portfolio-hero-total {
-  font-size: 36px;
-  font-weight: 900;
-  color: var(--text);
+/* CHARTS ROW */
+.portfolio-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) {
+  .portfolio-charts-row { grid-template-columns: 1fr; }
 }
 
 .portfolio-chart-card {
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 16px;
-  margin: 0 16px 20px;
   padding: 20px;
+}
+.portfolio-chart-header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-height: 200px;
+  margin-bottom: 16px;
+}
+.portfolio-chart-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+.portfolio-chart-tabs {
+  display: flex;
+  gap: 4px;
+}
+.portfolio-chart-tab {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.portfolio-chart-tab:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+.portfolio-chart-tab.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.portfolio-chart-wrap {
+  height: 280px;
+  position: relative;
 }
 
-#pie-canvas {
-  max-width: 200px;
-  max-height: 200px;
-}
-
-.holding-row {
+/* LEGEND */
+.portfolio-legend {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
-
-.holding-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.portfolio-legend-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.portfolio-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
   flex-shrink: 0;
 }
+.portfolio-legend-sym { font-weight: 700; color: var(--text); }
+.portfolio-legend-pct { font-family: var(--font-mono); color: var(--text3); }
 
-.holding-info {
-  flex: 1;
+/* HOLDINGS ROW */
+.portfolio-holdings-row {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .portfolio-holdings-row { grid-template-columns: 1fr; }
 }
 
-.holding-sym {
-  font-size: 14px;
+.portfolio-holdings-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.portfolio-holdings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.portfolio-holdings-title {
+  font-size: 15px;
   font-weight: 700;
   color: var(--text);
+  margin: 0;
 }
-
-.holding-name {
-  font-size: 11px;
-  color: var(--text3);
-}
-
-.holding-amount {
-  text-align: right;
-}
-
-.holding-usd {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.holding-pct {
-  font-size: 11px;
-  color: var(--text3);
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
+.portfolio-export-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
   cursor: pointer;
-  padding: 4px;
+  transition: all 0.15s;
+}
+.portfolio-export-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--bg3); }
+
+.portfolio-table-wrap { overflow-x: auto; }
+.portfolio-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.portfolio-table th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+  white-space: nowrap;
+}
+.portfolio-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.portfolio-table tbody tr:last-child td { border-bottom: none; }
+.portfolio-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+.portfolio-table-asset { display: flex; align-items: center; gap: 10px; }
+.portfolio-table-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 12px; flex-shrink: 0;
+}
+.portfolio-table-sym { font-weight: 700; color: var(--text); font-size: 13px; }
+.portfolio-table-name { font-size: 10px; color: var(--text3); }
+.portfolio-table .positive { color: var(--green); }
+.portfolio-table .negative { color: var(--red); }
+
+/* EARN CARD */
+.portfolio-earn-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+.portfolio-earn-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 16px;
+}
+.portfolio-earn-list { display: flex; flex-direction: column; gap: 10px; }
+.earn-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg3);
+  border-radius: 10px;
+  transition: border-color 0.15s;
+}
+.earn-item:hover { border-color: var(--blue); }
+.earn-item-left { display: flex; flex-direction: column; gap: 2px; }
+.earn-item-sym { font-weight: 700; font-size: 13px; color: var(--text); }
+.earn-item-name { font-size: 10px; color: var(--text3); text-transform: uppercase; }
+.earn-item-rate { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--green); }
+.portfolio-earn-view-all {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  padding: 10px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.portfolio-earn-view-all:hover { background: var(--bg3); }
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  color: var(--text3);
+  padding: 40px 20px;
+  font-size: 13px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 767px) {
+  .portfolio-page { padding: 0 16px 16px; }
+  .portfolio-stat-card { padding: 16px; }
+  .portfolio-stat-value { font-size: 20px; }
+  .portfolio-chart-card { padding: 16px; }
+  .portfolio-chart-wrap { height: 240px; }
+  .portfolio-holdings-header { padding: 12px 16px; }
+  .portfolio-table th, .portfolio-table td { padding: 10px 12px; font-size: 12px; }
+  .portfolio-earn-card { position: static; }
 }

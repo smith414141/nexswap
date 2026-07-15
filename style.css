@@ -2629,95 +2629,6 @@ h3 {
   border-color: hsl(280 65% 60% / 0.25);
 }
 
-/* ---- CHARITY PAGE STYLES ---- */
-.cause-card {
-  border-left: 3px solid var(--cause-color);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.cause-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-.cause-icon-badge {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--cause-color-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-}
-.cause-tag {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 2px 8px;
-  border-radius: 20px;
-  background: var(--cause-color-light);
-  color: var(--cause-color);
-  margin-left: 8px;
-  vertical-align: middle;
-}
-.cause-progress-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  font-size: 12px;
-}
-.cause-progress-label {
-  font-weight: 700;
-  color: var(--text3);
-}
-.cause-progress-pct {
-  font-weight: 800;
-  font-family: var(--font-mono);
-  color: var(--cause-color);
-  background: var(--cause-color-light);
-  padding: 2px 8px;
-  border-radius: 20px;
-  font-size: 11px;
-}
-.cause-progress-bar {
-  height: 10px;
-  background: var(--bg3);
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-}
-.cause-progress-fill {
-  height: 100%;
-  border-radius: 8px;
-  background: linear-gradient(90deg, var(--cause-color-start), var(--cause-color-end));
-  transition: width 0.4s ease;
-}
-
-/* Hero banner gradient for charity page */
-.charity-hero-banner {
-  height: 4px;
-  background: linear-gradient(90deg, rgba(236, 72, 153, 0.4), rgba(244, 114, 182, 0.2), transparent);
-  margin: 0 -16px 0 -16px;
-  border-radius: 0 0 12px 12px;
-}
-
-/* Stat box styling for charity page */
-.stat-box {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.01)
-  ) !important;
-  border: 1px solid var(--border) !important;
-}
-.stat-box-icon {
-  font-size: 14px;
-  margin-right: 4px;
-}
-
 /* ---- PRODUCT HUB TABS + BADGES ---- */
   display: flex;
   gap: 8px;
@@ -4093,4 +4004,414 @@ body.home-v2 #earn-accordion .chev {
   padding: 6px 10px;
   border-radius: 100px;
   cursor: default;
+}
+
+/* ============ P2P PAGE STYLES ============ */
+.p2p-stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+}
+
+.p2p-method-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--bg3);
+  color: var(--text2);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.p2p-listing-row {
+  background: var(--bg2);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.p2p-listing-row:hover {
+  background: var(--bg3);
+}
+
+.p2p-listing-row:active {
+  background: var(--bg3);
+}
+
+.p2p-price-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Search input styling */
+#p2p-search {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 14px;
+  flex: 1;
+}
+
+#p2p-search::placeholder {
+  color: var(--text3);
+}
+
+/* Crypto pills for upcoming coins */
+.crypto-pill:disabled,
+.crypto-pill[style*="opacity: 0.6"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767px) {
+  .p2p-listing-row > div {
+    grid-template-columns: 1fr !important;
+  }
+  .p2p-price-col {
+    width: 100%;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* ============ P2P PAGE COMPACT LAYOUT ============ */
+.p2p-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.p2p-header-left {
+  min-width: 200px;
+}
+.p2p-page-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+.p2p-page-sub {
+  font-size: 12px;
+  color: var(--text2);
+  margin: 0;
+}
+.p2p-header-right {
+  display: flex;
+  gap: 16px;
+}
+.p2p-header-link {
+  font-size: 13px;
+  color: var(--text2);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+.p2p-header-link:hover {
+  color: var(--text);
+  background: var(--bg3);
+}
+
+/* Buy/Sell full-width toggle */
+.p2p-toggle-bar {
+  display: flex;
+  padding: 0 24px 16px;
+}
+.p2p-toggle-segment {
+  flex: 1;
+  padding: 14px 0;
+  border: none;
+  background: var(--bg3);
+  color: var(--text2);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.p2p-toggle-segment:first-child {
+  border-radius: 12px 0 0 12px;
+}
+.p2p-toggle-segment:last-child {
+  border-radius: 0 12px 12px 0;
+}
+.p2p-toggle-segment:hover {
+  background: var(--border2);
+}
+.p2p-toggle-segment.active {
+  background: var(--green);
+  color: #fff;
+}
+.p2p-toggle-segment.active:last-child {
+  background: var(--red);
+}
+
+/* Filter row 1: Coin tabs + Search + Express */
+.p2p-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px 12px;
+  flex-wrap: wrap;
+}
+.p2p-coin-tabs {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.coin-tab {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.coin-tab:hover:not(.active) {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.coin-tab.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.p2p-search-wrapper {
+  flex: 1;
+  min-width: 180px;
+  position: relative;
+}
+.p2p-search-wrapper input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+}
+.p2p-search-wrapper input:focus {
+  border-color: var(--blue);
+}
+.p2p-search-wrapper .input-suffix {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  pointer-events: none;
+}
+.p2p-express-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+.p2p-express-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
+/* Filter row 2: Payment method pills */
+.p2p-payment-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px 12px;
+  overflow-x: auto;
+  flex-wrap: wrap;
+}
+.p2p-filter-label {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pay-filter-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pay-filter-pill:hover:not(.active) {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.pay-filter-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+/* Currency picker inline */
+.p2p-currency-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin: 0 24px 12px;
+}
+.p2p-currency-picker:hover {
+  border-color: var(--blue);
+  background: var(--bg3);
+}
+.p2p-currency-picker #selected-flag {
+  font-size: 16px;
+}
+.p2p-currency-picker #selected-currency {
+  font-weight: 700;
+  font-size: 13px;
+}
+.p2p-caret {
+  font-size: 10px;
+  color: var(--text3);
+}
+
+/* Amount filter */
+.p2p-amount-filter {
+  padding: 0 24px 16px;
+}
+
+/* Listings table */
+.p2p-listings-table {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.p2p-listing-row {
+  background: var(--bg2);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.p2p-listing-row:hover {
+  background: var(--bg3);
+}
+.p2p-listing-row:active {
+  background: var(--bg3);
+}
+
+/* Verified icon */
+.verified-icon {
+  color: var(--blue);
+  font-size: 13px;
+}
+
+/* P2P method tags in listings */
+.p2p-method-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--bg3);
+  color: var(--text2);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .p2p-header-row {
+    padding: 12px 16px;
+  }
+  .p2p-page-title {
+    font-size: 20px;
+  }
+  .p2p-header-right {
+    gap: 8px;
+  }
+  .p2p-header-link {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  .p2p-toggle-bar {
+    padding: 0 16px 12px;
+  }
+  .p2p-toggle-segment {
+    padding: 12px 0;
+    font-size: 13px;
+  }
+  .p2p-filter-row {
+    padding: 0 16px 8px;
+    gap: 8px;
+  }
+  .p2p-coin-tabs {
+    flex: 1;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .p2p-search-wrapper {
+    min-width: 140px;
+  }
+  .p2p-payment-filter-row {
+    padding: 0 16px 8px;
+  }
+  .p2p-currency-picker {
+    margin: 0 16px 8px;
+    width: 100%;
+    justify-content: center;
+  }
+  .p2p-amount-filter {
+    padding: 0 16px 12px;
+  }
+  .p2p-listing-row > div {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+  .p2p-price-col,
+  .p2p-listing-row > div > div:last-child {
+    width: 100%;
+    text-align: left;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .p2p-price-col .btn {
+    width: auto;
+    min-width: 120px;
+  }
 }

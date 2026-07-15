@@ -19,192 +19,247 @@
   <body>
     <canvas id="bg-canvas"></canvas>
     <!-- PC NAV -->
-    <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        ><span class="logo-icon-mini">K</span>Kripex</a
-      >
+    <div class="pc-nav with-ticker">
+      <a class="pc-nav-logo" href="home.html">⚡ Kripex</a>
       <div class="pc-nav-right">
-        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
-        <a href="messages.html" class="nav-icon-btn" title="Messages">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-          </svg>
-        </a>
-        <a href="profile.html" class="nav-icon-btn" title="Profile">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-          </svg>
-        </a>
-        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+        <button class="icon-btn" title="Notifications" onclick="window.location.href='notifications.html'">
+          🔔
+        </button>
+        <button class="icon-btn" title="Messages" onclick="window.location.href='messages.html'">
+          ✉️
+        </button>
+        <div class="profile-menu-wrap" id="profile-menu-wrap">
+          <div class="profile-avatar" onclick="toggleProfileMenu()">👤</div>
+          <div class="profile-menu">
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
+          </div>
+        </div>
       </div>
     </div>
-
     <div class="pc-sidebar">
       <div class="pc-sidebar-group-label">Main</div>
-      <a class="pc-sidebar-link " href="home.html">
+      <a class="pc-sidebar-link" href="home.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" />
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
         </svg>
         Dashboard
       </a>
-      <a class="pc-sidebar-link " href="markets.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7" /></svg>
+      <a class="pc-sidebar-link" href="markets.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
         Markets
       </a>
-      <a class="pc-sidebar-link " href="trade.html">
+      <a class="pc-sidebar-link" href="trade.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
+          <path d="M7 3L3 7l4 4"/><path d="M3 7h13a4 4 0 014 4v1"/>
+          <path d="M17 21l4-4-4-4"/><path d="M21 17H8a4 4 0 01-4-4v-1"/>
         </svg>
         Trade
       </a>
-      <a class="pc-sidebar-link " href="wallet.html">
+      <a class="pc-sidebar-link" href="wallet.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
+          <rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+          <circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none"/>
         </svg>
         Wallet
       </a>
       <a class="pc-sidebar-link active" href="portfolio.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z"/><path d="M21 8A8.99 8.99 0 0014 2v6h7z"/></svg>
         Portfolio
       </a>
       <div class="pc-sidebar-group-label">Discover</div>
-      <a class="pc-sidebar-link " href="p2p.html">
+      <a class="pc-sidebar-link" href="p2p.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
+          <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/>
         </svg>
         P2P Trading
       </a>
-      <a class="pc-sidebar-link " href="earn.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
+      <a class="pc-sidebar-link" href="earn.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
         Earn
       </a>
-      <a class="pc-sidebar-link " href="products.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
+      <a class="pc-sidebar-link" href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
         More
       </a>
       <div class="pc-sidebar-spacer"></div>
       <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
         Logout
       </a>
     </div>
-<div class="pc-main">
-
-
-    <div class="page" style="padding-bottom: 90px">
-      <div class="top-bar">
-        <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
-          >←</span
-        >
-        <div class="top-bar-logo">Portfolio</div>
-        <button class="icon-btn" onclick="exportCSV()" title="Export CSV">
-          ⬇️
-        </button>
-      </div>
-
-      <!-- TOTAL -->
-      <div class="portfolio-hero">
-        <div class="portfolio-hero-label">Total Value</div>
-        <div id="portfolio-total" class="portfolio-hero-total">$0.00</div>
-      </div>
-
-      <!-- PIE CHART -->
-      <div class="portfolio-chart-card">
-        <div id="portfolio-chart-wrap">
-          <div class="empty-state">Loading...</div>
+    <div class="pc-main">
+      <!-- LIVE PRICE TICKER -->
+      <div class="pc-ticker-bar" id="pc-ticker-bar">
+        <div class="pc-ticker-track" id="pc-ticker-track">
+          <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
         </div>
       </div>
 
-      <!-- HOLDINGS -->
-      <div style="padding: 0 16px">
-        <p class="section-title">Holdings</p>
-        <div id="portfolio-holdings"></div>
+      <div class="portfolio-page">
+        <!-- STAT CARDS ROW -->
+        <div class="portfolio-stats-row" id="portfolio-stats-row">
+          <div class="portfolio-stat-card">
+            <div class="portfolio-stat-label">Portfolio Value</div>
+            <div class="portfolio-stat-value" id="stat-portfolio-value">$0.00</div>
+            <div class="portfolio-stat-sub" id="stat-cost-basis">Cost Basis: $0.00</div>
+          </div>
+          <div class="portfolio-stat-card">
+            <div class="portfolio-stat-label">Total PNL</div>
+            <div class="portfolio-stat-value positive" id="stat-total-pnl">$0.00</div>
+            <div class="portfolio-stat-sub positive" id="stat-total-pnl-pct">0.00%</div>
+          </div>
+          <div class="portfolio-stat-card">
+            <div class="portfolio-stat-label">Best Performer</div>
+            <div class="portfolio-stat-value" id="stat-best-performer">—</div>
+            <div class="portfolio-stat-sub positive" id="stat-best-performer-pct">—</div>
+          </div>
+          <div class="portfolio-stat-card">
+            <div class="portfolio-stat-label">Assets</div>
+            <div class="portfolio-stat-value" id="stat-assets-count">0</div>
+            <div class="portfolio-stat-sub">holdings</div>
+          </div>
+        </div>
+
+        <!-- CHART + ALLOCATION ROW -->
+        <div class="portfolio-charts-row">
+          <!-- LEFT: PERFORMANCE CHART -->
+          <div class="portfolio-chart-card">
+            <div class="portfolio-chart-header">
+              <h3 class="portfolio-chart-title">Performance</h3>
+              <div class="portfolio-chart-tabs" id="portfolio-chart-tabs">
+                <button class="portfolio-chart-tab active" data-range="1H">1H</button>
+                <button class="portfolio-chart-tab" data-range="4H">4H</button>
+                <button class="portfolio-chart-tab" data-range="1D">1D</button>
+                <button class="portfolio-chart-tab" data-range="1W">1W</button>
+                <button class="portfolio-chart-tab" data-range="1M">1M</button>
+              </div>
+            </div>
+            <div class="portfolio-chart-wrap">
+              <canvas id="portfolio-line-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- RIGHT: ALLOCATION DONUT -->
+          <div class="portfolio-chart-card">
+            <div class="portfolio-chart-header">
+              <h3 class="portfolio-chart-title">Allocation</h3>
+            </div>
+            <div class="portfolio-chart-wrap">
+              <canvas id="portfolio-donut-chart"></canvas>
+            </div>
+            <div class="portfolio-legend" id="portfolio-legend"></div>
+          </div>
+        </div>
+
+        <!-- HOLDINGS DETAIL TABLE + EARN PRODUCTS -->
+        <div class="portfolio-holdings-row">
+          <!-- LEFT: HOLDINGS TABLE -->
+          <div class="portfolio-holdings-card">
+            <div class="portfolio-holdings-header">
+              <h3 class="portfolio-holdings-title">Holdings Detail</h3>
+              <button class="portfolio-export-btn" onclick="exportPortfolioCSV()">Export CSV</button>
+            </div>
+            <div class="portfolio-table-wrap">
+              <table class="portfolio-table" id="portfolio-holdings-table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Cost Basis</th>
+                    <th>Current Value</th>
+                    <th>PNL</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
+                <tbody id="portfolio-holdings-body"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="portfolio-empty" style="display:none;">No holdings yet. Deposit crypto to get started.</div>
+          </div>
+
+          <!-- RIGHT: EARN PRODUCTS -->
+          <div class="portfolio-earn-card">
+            <h3 class="portfolio-earn-title">Earn Products</h3>
+            <div class="portfolio-earn-list" id="portfolio-earn-list">
+              <div class="earn-item">
+                <div class="earn-item-left">
+                  <div class="earn-item-sym">BTC</div>
+                  <div class="earn-item-name">Flexible</div>
+                </div>
+                <div class="earn-item-rate">3.5% APY</div>
+              </div>
+              <div class="earn-item">
+                <div class="earn-item-left">
+                  <div class="earn-item-sym">ETH</div>
+                  <div class="earn-item-name">Flexible</div>
+                </div>
+                <div class="earn-item-rate">4.2% APY</div>
+              </div>
+              <div class="earn-item">
+                <div class="earn-item-left">
+                  <div class="earn-item-sym">USDT</div>
+                  <div class="earn-item-name">Flexible</div>
+                </div>
+                <div class="earn-item-rate">8.5% APY</div>
+              </div>
+              <div class="earn-item">
+                <div class="earn-item-left">
+                  <div class="earn-item-sym">SOL</div>
+                  <div class="earn-item-name">30-Day</div>
+                </div>
+                <div class="earn-item-rate">12.0% APY</div>
+              </div>
+              <div class="earn-item">
+                <div class="earn-item-left">
+                  <div class="earn-item-sym">BNB</div>
+                  <div class="earn-item-name">60-Day</div>
+                </div>
+                <div class="earn-item-rate">15.5% APY</div>
+              </div>
+            </div>
+            <a href="earn.html" class="portfolio-earn-view-all">View All →</a>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- BOTTOM NAV -->
-    
-</div>
-<div class="bottom-nav">
+    <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-          />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
         </svg>
         <span class="nav-label">Home</span>
       </button>
       <button class="nav-item" onclick="window.location.href='p2p.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M7 3L3 7l4 4" />
-          <path d="M3 7h13a4 4 0 014 4v1" />
-          <path d="M17 21l4-4-4-4" />
-          <path d="M21 17H8a4 4 0 01-4-4v-1" />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
         </svg>
         <span class="nav-label">P2P</span>
       </button>
       <button class="nav-item" onclick="window.location.href='markets.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M3 3v18h18" />
-          <path d="M18 17V9" />
-          <path d="M13 17V5" />
-          <path d="M8 17v-3" />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18" /><path d="M18 17V9" /><path d="M13 17V5" /><path d="M8 17v-3" />
         </svg>
         <span class="nav-label">Markets</span>
       </button>
-      <button
-        class="nav-item active"
-        onclick="window.location.href='portfolio.html'"
-      >
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+      <button class="nav-item active" onclick="window.location.href='portfolio.html'">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10" />
           <path d="M12 8v4l3 3" />
         </svg>
         <span class="nav-label">Portfolio</span>
       </button>
       <button class="nav-item" onclick="window.location.href='profile.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="8" r="4" />
           <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
         </svg>

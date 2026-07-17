@@ -26,7 +26,9 @@
           <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" />
         </div>
         <button class="btn-primary" style="max-width:280px;width:100%;" onclick="verifyOTP()">Verify Code</button>
-        <button class="btn-secondary" onclick="resendCode()">Resend Code</button>
+        <button class="btn-secondary" onclick="resendVerification()">Resend verification email</button>
+        <p style="font-size:12px;color:var(--text3);margin:0;">Check your spam folder — verification emails sometimes land there.</p>
+        <button class="btn-secondary" onclick="goToLogin()">Already verified? Sign in →</button>
         <button class="btn-secondary" onclick="auth.signOut().then(() => window.location.href = '/')">Back to Login</button>
         <div id="otp-timer" style="font-size:12px;color:var(--text3);">Code expires in <span id="otp-countdown">15:00</span></div>
       </div>
@@ -45,6 +47,16 @@
       .otp-box:focus { border-color:var(--blue); }
     </style>
     <script>
+      // Check if user is authenticated, redirect if session expired
+      auth.onAuthStateChanged((user) => {
+        if (!user) {
+          document.getElementById("verify-desc").textContent = "Session expired. Please log in again.";
+          document.getElementById("otp-section").style.display = "none";
+          setTimeout(() => (window.location.href = "index.html?tab=login"), 2000);
+          return;
+        }
+      });
+
       // Auto-fill code from URL if user clicked the email link
       const urlParams = new URLSearchParams(window.location.search);
       const urlCode = urlParams.get("code");
@@ -107,9 +119,13 @@
         }
       }
 
-      async function resendCode() {
+      async function resendVerification() {
         const user = auth.currentUser;
-        if (!user) { window.location.href = "/"; return; }
+        if (!user) { 
+          showToast("Session expired. Please log in again.", "error");
+          setTimeout(() => (window.location.href = "index.html?tab=login"), 1500);
+          return; 
+        }
         try {
           const otp = Math.floor(100000 + Math.random() * 900000).toString();
           const otpExpiry = Date.now() + 15 * 60 * 1000;
@@ -120,10 +136,14 @@
           });
           expiryTime = otpExpiry;
           updateCountdown();
-          showToast("New code sent! Check your email.", "success");
+          showToast("Verification email sent! Check your email (and spam folder).", "success");
         } catch(err) {
           showToast(friendlyAuthError(err), "error");
         }
+      }
+
+      function goToLogin() {
+        window.location.href = "index.html?tab=login";
       }
     </script>
   </body>

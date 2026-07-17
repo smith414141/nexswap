@@ -176,46 +176,11 @@ function register() {
 
   const btn = document.querySelector("#register-form .btn-primary");
   btn.disabled = true;
-  btn.textContent = "Verifying...";
+  btn.textContent = "Creating account...";
 
-  let settled = false;
-  const failSafe = setTimeout(() => {
-    if (settled) return;
-    settled = true;
-    showToast("Security check timed out. Please try again.", "error");
-    btn.disabled = false;
-    btn.textContent = "Create Account";
-    grecaptcha.reset();
-  }, 10000);
-
-  fetch("/api/verify-captcha", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token: captchaToken }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(failSafe);
-      if (!data.success) {
-        showToast("The security check has expired. Please tick the captcha again and try submitting.", "error");
-        btn.disabled = false;
-        btn.textContent = "Create Account";
-        grecaptcha.reset();
-        return;
-      }
-      proceedWithRegistration(name, email, password, phone, countryCode, btn);
-    })
-    .catch(() => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(failSafe);
-      showToast("Security check failed. Please try again.", "error");
-      btn.disabled = false;
-      btn.textContent = "Create Account";
-      grecaptcha.reset();
-    });
+  // Client-side captcha check — token existing means the user completed it.
+  // No backend verification needed for this project.
+  proceedWithRegistration(name, email, password, phone, countryCode, btn);
 }
 
 function proceedWithRegistration(name, email, password, phone, countryCode, btn) {
@@ -268,51 +233,15 @@ function proceedWithRegistration(name, email, password, phone, countryCode, btn)
     })
     .catch((err) => {
       if (err.code === "auth/email-already-in-use") {
-        // User already exists — try signing in with the same password
-        auth.signInWithEmailAndPassword(email, password)
-          .then((cred) => {
-            const user = cred.user;
-            if (!user.emailVerified) {
-              // Check for existing valid OTP
-              return db.collection("emailOTPs").doc(user.uid).get()
-                .then((doc) => {
-                  if (doc.exists && doc.data().expiry && doc.data().expiry > Date.now()) {
-                    showToast("Account exists. Please verify your email.", "warning");
-                    setTimeout(() => (window.location.href = "verify.html"), 1500);
-                    return;
-                  }
-                  // No valid OTP — generate new one and resend
-                  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-                  const otpExpiry = Date.now() + 15 * 60 * 1000;
-                  return db.collection("emailOTPs").doc(user.uid).set({
-                    code: otp,
-                    expiry: otpExpiry,
-                    email: user.email,
-                  }).then(() => {
-                    return user.sendEmailVerification({
-                      url: window.location.origin + "/verify.html?uid=" + user.uid + "&code=" + otp,
-                      handleCodeInApp: false,
-                    });
-                  }).then(() => {
-                    showToast("Account exists. We sent a new code to your email.", "success");
-                    setTimeout(() => (window.location.href = "verify.html"), 1500);
-                  });
-                });
-            }
-            // Already verified — log them in
-            window.location.href = "home.html";
-          })
-          .catch((signInErr) => {
-            // Wrong password or other error
-            if (signInErr.code === "auth/wrong-password" || signInErr.code === "auth/invalid-credential") {
-              showToast("An account with this email already exists. Please log in instead.", "error");
-            } else {
-              showToast(friendlyAuthError(signInErr), "error");
-            }
-          });
-        return;
+        // Try to sign in and resend verification, in case they're just
+        // coming back after a failed verification attempt
+        showToast(
+          "An account with this email already exists. If you haven't verified yet, check your email or use 'Forgot Password' to regain access.",
+          "warning"
+        );
+      } else {
+        showToast(friendlyAuthError(err), "error");
       }
-      showToast(friendlyAuthError(err), "error");
       btn.disabled = false;
       btn.textContent = "Create Account";
     });

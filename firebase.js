@@ -21,6 +21,22 @@ auth.onAuthStateChanged((user) => {
 
   if (!user && !isPublicPage) {
     window.location.href = "/index.html?tab=login";
+    return;
+  }
+
+  // If user is authenticated and on a public/landing page, send them home.
+  // This catches Google OAuth completions even if the popup .then() chain
+  // fails or the Firestore write is slow.
+  if (user && isPublicPage) {
+    // Only redirect if email is verified OR it's a Google/OAuth sign-in
+    // (Google accounts always have emailVerified: true, so this is safe).
+    if (user.emailVerified) {
+      window.location.href = "/home.html";
+      return;
+    }
+    // If email not verified (manual registration that hasn't verified yet),
+    // don't redirect here — let the registration flow handle it.
+    return;
   }
 
   if (user && !user.emailVerified && !isPublicPage) {

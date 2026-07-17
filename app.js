@@ -401,44 +401,53 @@ function login() {
 }
 // ---- GOOGLE SIGN-IN ----
 function _handleOAuthSignIn(provider) {
-  // Use redirect to avoid Firebase-branded popup screen
-  auth.signInWithRedirect(provider).catch((err) => {
-    if (err.code === "auth/cancelled-popup-request") return;
-    showToast(friendlyAuthError(err), "error");
-  });
-}
+  auth
+    .signInWithPopup(provider)
+    .then(async (result) => {
+      const user = result.user;
+      const isNewUser = result.additionalUserInfo?.isNewUser;
 
-// Handle redirect result on page load
-auth.getRedirectResult().then((result) => {
-  if (!result || !result.user) return;
-  const user = result.user;
-  const isNewUser = result.additionalUserInfo?.isNewUser;
-  if (!isNewUser) {
-    window.location.href = "home.html";
-    return;
-  }
-  return Promise.all([
-    db.collection("users").doc(user.uid).set({
-      name: user.displayName || "User",
-      email: user.email || "",
-      phone: "",
-      kycStatus: "none",
-      merchantStatus: "none",
-      country: "ET",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    }),
-    db.collection("wallets").doc(user.uid).set({
-      BTC: 0,
-      USDT: 0,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    }),
-  ]).then(() => {
-    window.location.href = "home.html";
-  });
-}).catch((err) => {
-  if (!err || err.code === "auth/cancelled-popup-request") return;
-  showToast(friendlyAuthError(err), "error");
-});
+      if (isNewUser) {
+        // Try to create user/wallet docs, but don't block redirect on failure
+        try {
+          await Promise.all([
+            db.collection("users").doc(user.uid).set({
+              name: user.displayName || "User",
+              email: user.email || "",
+              phone: "",
+              kycStatus: "none",
+              merchantStatus: "none",
+              country: "ET",
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            }),
+            db.collection("wallets").doc(user.uid).set({
+              BTC: 0,
+              USDT: 0,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            }),
+          ]);
+        } catch (e) {
+          // Firestore write failed — that's okay, onAuthStateChanged will
+          // redirect the user to home.html anyway.
+          console.warn("OAuth new-user setup error (non-fatal):", e);
+        }
+      }
+
+      // Always redirect to home after OAuth — don't wait for Firestore.
+      window.location.href = "home.html";
+    })
+    .catch((err) => {
+      if (err.code === "auth/popup-closed-by-user") return;
+      if (err.code === "auth/account-exists-with-different-credential") {
+        showToast(
+          "An account already exists with this email using a different sign-in method.",
+          "error"
+        );
+        return;
+      }
+      showToast(err.message, "error");
+    });
+}
 
 function loginWithGoogle() {
   _handleOAuthSignIn(new firebase.auth.GoogleAuthProvider());

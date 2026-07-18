@@ -1120,3 +1120,23 @@ function openOrderInModal(orderId) {
       showToast(err.message, "error");
     });
 }
+
+// Render chat for existing order
+function renderChatForOrder(order) {
+  const messages = order.messages || [];
+  const container = document.getElementById("chat-messages");
+  const user = auth.currentUser;
+  if (!container || !user) return;
+
+  container.innerHTML = messages
+    .map(
+      (m) => `
+    <div class="chat-msg ${m.sender === user.uid ? "mine" : "theirs"}">
+      ${m.sender !== user.uid ? `<div style="font-size:10px; opacity:0.6; margin-bottom:2px;">${m.senderName || "Support"}</div>` : ""}
+      ${m.text}
+    </div>
+  `
+    )
+    .join("");
+  container.scrollTop = container.scrollHeight;
+}

@@ -16,107 +16,99 @@
   </head>
   <body class="has-pc-nav">
     <canvas id="bg-canvas"></canvas>
-
-    <div class="pc-nav">
-      <a class="pc-nav-logo" href="home.html" style="text-decoration: none"
-        >⚡ kriptex</a
-      >
-      <div class="pc-nav-right">
-        <span class="kyc-badge" id="kyc-badge-pc" style="display: none"></span>
-        <button class="btn-logout" onclick="logoutUser()">Logout</button>
+    <!-- PRICE TICKER BAR -->
+    <div class="pc-ticker-bar" id="pc-ticker-bar">
+      <div class="pc-ticker-track" id="pc-ticker-track">
+        <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
       </div>
     </div>
-
-    <div class="pc-sidebar">
-      <a class="pc-sidebar-link" href="home.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-          /></svg
-        >Home</a
-      >
-      <a class="pc-sidebar-link" href="p2p.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M7 3L3 7l4 4" />
-          <path d="M3 7h13a4 4 0 014 4v1" />
-          <path d="M17 21l4-4-4-4" />
-          <path d="M21 17H8a4 4 0 01-4-4v-1" /></svg
-        >P2P</a
-      >
-      <a class="pc-sidebar-link" href="deposit.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 3v12" />
-          <path d="M7 10l5 5 5-5" />
-          <path d="M5 19h14" /></svg
-        >Deposit</a
-      >
-      <a class="pc-sidebar-link" href="withdraw.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 19V7" />
-          <path d="M7 12l5-5 5 5" />
-          <path d="M5 19h14" /></svg
-        >Withdraw</a
-      >
-      <a class="pc-sidebar-link" href="messages.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
-          /></svg
-        >Messages</a
-      >
-      <a class="pc-sidebar-link active" href="profile.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
-        >Profile</a
-      >
-      <a class="pc-sidebar-link" href="settings.html"
-        ><svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <circle cx="12" cy="12" r="3" />
-          <path
-            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
-          /></svg
-        >Settings</a
-      >
+    <!-- PC NAV (hidden on mobile) -->
+    <div class="pc-nav with-ticker">
+      <a class="pc-nav-logo" href="home.html">⚡ Kripex</a>
+      <div class="pc-nav-right">
+        <button class="icon-btn" title="Notifications" onclick="window.location.href='notifications.html'">
+          🔔
+        </button>
+        <button class="icon-btn" title="Messages" onclick="window.location.href='messages.html'">
+          ✉️
+        </button>
+        <div class="profile-menu-wrap" id="profile-menu-wrap">
+          <div class="profile-avatar" onclick="toggleProfileMenu()">👤</div>
+          <div class="profile-menu">
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <a href="#" onclick="logoutUser()">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pc-sidebar with-ticker">
+      <div class="pc-sidebar-group-label">Main</div>
+      <a class="pc-sidebar-link" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Dashboard
+      </a>
+      <a class="pc-sidebar-link" href="markets.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+        Markets
+      </a>
+      <a class="pc-sidebar-link" href="trade.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 3L3 7l4 4"/><path d="M3 7h13a4 4 0 014 4v1"/>
+          <path d="M17 21l4-4-4-4"/><path d="M21 17H8a4 4 0 01-4-4v-1"/>
+        </svg>
+        Trade
+      </a>
+      <a class="pc-sidebar-link" href="wallet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/>
+          <circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none"/>
+        </svg>
+        Wallet
+      </a>
+      <a class="pc-sidebar-link" href="portfolio.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a10 10 0 1010 10H12V2z"/><path d="M21 8A8.99 8.99 0 0014 2v6h7z"/>
+        </svg>
+        Portfolio
+      </a>
+      <div class="pc-sidebar-group-label">Discover</div>
+      <a class="pc-sidebar-link" href="p2p.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/>
+        </svg>
+        P2P Trading
+      </a>
+      <a class="pc-sidebar-link" href="earn.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/>
+        </svg>
+        Earn
+      </a>
+      <a class="pc-sidebar-link" href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="5" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          <circle cx="19" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
+        More
+      </a>
+      <div class="pc-sidebar-spacer"></div>
+      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
+        </svg>
+        Logout
+      </a>
     </div>
 
-    <div class="page">
-      <div class="pc-main">
+    <div class="page with-ticker">
+      <div class="pc-main with-ticker">
         <!-- TOP BAR -->
         <div class="top-bar">
           <span style="font-size: 20px; cursor: pointer" onclick="goBack()"
@@ -692,31 +684,13 @@
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
       <button class="nav-item" onclick="window.location.href='home.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10"
-          />
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
         </svg>
         <span class="nav-label">Home</span>
       </button>
       <button class="nav-item" onclick="window.location.href='p2p.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M7 3L3 7l4 4" />
           <path d="M3 7h13a4 4 0 014 4v1" />
           <path d="M17 21l4-4-4-4" />
@@ -725,30 +699,14 @@
         <span class="nav-label">P2P</span>
       </button>
       <button class="nav-item" onclick="window.location.href='portfolio.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5" />
           <path d="M11 5l4 4L21 3" />
         </svg>
         <span class="nav-label">Portfolio</span>
       </button>
       <button class="nav-item" onclick="window.location.href='markets.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 3v18h18" />
           <path d="M18 17V9" />
           <path d="M13 17V5" />
@@ -757,15 +715,7 @@
         <span class="nav-label">Markets</span>
       </button>
       <button class="nav-item" onclick="window.location.href='deposit.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v12" />
           <path d="M7 10l5 5 5-5" />
           <path d="M5 19h14" />
@@ -773,32 +723,13 @@
         <span class="nav-label">Deposit</span>
       </button>
       <button class="nav-item" onclick="window.location.href='messages.html'">
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
         </svg>
         <span class="nav-label">Messages</span>
       </button>
-      <button
-        class="nav-item active"
-        onclick="window.location.href='profile.html'"
-      >
-        <svg
-          class="nav-icon-svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
+      <button class="nav-item active" onclick="window.location.href='profile.html'">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="8" r="4" />
           <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
         </svg>

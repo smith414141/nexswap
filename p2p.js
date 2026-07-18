@@ -492,7 +492,7 @@ function loadP2POrders() {
         return `
           <div style="display:flex; align-items:center; justify-content:space-between;
             padding:10px 16px; border-bottom:1px solid var(--border); font-size:12.5px; cursor:pointer;"
-            onclick="window.location.href='order.html?id=${o.id}'">
+            onclick="openOrderInModal('${o.id}')">
             <div style="flex:1;">
               <span style="font-weight:700;">${o.type === "buy" ? "Buy" : "Sell"} ${o.crypto || "USDT"}</span>
               <span style="color:var(--text3); margin-left:8px;">${date}</span>
@@ -549,7 +549,7 @@ function loadP2POrders() {
             return `
               <div style="display:flex; align-items:center; justify-content:space-between;
                 padding:10px 16px; border-bottom:1px solid var(--border); font-size:12.5px; cursor:pointer;"
-                onclick="window.location.href='order.html?id=${o.id}'">
+                onclick="openOrderInModal('${o.id}')">
                 <div style="flex:1;">
                   <span style="font-weight:700;">${o.type === "buy" ? "Buy" : "Sell"} ${o.crypto || "USDT"}</span>
                   <span style="color:var(--text3); margin-left:8px;">${date}</span>

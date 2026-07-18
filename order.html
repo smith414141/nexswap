@@ -149,59 +149,120 @@
           <span class="order-type" id="order-type-badge"></span>
         </div>
 
-        <!-- AMOUNT INPUT CARD -->
         <div id="step-amount">
-          <div class="card" style="margin-bottom: 14px; padding: 16px;">
-            <p class="section-title" id="amount-entry-title" style="margin-bottom: 12px;">Enter Amount</p>
-            <div class="input-row">
-              <input
-                type="number"
-                id="fiat-amount"
-                placeholder="0"
-                min="0"
-                oninput="calcCrypto()"
-                style="font-size: 18px; font-weight: 700;"
-              />
-              <span class="input-suffix" id="fiat-currency-label" style="font-size: 13px;">ETB</span>
-            </div>
-            <div style="text-align: center; font-size: 11.5px; color: var(--text2); margin: 8px 0;">
-              ≈ <span id="crypto-amount-display">0</span>
-              <span id="crypto-label"></span>
-            </div>
-            <div style="font-size: 10.5px; color: var(--text3); text-align: center" id="limit-display"></div>
-          </div>
 
-          <!-- SELL: payout details card -->
-          <div
-            class="card"
-            id="payout-section"
-            style="display: none; margin-bottom: 14px; padding: 16px;"
-          >
-            <p class="section-title" style="margin-bottom: 12px;">Your Payout Details</p>
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label style="font-size: 11px;">Payment Method</label>
-              <select id="payout-method" style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;"></select>
-            </div>
-            <div class="form-group" style="margin-bottom: 0;">
-              <label style="font-size: 11px;">Account / Phone Number</label>
-              <input
-                type="text"
-                id="payout-account"
-                placeholder="Enter account number"
-                style="width: 100%; padding: 12px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px;"
-              />
-            </div>
-          </div>
+  <!-- Order header info card -->
+  <div class="card" style="margin-bottom:12px; padding:18px 20px;">
+    <!-- Title: "Buy USDT" or "Sell USDT" -->
+    <div style="font-size:13px; font-weight:600; color:var(--text2); margin-bottom:10px;"
+      id="order-header-title">Buy USDT</div>
 
-          <button
-            class="btn-primary"
-            id="confirm-order-btn"
-            onclick="confirmOrder()"
-            style="width: 100%; padding: 14px; font-size: 14px;"
-          >
-            Confirm Order
-          </button>
-        </div>
+    <!-- Price + pair (big number) -->
+    <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:8px;">
+      <span id="order-price-display"
+        style="font-size:32px; font-weight:800; color:var(--green);"></span>
+      <span style="font-size:13px; color:var(--text3);" id="order-pair-label">ETB / USDT</span>
+    </div>
+
+    <!-- Available + Limit row -->
+    <div style="display:flex; gap:16px; font-size:12px; color:var(--text3);
+      padding-top:10px; border-top:1px solid var(--border);">
+      <span>Available <strong style="color:var(--text);" id="order-available-display">—</strong></span>
+      <span style="color:var(--border);">·</span>
+      <span>Limit <strong style="color:var(--text);" id="order-limit-inline">—</strong></span>
+    </div>
+  </div>
+
+  <!-- Merchant info row -->
+  <div style="display:flex; align-items:center; gap:12px; padding:14px 0 10px;">
+    <div id="trader-avatar"
+      style="width:38px; height:38px; border-radius:50%; display:flex;
+        align-items:center; justify-content:center; font-weight:800; font-size:13px;
+        flex-shrink:0;"></div>
+    <div>
+      <div style="font-weight:700; font-size:14px;">
+        <span id="trader-name"></span>
+        <span id="trader-verified" class="verified-icon"></span>
+      </div>
+      <div style="font-size:11px; color:var(--text2);" id="trader-stats"></div>
+    </div>
+    <span class="order-type" id="order-type-badge" style="margin-left:auto;"></span>
+  </div>
+
+  <!-- BUY: Payment method selector (pill buttons) -->
+  <!-- This section only shows for buy orders -->
+  <div id="buy-payment-section" style="display:none; margin-bottom:12px;">
+    <div style="font-size:11px; color:var(--text3); margin-bottom:8px;">
+      Payment method — select one
+    </div>
+    <div id="buy-payment-pills" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+  </div>
+
+  <!-- SELL: payout details (existing, keep IDs) -->
+  <div class="card" id="payout-section"
+    style="display:none; margin-bottom:12px; padding:16px 18px;">
+    <div style="font-size:11px; color:var(--text3); margin-bottom:10px;">
+      Your receive account — buyer will send here
+    </div>
+    <div class="form-group" style="margin-bottom:10px;">
+      <label style="font-size:11px;">Payment Method</label>
+      <select id="payout-method"
+        style="width:100%; padding:9px 12px; border-radius:8px;
+          background:var(--bg3); border:1px solid var(--border);
+          color:var(--text); font-size:13px;"></select>
+    </div>
+    <div class="form-group">
+      <label style="font-size:11px;">Account / Phone Number</label>
+      <input type="text" id="payout-account" placeholder="Enter account number"
+        style="width:100%; padding:9px 12px; border-radius:8px;
+          background:var(--bg3); border:1px solid var(--border);
+          color:var(--text); font-size:13px; box-sizing:border-box;" />
+      <div id="payout-saved-helper"
+        style="display:none; font-size:11px; color:var(--green); margin-top:4px;"></div>
+    </div>
+  </div>
+
+  <!-- Amount input card -->
+  <div class="card" style="margin-bottom:16px; padding:16px 18px;">
+    <div style="font-size:11px; font-weight:700; text-transform:uppercase;
+      letter-spacing:0.05em; color:var(--text3); margin-bottom:10px;"
+      id="amount-entry-title">You Pay (ETB)</div>
+
+    <!-- Input row with Max button -->
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="flex:1; display:flex; align-items:center;
+        background:var(--bg3); border:1px solid var(--border);
+        border-radius:10px; padding:10px 14px; gap:8px;">
+        <input type="number" id="fiat-amount" placeholder="0" min="0"
+          oninput="calcCrypto()"
+          style="flex:1; background:none; border:none; outline:none;
+            color:var(--text); font-size:16px; font-weight:600;" />
+        <span style="font-size:13px; color:var(--text3); white-space:nowrap;"
+          id="fiat-currency-label">ETB</span>
+      </div>
+      <button onclick="setMaxAmount()"
+        style="padding:10px 14px; border-radius:10px; border:1px solid var(--border);
+          background:var(--bg3); color:var(--text); font-size:12px;
+          font-weight:700; cursor:pointer; white-space:nowrap;">Max</button>
+    </div>
+
+    <!-- Equivalent crypto amount -->
+    <div style="text-align:center; font-size:12px; color:var(--text2); margin-top:10px;">
+      ≈ <span id="crypto-amount-display">0</span>
+      <span id="crypto-label"></span>
+    </div>
+    <div style="font-size:11px; color:var(--text3); text-align:center; margin-top:4px;"
+      id="limit-display"></div>
+  </div>
+
+  <!-- Confirm button -->
+  <button class="btn-primary" id="confirm-order-btn" onclick="confirmOrder()"
+    style="width:100%; padding:14px; font-size:14px; font-weight:700;
+      border-radius:12px;">
+    Confirm Order
+  </button>
+
+</div>
 
         <!-- STEP 2: ACTIVE ORDER -->
         <div id="step-order" style="display: none">

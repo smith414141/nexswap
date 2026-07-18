@@ -951,6 +951,7 @@ function loadMyOrders() {
     ? ["awaiting_payment", "awaiting_release"]
     : ["completed", "cancelled", "disputed"];
 
+  // Try ordered query first (requires composite index)
   db.collection("p2pOrders")
     .where("buyerUid", "==", user.uid)
     .orderBy("createdAt", "desc")
@@ -998,10 +999,62 @@ function loadMyOrders() {
       }).join("");
     })
     .catch((err) => {
-      console.error("Orders query failed:", err);
-      list.innerHTML = `<div style="padding:20px; color:var(--text3); font-size:13px; text-align:center;">
-        Could not load orders
-      </div>`;
+      console.error("Ordered query failed, trying fallback:", err);
+      // Fallback: query without orderBy (no composite index needed)
+      return db.collection("p2pOrders")
+        .where("buyerUid", "==", user.uid)
+        .limit(10)
+        .get()
+        .then((snap) => {
+          console.log("Fallback query snapshot:", snap.size, "docs");
+          const orders = [];
+          snap.forEach((d) => {
+            const o = { id: d.id, ...d.data() };
+            console.log("Order (fallback):", o.id, o.status, o.type, o.fiatAmount, o.currency);
+            if (statusFilter.some((s) => o.status === s)) orders.push(o);
+          });
+          // Sort in memory by createdAt desc
+          orders.sort((a, b) => {
+            const ta = a.createdAt?.toDate?.()?.getTime() || 0;
+            const tb = b.createdAt?.toDate?.()?.getTime() || 0;
+            return tb - ta;
+          });
+          orders.splice(10); // limit to 10
+
+          if (orders.length === 0) {
+            list.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text3); font-size:13px;">
+              No ${myOrdersTab === "open" ? "open" : "completed"} orders
+            </div>`;
+            return;
+          }
+
+          list.innerHTML = orders.map((o) => {
+            const statusColor = o.status === "completed" ? "var(--green)"
+              : o.status === "cancelled" ? "var(--red)"
+              : "var(--yellow)";
+            const date = o.createdAt?.toDate
+              ? o.createdAt.toDate().toLocaleDateString()
+              : "—";
+            return `
+              <div style="display:flex; align-items:center; justify-content:space-between;
+                padding:10px 16px; border-bottom:1px solid var(--border); font-size:12.5px; cursor:pointer;"
+                onclick="openOrderInModal('${o.id}')">
+                <div style="flex:1;">
+                  <span style="font-weight:700;">${o.type === "buy" ? "Buy" : "Sell"} ${o.crypto || "USDT"}</span>
+                  <span style="color:var(--text3); margin-left:8px;">${date}</span>
+                </div>
+                <div style="flex:1; text-align:center;">
+                  ${o.fiatAmount ? formatNumber(o.fiatAmount) : "—"} ${o.currency || ""}
+                </div>
+                <div style="flex:0 0 90px; text-align:right;">
+                  <span style="padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700;
+                    background:${statusColor}22; color:${statusColor}; text-transform:capitalize;">
+                    ${o.status}
+                  </span>
+                </div>
+              </div>`;
+          }).join("");
+        });
     });
 }
 

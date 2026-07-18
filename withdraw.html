@@ -134,7 +134,7 @@
             <div class="withdraw-max-link" id="wd-max-display" onclick="setMaxWithdraw()">MAX</div>
           </div>
           <div class="withdraw-input-row">
-            <input type="number" id="wd-amount" placeholder="0.00" min="0" step="any" oninput="updateWdSummary()" />
+            <input type="number" id="wd-amount" placeholder="0.00" min="0" step="any" oninput="updateWdSummary()" onkeydown="if(event.key==='Enter'){event.preventDefault(); submitWithdrawal();}" />
             <span class="input-suffix text-brass" id="wd-amount-suffix">USDT</span>
           </div>
           <p class="withdraw-available" id="wd-available">Available: <span>0.00</span> USDT</p>

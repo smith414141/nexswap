@@ -233,4 +233,15 @@ function populateToCoinOptions() {
 document.addEventListener("DOMContentLoaded", () => {
   populateFromCoinOptions();
   populateToCoinOptions();
+
+  // Enter key on amount input triggers conversion
+  const amountInput = document.getElementById("convert-amount");
+  if (amountInput) {
+    amountInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitConvert();
+      }
+    });
+  }
 });

@@ -51,13 +51,11 @@ function renderListingInfo() {
   document.getElementById("trader-verified").textContent = listing.verified
     ? "✓"
     : "";
-  document.getElementById(
-    "trader-stats"
-  ).innerHTML = `<span class="online-dot ${
-    listing.online ? "online" : "offline"
-  }"></span>${listing.online ? "Online" : "Offline"} • ${
-    listing.trades
-  } trades • ${listing.completion}%`;
+  document.getElementById("trader-online-dot").style.background = listing.online
+    ? "var(--green)"
+    : "var(--text3)";
+  document.getElementById("trader-online-status").className = "online-dot " + (listing.online ? "online" : "offline");
+  document.getElementById("trader-stats-text").textContent = `${listing.online ? "Online" : "Offline"} • ${listing.trades} trades • ${listing.completion}%`;
 
   const badge = document.getElementById("order-type-badge");
   badge.textContent = listing.type === "buy" ? "BUY" : "SELL";

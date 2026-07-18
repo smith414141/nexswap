@@ -185,9 +185,12 @@ function renderListings() {
       }
 
       currentListings = [...realListings, ...fakeListings];
-      currentListings.sort((a, b) =>
-        currentType === "sell" ? a.price - b.price : b.price - a.price
-      );
+      currentListings.sort((a, b) => {
+        // Online merchants always appear above offline ones
+        if (a.online !== b.online) return a.online ? -1 : 1;
+        // Within the same online/offline group, sort by price
+        return currentType === "sell" ? a.price - b.price : b.price - a.price;
+      });
       renderListingsDisplay();
     })
     .catch(() => {
@@ -240,66 +243,74 @@ function renderListingsDisplay() {
   container.innerHTML = listings
     .map(
       (l) => `
-      <div class="p2p-listing-row" style="${
-        l.online ? "" : "opacity:0.5;"
-      } border-bottom:1px solid var(--border);" onclick="openOrder('${l.id}')">
-        <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; padding: 12px 16px;">
-          <div style="min-width: 0; display: flex; align-items: center; gap: 12px;">
-            <div style="position: relative; width:36px; height:36px; border-radius:50%; background:${
-              l.color
-            }22; color:${
-        l.color
-      }; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">
-              ${l.initials}
-              <span style="position:absolute; bottom:0; right:0; width:10px; height:10px; border-radius:50%; background:${
-                l.online ? "var(--green)" : "var(--text3)"
-              }; border:2px solid var(--bg);"></span>
+      <div class="listing-card" style="${
+        l.online ? "" : "opacity:0.45; pointer-events:none;"
+      }" onclick="openOrder('${l.id}')">
+        <div style="display:flex; align-items:center; gap:8px; padding:10px 12px;">
+
+          <!-- Avatar -->
+          <div style="width:30px; height:30px; border-radius:50%; background:${
+            l.color
+          }22; color:${l.color}; display:flex; align-items:center; justify-content:center;
+          font-weight:800; font-size:11px; flex-shrink:0; position:relative;">
+            ${l.initials}
+            <span style="position:absolute; bottom:-1px; right:-1px; width:7px; height:7px;
+              border-radius:50%; background:${l.online ? "var(--green)" : "var(--text3)"};
+              border:1.5px solid var(--bg1);"></span>
+          </div>
+
+          <!-- Merchant info -->
+          <div style="flex:0 0 120px; min-width:0;">
+            <div style="font-weight:700; font-size:12px; white-space:nowrap; overflow:hidden;
+              text-overflow:ellipsis;">
+              ${l.name}${l.verified ? ' <span style="color:var(--blue);font-size:9px;">✓</span>' : ""}
             </div>
-            <div style="min-width: 0;">
-              <div style="font-weight:700; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                ${l.name} ${l.verified ? '<span class="verified-icon" style="margin-left: 6px;">✓</span>' : ""}
-              </div>
-              <div class="text-muted" style="font-size:11px; margin-top:2px;">
-                ★ ${l.completion}% &middot; ${l.trades} trades
-              </div>
+            <div class="text-muted" style="font-size:9px;">★ ${l.rating || "4.9"} • ${l.trades} trades</div>
+          </div>
+
+          <!-- Price -->
+          <div style="flex:0 0 85px;">
+            <div class="text-muted" style="font-size:8px; text-transform:uppercase; letter-spacing:0.04em;">Price</div>
+            <div class="text-mono" style="font-size:12px; font-weight:800; color:${
+              currentType === "sell" ? "var(--green)" : "var(--text)"
+            };">${formatPrice(l.price)}</div>
+            <div class="text-muted" style="font-size:8px;">${l.crypto}/USDT</div>
+          </div>
+
+          <!-- Limit -->
+          <div style="flex:0 0 100px;">
+            <div class="text-muted" style="font-size:8px; text-transform:uppercase; letter-spacing:0.04em;">Limit</div>
+            <div style="font-size:10.5px;">$${formatNumber(l.minLimit)}–$${formatNumber(l.maxLimit)}</div>
+          </div>
+
+          <!-- Payment methods -->
+          <div style="flex:1; min-width:0;">
+            <div class="text-muted" style="font-size:8px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Payment</div>
+            <div style="display:flex; gap:3px; flex-wrap:nowrap; overflow:hidden;">
+              ${l.methods.slice(0, 1).map(
+                (m) => `<span style="font-size:8.5px; background:var(--bg3); padding:1px 5px;
+                  border-radius:3px; white-space:nowrap;">${m}</span>`
+              ).join("")}${l.methods.length > 1
+                ? `<span style="font-size:8.5px; background:var(--bg3); padding:1px 5px; border-radius:3px;">+${l.methods.length - 1}</span>`
+                : ""}
             </div>
           </div>
 
-          <div class="p2p-price-col" style="text-align: right; min-width: 160px;">
-            <div class="text-mono" style="font-size:16px; font-weight:800; color:${
-              currentType === "buy" ? "var(--green)" : "var(--text)"
-            };">
-              ${formatPrice(l.price)}
-            </div>
-            <div class="text-muted" style="font-size:10px; margin-top:2px;">per ${l.crypto}</div>
-            <button class="btn" style="margin-top: 8px; padding: 8px 16px; font-size: 12px; font-weight: 700; ${
-              currentType === "buy"
-                ? "background: var(--green); color: #fff;"
-                : "background: var(--red); color: #fff;"
-            }" onclick="event.stopPropagation(); openOrder('${l.id}')">
-              ${currentType === "buy" ? "Buy" : "Sell"} &rarr;
-            </button>
+          <!-- Completion -->
+          <div style="flex:0 0 60px; text-align:right;">
+            <div class="text-muted" style="font-size:8px; text-transform:uppercase; letter-spacing:0.04em;">Completion</div>
+            <div style="font-size:11px; font-weight:700; color:${
+              parseFloat(l.completion) >= 95 ? "var(--green)" : parseFloat(l.completion) >= 85 ? "var(--yellow)" : "var(--text)"
+            };">${l.completion}%</div>
           </div>
 
-          <div style="text-align: right; min-width: 120px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px;">
-            <div class="text-muted" style="font-size:12px; white-space: nowrap;">
-              ${formatNumber(l.minLimit)} - ${formatNumber(l.maxLimit)} ${l.currency}
-            </div>
-            <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end;">
-              ${l.methods
-                .slice(0, 2)
-                .map((m) => `<span class="p2p-method-tag" style="font-size:9px; padding: 2px 6px;">${m}</span>`)
-                .join("")}
-              ${
-                l.methods.length > 2
-                  ? `<span class="p2p-method-tag" style="font-size:9px; padding: 2px 6px; background:var(--blue); color:#fff;">+${l.methods.length - 2}</span>`
-                  : ""
-              }
-            </div>
-            <div class="text-muted" style="font-size:11px; font-weight:600; color:${parseFloat(l.completion) >= 95 ? "var(--green)" : parseFloat(l.completion) >= 80 ? "var(--yellow)" : "var(--red)"};">
-              ${l.completion}% completion
-            </div>
-          </div>
+          <!-- Buy/Sell button -->
+          <button class="btn btn-primary" style="flex-shrink:0; padding:6px 12px; font-size:11px;${
+            currentType === "sell" ? " background:var(--red); color:#fff;" : ""
+          }" onclick="event.stopPropagation(); openOrder('${l.id}')">
+            ${currentType === "buy" ? "Buy ›" : "Sell ›"}
+          </button>
+
         </div>
       </div>
     `

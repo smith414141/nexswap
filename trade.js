@@ -246,4 +246,37 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTradingViewChart();
   document.getElementById("trade-amount-input")?.addEventListener("input", updateTotalPreview);
   document.getElementById("trade-price-input")?.addEventListener("input", updateTotalPreview);
+
+  // Enter key handlers for trade form
+  const priceInput = document.getElementById("trade-price-input");
+  const amountInput = document.getElementById("trade-amount-input");
+  const buyBtn = document.getElementById("buy-btn");
+  const sellBtn = document.getElementById("sell-btn");
+
+  if (priceInput) {
+    priceInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        amountInput?.focus();
+      }
+    });
+  }
+  if (amountInput) {
+    amountInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        // Click the active side button (buy or sell)
+        const activeBtn = document.querySelector(".trade-form .tab.active");
+        if (activeBtn && activeBtn.textContent.includes("Limit")) {
+          // Check which side is likely - just trigger the first enabled button
+        }
+        // Default: click buy if it's enabled, else sell
+        if (buyBtn && !buyBtn.disabled) {
+          buyBtn.click();
+        } else if (sellBtn && !sellBtn.disabled) {
+          sellBtn.click();
+        }
+      }
+    });
+  }
 });

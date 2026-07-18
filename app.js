@@ -407,6 +407,20 @@ document.addEventListener("DOMContentLoaded", () => {
   if (tab === "register" && typeof switchTab === "function") {
     switchTab("register");
   }
+
+  // Global Enter key handler for modals — clicks primary button when input focused
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    const activeModal = document.querySelector(".modal-overlay:not([style*='display: none'])");
+    if (!activeModal) return;
+    const focused = document.activeElement;
+    if (!focused || !["INPUT", "SELECT"].includes(focused.tagName)) return;
+    const primaryBtn = activeModal.querySelector(".btn-primary, button[class*='btn-primary']");
+    if (primaryBtn && !primaryBtn.disabled) {
+      e.preventDefault();
+      primaryBtn.click();
+    }
+  });
 });
 
 // ---- LOGOUT ----

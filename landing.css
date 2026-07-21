@@ -69,7 +69,7 @@
 }
 .mockup-balance {
   font-family: var(--font-mono);
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--text);
 }
@@ -175,7 +175,7 @@
   padding: 100px 24px 80px;
 }
 .landing-hero-title {
-  font-size: 64px;
+  font-size: 22px;
   line-height: 1.05;
   margin-bottom: 24px;
 }
@@ -241,10 +241,10 @@
 }
 
 .landing-section-title {
-  font-size: 26px;
+  font-size: 17px;
   font-weight: 800;
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 23px;
   color: var(--text);
 }
 
@@ -263,8 +263,8 @@
 }
 
 .feature-icon {
-  font-size: 28px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 8px;
 }
 
 .feature-card h3 {
@@ -350,7 +350,7 @@
 }
 
 .landing-cta h2 {
-  font-size: 26px;
+  font-size: 17px;
   font-weight: 800;
   margin-bottom: 8px;
   color: var(--text);
@@ -419,7 +419,7 @@
   .landing-hero-visual { justify-content: flex-end; }
 
   .landing-hero-title {
-    font-size: 52px;
+    font-size: 22px;
   }
 
   .landing-hero-sub {
@@ -459,7 +459,7 @@
 .landing-logo { flex-direction: column; align-items: flex-start; gap: 0; }
 .landing-logo span {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 4px;
   color: var(--blue);
@@ -503,7 +503,7 @@
 .hero-v2-content { max-width: 720px; z-index: 2; }
 .hero-v2-title {
   font-family: "Playfair Display", var(--font-display), serif;
-  font-size: clamp(52px, 8vw, 96px);
+  font-size: clamp(42px, 6.4vw, 77px);
   line-height: 1.0;
   font-weight: 500;
   color: var(--text);
@@ -573,7 +573,7 @@
 .section-v2-title {
   font-family: "Playfair Display", var(--font-display), serif;
   font-weight: 500;
-  font-size: clamp(32px, 4vw, 48px);
+  font-size: clamp(26px, 3.2vw, 38px);
   line-height: 1.15;
   margin-bottom: 40px;
   color: var(--text);
@@ -634,7 +634,7 @@
 .ledger-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
 .ledger-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
 .ledger-label { font-size: 11px; letter-spacing: 2px; color: var(--text3); margin-bottom: 8px; }
-.ledger-value { font-family: var(--font-mono); font-size: 44px; font-weight: 700; }
+.ledger-value { font-family: var(--font-mono); font-size: 23px; font-weight: 700; }
 .ledger-change { color: var(--green); font-size: 14px; margin-bottom: 24px; }
 .ledger-asset-row {
   display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 10px;
@@ -651,7 +651,7 @@
 /* FORTRESS (Security) */
 .fortress-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
 .fortress-stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 28px 16px; text-align: center; }
-.fortress-num { font-family: var(--font-mono); font-size: 32px; font-weight: 700; margin-bottom: 6px; }
+.fortress-num { font-family: var(--font-mono); font-size: 21px; font-weight: 700; margin-bottom: 6px; }
 .fortress-label { font-size: 11px; letter-spacing: 1px; color: var(--text3); text-transform: uppercase; }
 .fortress-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
 .fortress-visual {
@@ -686,7 +686,7 @@
 /* CTA V2 */
 .landing-cta-v2 { padding: 80px 60px; background: var(--bg2); border-top: 1px solid var(--border); }
 .cta-v2-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
-.cta-v2-inner h2 { font-family: "Playfair Display", var(--font-display), serif; font-size: 32px; font-weight: 500; margin-bottom: 8px; }
+.cta-v2-inner h2 { font-family: "Playfair Display", var(--font-display), serif; font-size: 21px; font-weight: 500; margin-bottom: 8px; }
 .cta-v2-inner p { color: var(--text2); max-width: 420px; }
 .cta-v2-form { display: flex; gap: 10px; }
 .cta-v2-form input { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; color: var(--text); min-width: 220px; }

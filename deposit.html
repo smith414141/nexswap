@@ -2,23 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title>Kripex — Deposit</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="deposit.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body class="has-pc-nav">
+    <script>
+      // Redirect to wallet with deposit modal
+      window.location.replace('wallet.html?action=deposit');
+    </script>
     <canvas id="bg-canvas"></canvas>
-
-    <!-- PC NAV -->
+    <!-- PRICE TICKER BAR -->
+    <div class="pc-ticker-bar" id="pc-ticker-bar">
+      <div class="pc-ticker-track" id="pc-ticker-track">
+        <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
+      </div>
+    </div>
+    <!-- PC NAV (hidden on mobile) -->
     <div class="pc-nav with-ticker">
       <a class="pc-nav-logo" href="home.html">⚡ Kripex</a>
       <div class="pc-nav-right">
@@ -38,149 +41,199 @@
         </div>
       </div>
     </div>
-
-    <!-- PC SIDEBAR -->
-    <div class="pc-sidebar">
-      <a class="pc-sidebar-link" href="home.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" /></svg
-        >Home</a
-      >
-      <a class="pc-sidebar-link" href="p2p.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 3L3 7l4 4" />
-          <path d="M3 7h13a4 4 0 014 4v1" />
-          <path d="M17 21l4-4-4-4" />
-          <path d="M21 17H8a4 4 0 01-4-4v-1" /></svg
-        >P2P</a
-      >
-      <a class="pc-sidebar-link active" href="deposit.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 3v12" />
-          <path d="M7 10l5 5 5-5" />
-          <path d="M5 19h14" /></svg
-        >Deposit</a
-      >
-      <a class="pc-sidebar-link" href="withdraw.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 19V7" />
-          <path d="M7 12l5-5 5 5" />
-          <path d="M5 19h14" /></svg
-        >Withdraw</a
-      >
-      <a class="pc-sidebar-link" href="messages.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path
-            d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
-          /></svg
-        >Messages</a
-      >
-      <a class="pc-sidebar-link" href="profile.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg
-        >Profile</a
-      >
-      <a class="pc-sidebar-link" href="settings.html"
-        ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3" />
-          <path
-            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"
-          /></svg
-        >Settings</a
-      >
+    <div class="pc-sidebar with-ticker">
+      <div class="pc-sidebar-group-label">Main</div>
+      <a class="pc-sidebar-link" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Dashboard
+      </a>
+      <a class="pc-sidebar-link" href="markets.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+        Markets
+      </a>
+      <a class="pc-sidebar-link" href="trade.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 3L3 7l4 4" /><path d="M3 7h13a4 4 0 014 4v1" /><path d="M17 21l4-4-4-4" /><path d="M21 17H8a4 4 0 01-4-4v-1" />
+        </svg>
+        Trade
+      </a>
+      <a class="pc-sidebar-link" href="wallet.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="6" width="20" height="14" rx="2" /><path d="M2 10h20" /><circle cx="17" cy="15" r="1.4" fill="currentColor" stroke="none" />
+        </svg>
+        Wallet
+      </a>
+      <a class="pc-sidebar-link" href="portfolio.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1010 10H12V2z" /><path d="M21 8A8.99 8.99 0 0014 2v6h7z" /></svg>
+        Portfolio
+      </a>
+      <div class="pc-sidebar-group-label">Discover</div>
+      <a class="pc-sidebar-link" href="p2p.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" /><path d="M16 3.13a4 4 0 010 7.75" /><path d="M21 21v-2a4 4 0 00-3-3.87" />
+        </svg>
+        P2P Trading
+      </a>
+      <a class="pc-sidebar-link" href="earn.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>
+        Earn
+      </a>
+      <a class="pc-sidebar-link" href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.5" fill="currentColor" /><circle cx="12" cy="12" r="1.5" fill="currentColor" /><circle cx="19" cy="12" r="1.5" fill="currentColor" /></svg>
+        More
+      </a>
+      <div class="pc-sidebar-spacer"></div>
+      <a class="pc-sidebar-link pc-sidebar-logout" href="#" onclick="logoutUser();return false;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><path d="M16 17l5-5-5-5" /><path d="M21 12H9" /></svg>
+        Logout
+      </a>
     </div>
 
-    <div class="page">
-      <div class="pc-main">
+    <div class="page with-ticker">
+      <div class="pc-main with-ticker">
+        <!-- LIVE PRICE TICKER -->
+        <div class="pc-ticker-bar" id="pc-ticker-bar">
+          <div class="pc-ticker-track" id="pc-ticker-track">
+            <span class="pc-ticker-item"><span class="sym">Loading prices…</span></span>
+          </div>
+        </div>
+
+        <!-- DEPOSIT PAGE CONTENT -->
         <div class="deposit-page">
           <!-- HEADER -->
           <div class="deposit-header">
             <div class="deposit-header-left">
-              <h1 class="deposit-title" id="deposit-title">Deposit USDT</h1>
+              <h1 class="deposit-title">Deposit</h1>
+              <span class="deposit-subtitle">Send crypto to your Kripex wallet</span>
+            </div>
+            <div class="deposit-header-right">
+              <span class="deposit-total-balance" id="header-total-balance">$0.00</span>
             </div>
           </div>
 
-          <!-- SELECT ASSET (pills) -->
+          <!-- COIN SELECTOR (Dropdown) -->
           <div class="deposit-section">
-            <p class="deposit-section-label">Select Asset</p>
-            <div class="deposit-pill-group" id="deposit-asset-pills">
-              <button class="deposit-pill active" data-sym="USDT" onclick="selectDepositAsset('USDT')">USDT</button>
-              <button class="deposit-pill" data-sym="BTC" onclick="selectDepositAsset('BTC')">BTC</button>
-              <button class="deposit-pill" data-sym="ETH" onclick="selectDepositAsset('ETH')">ETH</button>
-              <button class="deposit-pill" data-sym="SOL" onclick="selectDepositAsset('SOL')">SOL</button>
-              <button class="deposit-pill" data-sym="BNB" onclick="selectDepositAsset('BNB')">BNB</button>
+            <div class="deposit-section-header">
+              <label class="deposit-section-label">Select Coin</label>
             </div>
-          </div>
-
-          <!-- SELECT NETWORK (pills) -->
-          <div class="deposit-section">
-            <p class="deposit-section-label">Network</p>
-            <div class="deposit-pill-group" id="deposit-network-pills"></div>
-          </div>
-
-          <!-- WARNING -->
-          <div class="deposit-warning" id="deposit-warning">
-            Only send <strong id="warn-network"></strong> <strong id="warn-coin"></strong> to this address.
-          </div>
-
-          <!-- QR CODE -->
-          <div class="deposit-qr-section">
-            <div class="qr-wrap" id="qr-wrap"></div>
-            <p class="deposit-qr-note">
-              Scan QR code to get deposit address
-            </p>
-          </div>
-
-          <!-- DEPOSIT ADDRESS -->
-          <div class="deposit-address-section">
-            <p class="deposit-section-label">
-              Deposit Address (<span id="addr-network"></span>)
-            </p>
-            <div class="deposit-addr-box">
-              <div class="deposit-addr-text" id="deposit-address">Loading…</div>
-              <button class="deposit-copy-btn" onclick="copyDepositAddress()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                Copy
-              </button>
-            </div>
-            <!-- MEMO/TAG FIELD (for XRP, XLM, ATOM, HBAR) -->
-            <div class="deposit-memo-section" id="deposit-memo-section" style="display:none; margin-top:12px;">
-              <p class="deposit-memo-warning">⚠️ You MUST include the memo or your deposit will be lost.</p>
-              <div class="deposit-addr-box">
-                <div class="deposit-addr-text" id="deposit-memo">—</div>
-                <button class="deposit-copy-btn" onclick="copyMemo()">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                  Copy Memo
-                </button>
+            <div class="deposit-select-wrapper">
+              <div class="deposit-select" id="coin-select" onclick="toggleCoinDropdown()">
+                <div class="deposit-select-value" id="coin-select-value">
+                  <span class="coin-icon" id="selected-coin-icon">₮</span>
+                  <span class="coin-symbol" id="selected-coin-symbol">Select Coin</span>
+                  <span class="coin-name" id="selected-coin-name">Choose a cryptocurrency</span>
+                </div>
+                <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              <div class="deposit-dropdown" id="coin-dropdown">
+                <input type="text" class="dropdown-search" id="coin-search" placeholder="Search coins..." oninput="filterCoins()" />
+                <div class="dropdown-list" id="coin-dropdown-list"></div>
               </div>
             </div>
           </div>
 
-          <!-- INFO ROWS -->
-          <div class="deposit-info-grid">
-            <div class="deposit-info-cell">
-              <div class="deposit-info-label">Min Deposit</div>
-              <div class="deposit-info-value" id="info-min-deposit">—</div>
+          <!-- NETWORK SELECTOR (Pills) -->
+          <div class="deposit-section" id="network-section" style="display:none;">
+            <div class="deposit-section-header">
+              <label class="deposit-section-label">Select Network</label>
+              <span class="network-coin-badge" id="network-coin-badge"></span>
             </div>
-            <div class="deposit-info-cell">
-              <div class="deposit-info-label">Confirmations</div>
-              <div class="deposit-info-value" id="info-confirms">—</div>
-            </div>
-            <div class="deposit-info-cell">
-              <div class="deposit-info-label">Est. Arrival</div>
-              <div class="deposit-info-value" id="info-time">—</div>
-            </div>
-            <div class="deposit-info-cell">
-              <div class="deposit-info-label">Network Fee</div>
-              <div class="deposit-info-value" id="info-fee">—</div>
-            </div>
+            <div class="deposit-pill-group" id="network-pills"></div>
           </div>
 
-          <!-- COMPLETE BUTTON -->
-          <button class="deposit-complete-btn" onclick="showToast('Deposit completed notification sent', 'success')">
-            I've Completed My Deposit
-          </button>
+          <!-- DEPOSIT ADDRESS CARD -->
+          <div class="deposit-section" id="address-section" style="display:none;">
+            <!-- WARNING -->
+            <div class="deposit-warning" id="deposit-warning">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div class="warning-content">
+                <strong>Important:</strong> Only send <strong id="warn-network"></strong> <strong id="warn-coin"></strong> to this address.
+              </div>
+            </div>
+
+            <!-- QR CODE -->
+            <div class="deposit-qr-section">
+              <div class="qr-wrap" id="qr-wrap"></div>
+              <p class="deposit-qr-note">Scan QR code or copy address below</p>
+            </div>
+
+            <!-- DEPOSIT ADDRESS -->
+            <div class="deposit-address-section">
+              <div class="deposit-section-header">
+                <label class="deposit-section-label">Deposit Address <span id="addr-network-badge" class="network-badge"></span></label>
+                <button class="btn-secondary btn-sm" onclick="copyDepositAddress()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Copy
+                </button>
+              </div>
+              <div class="deposit-addr-box">
+                <div class="deposit-addr-text" id="deposit-address">Loading…</div>
+                <button class="deposit-copy-btn" onclick="copyDepositAddress()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                  Copy
+                </button>
+              </div>
+
+              <!-- MEMO/TAG FIELD -->
+              <div class="deposit-memo-section" id="deposit-memo-section" style="display:none; margin-top:12px;">
+                <div class="deposit-memo-warning">⚠️ <strong>Required:</strong> You MUST include the memo/tag or your deposit will be lost.</                <div class="deposit-addr-box">
+                  <div class="deposit-addr-text" id="deposit-memo">—</div>
+                  <button class="deposit-copy-btn" onclick="copyMemo()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    Copy Memo
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- NETWORK INFO GRID -->
+            <div class="deposit-info-grid" id="deposit-info-grid" style="display:none;">
+              <div class="deposit-info-cell">
+                <div class="deposit-info-label">Network</div>
+                <div class="deposit-info-value" id="info-network">—</div>
+              </div>
+              <div class="deposit-info-cell">
+                <div class="deposit-info-label">Min Deposit</div>
+                <div class="deposit-info-value" id="info-min-deposit">—</div>
+              </div>
+              <div class="deposit-info-cell">
+                <div class="deposit-info-label">Confirmations</div>
+                <div class="deposit-info-value" id="info-confirms">—</div>
+              </div>
+              <div class="deposit-info-cell">
+                <div class="deposit-info-label">Est. Arrival</div>
+                <div class="deposit-info-value" id="info-time">—</div>
+              </div>
+              <div class="deposit-info-cell">
+                <div class="deposit-info-label">Network Fee</div>
+                <div class="deposit-info-value" id="info-fee">—</div>
+              </div>
+            </div>
+
+            <!-- LIMITS -->
+            <div class="deposit-limits" id="deposit-limits" style="display:none;">
+              <div class="limit-item">
+                <span class="limit-label">Min Deposit</span>
+                <span class="limit-value" id="lim-min">—</span>
+              </div>
+              <div class="limit-item">
+                <span class="limit-label">Max Deposit</span>
+                <span class="limit-value" id="lim-max">—</span>
+              </div>
+              <div class="limit-item">
+                <span class="limit-label">24h Limit</span>
+                <span class="limit-value" id="lim-24h">—</span>
+              </div>
+            </div>
+
+            <!-- COMPLETE BUTTON -->
+            <button class="deposit-complete-btn" onclick="showToast('Deposit completed notification sent', 'success')">
+              I've Completed My Deposit
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -209,7 +262,7 @@
         </svg>
         <span class="nav-label">Portfolio</span>
       </button>
-      <button class="nav-item active" onclick="window.location.href='deposit.html'">
+      <button class="nav-item active" onclick="window.location.href='wallet.html?action=deposit'">
         <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 3v12" />
           <path d="M7 10l5 5 5-5" />
@@ -242,6 +295,6 @@
     <script src="firebase.js"></script>
     <script src="app.js"></script>
     <script src="wallet.js"></script>
-    <script src="dposit.js"></script>
+    <script src="deposit.js"></script>
   </body>
 </html>

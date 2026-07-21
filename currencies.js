@@ -88,7 +88,7 @@ const PAYMENT_METHODS = {
 };
 
 // Crypto base prices in USD (will be updated live)
-const CRYPTO_PRICES = {
+var CRYPTO_PRICES = {
   BTC: 67500,
   USDT: 1,
 };

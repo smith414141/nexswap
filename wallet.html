@@ -13,6 +13,8 @@
     />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="wallet.css" />
+    <link rel="stylesheet" href="deposit.css" />
+    <link rel="stylesheet" href="withdraw.css" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body>
@@ -110,8 +112,8 @@
             <p class="wallet-subtitle">Manage your assets across accounts</p>
           </div>
           <div class="wallet-header-right">
-            <a href="deposit.html" class="wallet-btn btn-primary" style="background:var(--green);color:#000;">⬇️ Deposit</a>
-            <a href="withdraw.html" class="wallet-btn btn-secondary">⬆️ Withdraw</a>
+            <button class="wallet-btn btn-primary" onclick="openDepositModal()" style="background:var(--green);color:#000;">⬇️ Deposit</button>
+            <button class="wallet-btn btn-secondary" onclick="openWithdrawModal()">⬆️ Withdraw</button>
           </div>
         </div>
 
@@ -125,8 +127,8 @@
         <div class="wallet-balance-section">
           <div class="wallet-balance-value" id="wallet-total-usd">$0.00</div>
           <div class="wallet-balance-actions">
-            <a href="deposit.html" class="wallet-action-link">➤ Send</a>
-            <a href="deposit.html" class="wallet-action-link">➤ Receive</a>
+            <a href="javascript:void(0)" class="wallet-action-link" onclick="openDepositModal()">➤ Receive</a>
+            <a href="javascript:void(0)" class="wallet-action-link" onclick="openWithdrawModal()">➤ Send</a>
             <a href="trade.html" class="wallet-action-link">➤ Trade</a>
           </div>
         </div>
@@ -205,11 +207,49 @@
     </div>
 
     <div id="toast-container"></div>
+
+    <!-- DEPOSIT MODAL -->
+    <div id="deposit-modal" class="modal-overlay" style="display:none;">
+      <div class="modal-sheet" style="max-height:90vh; overflow-y:auto;">
+        <div class="modal-header">
+          <span class="modal-title">Deposit</span>
+          <span class="modal-close" onclick="closeDepositModal()">✕</span>
+        </div>
+        <div style="flex:1; padding:16px;" id="deposit-modal-content"></div>
+      </div>
+    </div>
+
+    <!-- WITHDRAW MODAL -->
+    <div id="withdraw-modal" class="modal-overlay" style="display:none;">
+      <div class="modal-sheet" style="max-height:90vh; overflow-y:auto;">
+        <div class="modal-header">
+          <span class="modal-title">Withdraw</span>
+          <span class="modal-close" onclick="closeWithdrawModal()">✕</span>
+        </div>
+        <div style="flex:1; padding:16px;" id="withdraw-modal-content"></div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <!-- QR code library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
     <script src="app.js"></script>
     <script src="wallet.js"></script>
+    <script src="deposit.js"></script>
+    <script src="withdraw.js"></script>
+    <script>
+      // Auto-open modal based on URL parameter
+      const params = new URLSearchParams(window.location.search);
+      const action = params.get('action');
+      if (action === 'deposit') {
+        setTimeout(openDepositModal, 100);
+      } else if (action === 'withdraw') {
+        setTimeout(openWithdrawModal, 100);
+      }
+    </script>
   </body>
 </html>
